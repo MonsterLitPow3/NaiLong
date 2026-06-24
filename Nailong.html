@@ -218,19 +218,30 @@
         }
         .game-canvas-wrap {
             width: 100%;
-            max-width: 560px;
-            aspect-ratio: 1 / 1;
+            max-width: 600px;
             border: 3px solid var(--yellow);
             border-radius: 12px;
             overflow: hidden;
             background: #0b0c14;
             position: relative;
         }
-        #gameCanvas {
+        /* 各游戏不同宽高比 */
+        #panel-goban .game-canvas-wrap {
+            aspect-ratio: 1 / 1;
+            max-width: 600px;
+        }
+        #panel-tetris .game-canvas-wrap {
+            aspect-ratio: 10 / 20;
+            max-width: 360px;
+        }
+        #panel-paint .game-canvas-wrap {
+            aspect-ratio: 4 / 3;
+            max-width: 640px;
+        }
+        .game-canvas-wrap canvas {
             width: 100%;
             height: 100%;
             display: block;
-            background: #0b0c14;
             image-rendering: pixelated;
         }
         .game-control {
@@ -383,7 +394,8 @@
             .nav-btn { font-size: 11px; padding: 4px 10px; }
             .ctrl-btn { font-size: 10px; padding: 3px 7px; }
             .module { padding: 14px; width: 98%; margin: 12px auto; }
-            .game-canvas-wrap { max-width: 100%; }
+            .game-canvas-wrap { max-width: 100% !important; }
+            #panel-tetris .game-canvas-wrap { max-width: 280px; }
             .story-content { font-size: 14px; padding: 14px 18px; min-height: 280px; }
             .story-head h2 { font-size: 16px; }
             .nav-right { gap: 4px; }
@@ -398,6 +410,7 @@
             .story-content { font-size: 13px; padding: 12px 14px; min-height: 200px; }
             .game-tab { font-size: 11px; padding: 3px 10px; }
             .color-picker-group input[type="color"] { width: 32px; height: 32px; }
+            #panel-tetris .game-canvas-wrap { max-width: 220px; }
         }
     </style>
 </head>
@@ -435,7 +448,7 @@
         <div class="game-panel active-panel" id="panel-goban">
             <div class="game-status" id="gobanStatus">黑棋走</div>
             <div class="game-canvas-wrap">
-                <canvas id="gobanCanvas" width="600" height="600"></canvas>
+                <canvas id="gobanCanvas" width="700" height="700"></canvas>
             </div>
             <div class="game-control">
                 <button class="game-btn" id="gobanReset">🔄 新游戏</button>
@@ -446,7 +459,7 @@
         <!-- 俄罗斯方块 -->
         <div class="game-panel" id="panel-tetris">
             <div class="game-status" id="tetrisStatus">得分: 0</div>
-            <div class="game-canvas-wrap" style="aspect-ratio: 10/20;">
+            <div class="game-canvas-wrap">
                 <canvas id="tetrisCanvas" width="300" height="600"></canvas>
             </div>
             <div class="game-control">
@@ -460,7 +473,7 @@
         <!-- 绘画板 -->
         <div class="game-panel" id="panel-paint">
             <div class="game-status" id="paintStatus">🎨 自由绘画</div>
-            <div class="game-canvas-wrap" style="aspect-ratio: 4/3;">
+            <div class="game-canvas-wrap">
                 <canvas id="paintCanvas" width="800" height="600"></canvas>
             </div>
             <div class="game-control" style="flex-wrap:wrap; gap:10px;">
@@ -629,14 +642,15 @@
         });
 
         // ============================================================
-        //  5. 五子棋 (人机对战)
+        //  5. 五子棋 (人机对战 - 高难度)
         // ============================================================
         const gobanCanvas = document.getElementById('gobanCanvas');
         const gCtx = gobanCanvas.getContext('2d');
         const BOARD_SIZE = 15;
-        const CELL_SIZE = gobanCanvas.width / (BOARD_SIZE + 1);
+        // 动态计算格子大小，确保棋盘占满画布
+        let CELL_SIZE = gobanCanvas.width / (BOARD_SIZE + 1);
         let gobanBoard = [];
-        let gobanTurn = 'black'; // 'black' 或 'white'
+        let gobanTurn = 'black';
         let gameOver = false;
         let gobanHistory = [];
 
@@ -652,7 +666,6 @@
         function drawGoban() {
             const w = gobanCanvas.width, h = gobanCanvas.height;
             gCtx.clearRect(0, 0, w, h);
-            // 背景
             gCtx.fillStyle = '#d4b48c';
             gCtx.fillRect(0, 0, w, h);
             // 网格
@@ -680,7 +693,7 @@
             gCtx.fillStyle = '#000';
             stars.forEach(([x, y]) => {
                 gCtx.beginPath();
-                gCtx.arc(offset + x * CELL_SIZE, offset + y * CELL_SIZE, 4, 0, Math.PI * 2);
+                gCtx.arc(offset + x * CELL_SIZE, offset + y * CELL_SIZE, 5, 0, Math.PI * 2);
                 gCtx.fill();
             });
             // 棋子
@@ -739,7 +752,6 @@
             return false;
         }
 
-        // 检查是否平局
         function isBoardFull() {
             for (let y = 0; y < BOARD_SIZE; y++) {
                 for (let x = 0; x < BOARD_SIZE; x++) {
@@ -769,44 +781,14 @@
             }
             gobanTurn = 'white';
             document.getElementById('gobanStatus').textContent = 'AI思考中...';
-            // AI走棋
-            setTimeout(() => {
-                aiMove();
-            }, 100);
+            setTimeout(() => { aiMove(); }, 80);
         }
 
-        // AI 简单评分算法
-        function evaluateDirection(row, col, color, dx, dy) {
-            let count = 1;
-            let openLeft = 0,
-                openRight = 0;
-            // 正方向
-            for (let step = 1; step < 5; step++) {
-                const nx = col + dx * step,
-                    ny = row + dy * step;
-                if (nx < 0 || nx >= BOARD_SIZE || ny < 0 || ny >= BOARD_SIZE) break;
-                if (gobanBoard[ny][nx] === color) count++;
-                else if (gobanBoard[ny][nx] === null) { openRight++; break; } else break;
-            }
-            // 反方向
-            for (let step = 1; step < 5; step++) {
-                const nx = col - dx * step,
-                    ny = row - dy * step;
-                if (nx < 0 || nx >= BOARD_SIZE || ny < 0 || ny >= BOARD_SIZE) break;
-                if (gobanBoard[ny][nx] === color) count++;
-                else if (gobanBoard[ny][nx] === null) { openLeft++; break; } else break;
-            }
-            // 评分：连子数+开放度
-            let score = count * 10;
-            if (count >= 5) score += 1000;
-            if (openLeft > 0) score += 5;
-            if (openRight > 0) score += 5;
-            return score;
-        }
-
+        // ---------- 高级AI评分 (高难度) ----------
+        // 评估某个空位对某一方的价值
         function evaluatePoint(row, col, color) {
-            if (gobanBoard[row][col]) return 0;
-            let total = 0;
+            if (gobanBoard[row][col]) return -1;
+            let totalScore = 0;
             const dirs = [
                 [1, 0],
                 [0, 1],
@@ -814,35 +796,75 @@
                 [1, -1]
             ];
             for (const [dx, dy] of dirs) {
-                total += evaluateDirection(row, col, color, dx, dy);
+                // 计算该方向上连续同色棋子数及两端空位
+                let count = 1;
+                let openLeft = 0,
+                    openRight = 0;
+                // 正方向
+                for (let step = 1; step < 5; step++) {
+                    const nx = col + dx * step,
+                        ny = row + dy * step;
+                    if (nx < 0 || nx >= BOARD_SIZE || ny < 0 || ny >= BOARD_SIZE) break;
+                    if (gobanBoard[ny][nx] === color) count++;
+                    else if (gobanBoard[ny][nx] === null) { openRight++; break; } else break;
+                }
+                // 反方向
+                for (let step = 1; step < 5; step++) {
+                    const nx = col - dx * step,
+                        ny = row - dy * step;
+                    if (nx < 0 || nx >= BOARD_SIZE || ny < 0 || ny >= BOARD_SIZE) break;
+                    if (gobanBoard[ny][nx] === color) count++;
+                    else if (gobanBoard[ny][nx] === null) { openLeft++; break; } else break;
+                }
+                // 评分：连子数权重极高，并且双活三、冲四等
+                let score = 0;
+                if (count >= 5) score += 100000;
+                else if (count === 4) {
+                    if (openLeft > 0 && openRight > 0) score += 50000; // 活四
+                    else if (openLeft > 0 || openRight > 0) score += 3000; // 冲四
+                } else if (count === 3) {
+                    if (openLeft > 0 && openRight > 0) score += 5000; // 活三
+                    else if (openLeft > 0 || openRight > 0) score += 200; // 眠三
+                } else if (count === 2) {
+                    if (openLeft > 0 && openRight > 0) score += 50;
+                    else if (openLeft > 0 || openRight > 0) score += 10;
+                } else if (count === 1) {
+                    score += 1;
+                }
+                totalScore += score;
             }
-            return total;
+            return totalScore;
         }
 
+        // AI走棋：综合考虑进攻和防守，选取最高分
         function aiMove() {
             if (gameOver) return;
             let bestScore = -1;
             let bestMoves = [];
+            // 遍历所有空位，分别计算白棋（进攻）和黑棋（防守）的得分，加权求和
             for (let y = 0; y < BOARD_SIZE; y++) {
                 for (let x = 0; x < BOARD_SIZE; x++) {
                     if (gobanBoard[y][x]) continue;
-                    const score = evaluatePoint(y, x, 'white');
-                    if (score > bestScore) {
-                        bestScore = score;
+                    const whiteScore = evaluatePoint(y, x, 'white');
+                    const blackScore = evaluatePoint(y, x, 'black');
+                    // 防守权重稍高，让AI更倾向于堵玩家
+                    const total = whiteScore * 1.2 + blackScore * 1.5;
+                    if (total > bestScore) {
+                        bestScore = total;
                         bestMoves = [{ row: y, col: x }];
-                    } else if (score === bestScore) {
+                    } else if (total === bestScore) {
                         bestMoves.push({ row: y, col: x });
                     }
                 }
             }
             if (bestMoves.length === 0) {
-                // 无可用位置，平局
                 if (isBoardFull()) {
                     document.getElementById('gobanStatus').textContent = '🤝 平局';
                     gameOver = true;
                 }
                 return;
             }
+            // 随机选择一个最优位置（增加一点随机性，避免每次相同）
             const move = bestMoves[Math.floor(Math.random() * bestMoves.length)];
             gobanBoard[move.row][move.col] = 'white';
             gobanHistory.push({ row: move.row, col: move.col, color: 'white' });
@@ -879,7 +901,6 @@
         document.getElementById('gobanUndo').addEventListener('click', () => {
             if (gameOver) return;
             if (gobanHistory.length < 2) return;
-            // 撤回两步（玩家和AI各一步）
             for (let i = 0; i < 2; i++) {
                 const last = gobanHistory.pop();
                 if (last) gobanBoard[last.row][last.col] = null;
@@ -892,13 +913,14 @@
         initGoban();
 
         // ============================================================
-        //  6. 俄罗斯方块 (单人)
+        //  6. 俄罗斯方块 (修复计分和显示)
         // ============================================================
         const tetrisCanvas = document.getElementById('tetrisCanvas');
         const tCtx = tetrisCanvas.getContext('2d');
         const TETRIS_COLS = 10,
             TETRIS_ROWS = 20;
-        const BLOCK_SIZE = tetrisCanvas.width / TETRIS_COLS;
+        // 动态计算块大小，确保填充画布
+        let BLOCK_SIZE = tetrisCanvas.width / TETRIS_COLS;
         let tetrisBoard = [];
         let tetrisPiece = null;
         let tetrisScore = 0;
@@ -1004,6 +1026,7 @@
                     tetrisBoard.splice(row, 1);
                     tetrisBoard.unshift(Array(TETRIS_COLS).fill(0));
                     cleared++;
+                    // 继续检查同一行
                 } else {
                     row--;
                 }
@@ -1053,9 +1076,24 @@
             const w = tetrisCanvas.width,
                 h = tetrisCanvas.height;
             tCtx.clearRect(0, 0, w, h);
-            // 棋盘
             tCtx.fillStyle = '#0b0c14';
             tCtx.fillRect(0, 0, w, h);
+            // 绘制网格线（可选）
+            tCtx.strokeStyle = '#1a1a2e';
+            tCtx.lineWidth = 0.5;
+            for (let row = 0; row <= TETRIS_ROWS; row++) {
+                tCtx.beginPath();
+                tCtx.moveTo(0, row * BLOCK_SIZE);
+                tCtx.lineTo(w, row * BLOCK_SIZE);
+                tCtx.stroke();
+            }
+            for (let col = 0; col <= TETRIS_COLS; col++) {
+                tCtx.beginPath();
+                tCtx.moveTo(col * BLOCK_SIZE, 0);
+                tCtx.lineTo(col * BLOCK_SIZE, h);
+                tCtx.stroke();
+            }
+            // 已固定的方块
             for (let row = 0; row < TETRIS_ROWS; row++) {
                 for (let col = 0; col < TETRIS_COLS; col++) {
                     const color = tetrisBoard[row][col];
@@ -1080,10 +1118,10 @@
                 }
             }
             if (tetrisGameOver) {
-                tCtx.fillStyle = 'rgba(0,0,0,0.5)';
+                tCtx.fillStyle = 'rgba(0,0,0,0.6)';
                 tCtx.fillRect(0, 0, w, h);
                 tCtx.fillStyle = '#ffe100';
-                tCtx.font = 'bold 28px sans-serif';
+                tCtx.font = 'bold 32px sans-serif';
                 tCtx.textAlign = 'center';
                 tCtx.textBaseline = 'middle';
                 tCtx.fillText('💀 GAME OVER', w / 2, h / 2);
@@ -1203,7 +1241,6 @@
         paintCanvas.addEventListener('mouseup', stopDrawing);
         paintCanvas.addEventListener('mouseleave', stopDrawing);
 
-        // 触控支持
         paintCanvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             const touch = e.touches[0];
@@ -1241,7 +1278,7 @@
         initPaint();
 
         // ============================================================
-        //  8. 小说生成 (保留)
+        //  8. 小说生成
         // ============================================================
         const storyBox = document.getElementById('storyBox');
 
@@ -1400,7 +1437,7 @@
 
         console.log('🐲 奶龙娱乐空间站 已启动 ✨');
         console.log('📦 主题:', currentTheme, ' 语言:', currentLang);
-        console.log('🎮 游戏: 五子棋(人机) | 俄罗斯方块 | 绘画板');
+        console.log('🎮 游戏: 五子棋(高难度) | 俄罗斯方块 | 绘画板');
         console.log('📖 末世文: 超丰富随机生成');
     </script>
 </body>
