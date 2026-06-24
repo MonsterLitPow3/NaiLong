@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>奶龙娱乐空间站✨游戏·绘画·小说</title>
+    <title>奶龍娛樂空間站✨遊戲·繪畫·小說</title>
     <style>
-        /* ========== CSS变量 & 主题 ========== */
+        /* ========== CSS變量 & 主題 ========== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "微软雅黑", "PingFang SC", system-ui, sans-serif;
+            font-family: "微軟雅黑", "PingFang SC", system-ui, sans-serif;
             transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
         }
         :root {
@@ -53,7 +53,7 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-        /* ===== 导航栏 ===== */
+        /* ===== 導航欄 ===== */
         .nav-bar {
             width: 100%;
             height: var(--nav-height);
@@ -158,7 +158,7 @@
             padding: 0 2px;
         }
 
-        /* ===== 模块容器 ===== */
+        /* ===== 模塊容器 ===== */
         .module {
             width: 95%;
             max-width: 1100px;
@@ -179,7 +179,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== 游戏模块 ===== */
+        /* ===== 遊戲模塊 ===== */
         .game-tabs {
             display: flex;
             gap: 8px;
@@ -305,7 +305,7 @@
             accent-color: var(--yellow);
         }
 
-        /* ===== 小说模块 ===== */
+        /* ===== 小說模塊 ===== */
         .story-wrap { padding: 4px 0; }
         .story-head {
             display: flex;
@@ -371,7 +371,7 @@
             text-align: center;
         }
 
-        /* ===== 滚动条 ===== */
+        /* ===== 滾動條 ===== */
         .story-content::-webkit-scrollbar {
             width: 5px;
         }
@@ -384,7 +384,7 @@
             border-radius: 4px;
         }
 
-        /* ===== 响应式 ===== */
+        /* ===== 響應式 ===== */
         @media (max-width: 768px) {
             .nav-bar { padding: 0 10px; height: auto; min-height: 56px; }
             .logo { font-size: 15px; }
@@ -413,12 +413,12 @@
     </style>
 </head>
 <body>
-    <!-- ===== 导航 ===== -->
+    <!-- ===== 導航 ===== -->
     <div class="nav-bar">
-        <div class="logo">🐲 奶龙娱乐 <span id="logoSub">空间站</span></div>
+        <div class="logo">🐲 奶龍娛樂 <span id="logoSub">空間站</span></div>
         <div class="nav-right">
             <div class="nav-btn-group">
-                <button class="nav-btn btn-game active" data-target="gameModule" data-key="navGame">🎮 游戏</button>
+                <button class="nav-btn btn-game active" data-target="gameModule" data-key="navGame">🎮 遊戲</button>
                 <button class="nav-btn btn-story" data-target="storyModule" data-key="navStory">📖 末世文</button>
             </div>
             <span class="divider">|</span>
@@ -434,12 +434,12 @@
         </div>
     </div>
 
-    <!-- ===== 模块1：游戏 ===== -->
+    <!-- ===== 模塊1：遊戲 ===== -->
     <div id="gameModule" class="module show">
         <div class="game-tabs" id="gameTabs">
             <button class="game-tab active-tab" data-game="goban" data-key="tabGoban">♟ 五子棋</button>
-            <button class="game-tab" data-game="tetris" data-key="tabTetris">🧩 俄罗斯方块</button>
-            <button class="game-tab" data-game="paint" data-key="tabPaint">🎨 绘画板</button>
+            <button class="game-tab" data-game="tetris" data-key="tabTetris">🧩 俄羅斯方塊</button>
+            <button class="game-tab" data-game="paint" data-key="tabPaint">🎨 繪畫板</button>
         </div>
 
         <!-- 五子棋 -->
@@ -449,36 +449,36 @@
                 <canvas id="gobanCanvas" width="700" height="700"></canvas>
             </div>
             <div class="game-control">
-                <button class="game-btn" id="gobanReset" data-key="gobanNewGame">🔄 新游戏</button>
+                <button class="game-btn" id="gobanReset" data-key="gobanNewGame">🔄 新遊戲</button>
                 <button class="game-btn" id="gobanUndo" data-key="gobanUndo">↩ 悔棋</button>
             </div>
         </div>
 
-        <!-- 俄罗斯方块 -->
+        <!-- 俄羅斯方塊 -->
         <div class="game-panel" id="panel-tetris">
             <div class="game-status" id="tetrisStatus" data-key="tetrisScore">得分: 0</div>
             <div class="game-canvas-wrap">
                 <canvas id="tetrisCanvas" width="300" height="600"></canvas>
             </div>
             <div class="game-control">
-                <button class="game-btn" id="tetrisStart" data-key="tetrisStart">▶ 开始</button>
-                <button class="game-btn" id="tetrisPause" data-key="tetrisPause">⏸ 暂停</button>
+                <button class="game-btn" id="tetrisStart" data-key="tetrisStart">▶ 開始</button>
+                <button class="game-btn" id="tetrisPause" data-key="tetrisPause">⏸ 暫停</button>
                 <button class="game-btn" id="tetrisReset" data-key="tetrisReset">🔄 重置</button>
-                <span class="game-hint" data-key="tetrisHint" style="color:var(--text-secondary);font-size:13px;">⬅⬇➡ 移动 · ⬆ 旋转</span>
+                <span class="game-hint" data-key="tetrisHint" style="color:var(--text-secondary);font-size:13px;">⬅⬇➡ 移動 · ⬆ 旋轉</span>
             </div>
         </div>
 
-        <!-- 绘画板 -->
+        <!-- 繪畫板 -->
         <div class="game-panel" id="panel-paint">
-            <div class="game-status" id="paintStatus" data-key="paintStatus">🎨 自由绘画</div>
+            <div class="game-status" id="paintStatus" data-key="paintStatus">🎨 自由繪畫</div>
             <div class="game-canvas-wrap">
                 <canvas id="paintCanvas" width="800" height="600"></canvas>
             </div>
             <div class="game-control" style="flex-wrap:wrap; gap:10px;">
                 <div class="color-picker-group">
-                    <label data-key="paintColorLabel">颜色</label>
+                    <label data-key="paintColorLabel">顏色</label>
                     <input type="color" id="paintColor" value="#ffe100">
-                    <label data-key="paintSizeLabel">粗细</label>
+                    <label data-key="paintSizeLabel">粗細</label>
                     <input type="range" id="paintSize" min="2" max="30" value="8">
                 </div>
                 <button class="game-btn" id="paintClear" data-key="paintClear">🗑 清空</button>
@@ -487,15 +487,15 @@
         </div>
     </div>
 
-    <!-- ===== 模块2：小说 ===== -->
+    <!-- ===== 模塊2：小說 ===== -->
     <div id="storyModule" class="module">
         <div class="story-wrap">
             <div class="story-head">
-                <h2><span data-key="storyTitle">抽象末世 · 奶龙重生复仇</span></h2>
+                <h2><span data-key="storyTitle">抽象末世 · 奶龍重生復仇</span></h2>
                 <button class="generate-story" id="createStory" data-key="storyGen">⚡ 生成全新篇章</button>
             </div>
             <div class="story-content" id="storyBox">
-                <span data-key="storyPlaceholder">点击右侧按钮，生成一篇独一无二的末世重生复仇故事，每次完全不同。</span>
+                <span data-key="storyPlaceholder">點擊右側按鈕，生成一篇獨一無二的末世重生復仇故事，每次完全不同。</span>
             </div>
         </div>
     </div>
@@ -505,57 +505,55 @@
 
     <script>
         // ============================================================
-        //  1. 多语言词库（全面覆盖）
+        //  1. 多語言詞庫（全面覆蓋，中文為繁體）
         // ============================================================
         const LANG = {
             zh: {
-                navGame: '🎮 游戏',
+                navGame: '🎮 遊戲',
                 navStory: '📖 末世文',
                 themeDark: '🌙',
                 themeLight: '☀️',
                 langZh: '中文',
                 langEn: 'EN',
-                logoSub: '空间站',
+                logoSub: '空間站',
                 tabGoban: '♟ 五子棋',
-                tabTetris: '🧩 俄罗斯方块',
-                tabPaint: '🎨 绘画板',
+                tabTetris: '🧩 俄羅斯方塊',
+                tabPaint: '🎨 繪畫板',
                 gobanBlackTurn: '黑棋走',
                 gobanWhiteTurn: '白棋走',
                 gobanAIThinking: 'AI思考中...',
-                gobanYouWin: '🎉 你赢了！',
-                gobanAIWin: '😵 AI赢了...',
+                gobanYouWin: '🎉 你贏了！',
+                gobanAIWin: '😵 AI贏了...',
                 gobanDraw: '🤝 平局',
-                gobanNewGame: '🔄 新游戏',
+                gobanNewGame: '🔄 新遊戲',
                 gobanUndo: '↩ 悔棋',
                 tetrisScore: '得分: {score}',
-                tetrisPaused: '⏸ 暂停',
-                tetrisGameOver: '💀 游戏结束',
-                tetrisStart: '▶ 开始',
-                tetrisPause: '⏸ 暂停',
+                tetrisPaused: '⏸ 暫停',
+                tetrisGameOver: '💀 遊戲結束',
+                tetrisStart: '▶ 開始',
+                tetrisPause: '⏸ 暫停',
                 tetrisReset: '🔄 重置',
-                tetrisHint: '⬅⬇➡ 移动 · ⬆ 旋转',
-                paintStatus: '🎨 自由绘画',
-                paintColorLabel: '颜色',
-                paintSizeLabel: '粗细',
+                tetrisHint: '⬅⬇➡ 移動 · ⬆ 旋轉',
+                paintStatus: '🎨 自由繪畫',
+                paintColorLabel: '顏色',
+                paintSizeLabel: '粗細',
                 paintClear: '🗑 清空',
                 paintEraser: '🧽 橡皮',
-                paintEraserActive: '✏️ 画笔',
-                storyTitle: '抽象末世 · 奶龙重生复仇',
+                paintEraserActive: '✏️ 畫筆',
+                storyTitle: '抽象末世 · 奶龍重生復仇',
                 storyGen: '⚡ 生成全新篇章',
-                storyPlaceholder: '点击右侧按钮，生成一篇独一无二的末世重生复仇故事，每次完全不同。',
-                // 故事章节标题（英文版另有）
-                storyChapterPrologue: '序章 · 末世铁律',
-                storyChapterPast: '前世 · 血与背叛',
-                storyChapterAwaken: '觉醒 · 禁忌之力',
-                storyChapterHunt: '征途 · 荒原猎杀',
-                storyChapterTwist: '惊天反转 · 真相浮现',
-                storyChapterFinal: '最终抉择 · 宿命终章',
-                storyFooter: '【本故事纯属抽象虚构 · 无科学逻辑 · 无世界观闭环 · 随机生成仅此一篇】',
-                storyFooter2: '🐲 奶龙专属 · 末世复仇史诗 · 万次重生永不完结',
-                storyTime: '✨ 生成时间：',
-                // 游戏内通用
-                gameOver: '游戏结束',
-                restart: '点击「重置」重新开始',
+                storyPlaceholder: '點擊右側按鈕，生成一篇獨一無二的末世重生復仇故事，每次完全不同。',
+                storyChapterPrologue: '序章 · 末世鐵律',
+                storyChapterPast: '前世 · 血與背叛',
+                storyChapterAwaken: '覺醒 · 禁忌之力',
+                storyChapterHunt: '征途 · 荒原獵殺',
+                storyChapterTwist: '驚天反轉 · 真相浮現',
+                storyChapterFinal: '最終抉擇 · 宿命終章',
+                storyFooter: '【本故事純屬抽象虛構 · 無科學邏輯 · 無世界觀閉環 · 隨機生成僅此一篇】',
+                storyFooter2: '🐲 奶龍專屬 · 末世復仇史詩 · 萬次重生永不完結',
+                storyTime: '✨ 生成時間：',
+                gameOver: '遊戲結束',
+                restart: '點擊「重置」重新開始',
             },
             en: {
                 navGame: '🎮 Games',
@@ -592,7 +590,6 @@
                 storyTitle: 'Abstract Apocalypse · Revenge Rebirth',
                 storyGen: '⚡ Generate New',
                 storyPlaceholder: 'Click to generate a unique apocalyptic revenge story. Completely different each time.',
-                // English story chapters
                 storyChapterPrologue: 'Prologue · Iron Law',
                 storyChapterPast: 'Past · Blood & Betrayal',
                 storyChapterAwaken: 'Awakening · Forbidden Power',
@@ -608,17 +605,15 @@
         };
 
         // ============================================================
-        //  2. 全局翻译函数 & 当前语言
+        //  2. 全局翻譯函數 & 當前語言
         // ============================================================
         let currentLang = 'zh';
 
         function __(key, ...args) {
             let text = LANG[currentLang]?.[key];
             if (text === undefined) {
-                // fallback to Chinese
                 text = LANG['zh'][key] || key;
             }
-            // 替换 {0} 等占位符
             if (args && args.length) {
                 for (let i = 0; i < args.length; i++) {
                     text = text.replace(`{${i}}`, args[i]);
@@ -632,7 +627,7 @@
         }
 
         // ============================================================
-        //  3. 语言 & 主题 切换
+        //  3. 語言 & 主題 切換（修復按鈕狀態）
         // ============================================================
         function applyLang(lang) {
             currentLang = lang;
@@ -644,37 +639,36 @@
                     if (el.tagName === 'INPUT' && el.placeholder !== undefined) {
                         el.placeholder = text;
                     } else if (el.tagName === 'BUTTON' && el.id !== 'createStory' && !el.dataset.game) {
-                        // 普通按钮
                         el.textContent = text;
                     } else {
                         el.textContent = text;
                     }
                 }
             });
-            // 特殊处理：logo子标题
+            // 特殊處理：logo子標題
             document.getElementById('logoSub').textContent = __('logoSub');
-            // 更新游戏状态（如果有动态状态，需要刷新）
+            // 更新遊戲狀態
             updateAllGameStatus();
-            // 更新小说标题等
+            // 更新小說標題等
             document.querySelector('.story-head h2 span').textContent = __('storyTitle');
-            // 更新生成按钮
+            // 更新生成按鈕
             document.getElementById('createStory').textContent = __('storyGen');
             // 更新占位
             document.querySelector('#storyBox span').textContent = __('storyPlaceholder');
-            // 更新选项卡按钮（已通过 data-key 更新）
-            // 更新五子棋状态
+            // 更新選項卡按鈕（已通過 data-key 更新）
+            // 更新五子棋狀態
             updateGobanStatusText();
-            // 更新俄罗斯方块状态
+            // 更新俄羅斯方塊狀態
             updateTetrisStatusText();
-            // 更新绘画板状态
+            // 更新繪畫板狀態
             document.getElementById('paintStatus').textContent = __('paintStatus');
-            // 更新橡皮按钮文字
+            // 更新橡皮按鈕文字
             updateEraserButton();
-            // 语言按钮高亮
+            // 語言按鈕高亮
             document.querySelectorAll('.lang-group .ctrl-btn').forEach(btn => {
                 btn.classList.toggle('active-ctrl', btn.dataset.lang === lang);
             });
-            // 重新绘制画布（可能包含文字）
+            // 重新繪製畫布（可能包含文字）
             drawGoban();
             drawTetris();
         }
@@ -686,7 +680,7 @@
             });
         }
 
-        // 主题切换事件
+        // 主題切換事件
         document.querySelectorAll('.theme-group .ctrl-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 applyTheme(btn.dataset.theme);
@@ -694,10 +688,11 @@
                 LocalDB.set('nailongTheme', btn.dataset.theme);
             });
         });
+        // 語言切換事件
         document.querySelectorAll('.lang-group .ctrl-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 applyLang(btn.dataset.lang);
-                showToast(btn.dataset.lang === 'zh' ? '🇨🇳 中文' : '🇬🇧 English');
+                showToast(btn.dataset.lang === 'zh' ? '🇨🇳 繁體中文' : '🇬🇧 English');
                 LocalDB.set('nailongLang', btn.dataset.lang);
             });
         });
@@ -722,7 +717,7 @@
         }
 
         // ============================================================
-        //  5. 导航切换
+        //  5. 導航切換
         // ============================================================
         const navBtns = document.querySelectorAll('.nav-btn');
         const modules = document.querySelectorAll('.module');
@@ -737,7 +732,7 @@
         });
 
         // ============================================================
-        //  6. 游戏选项卡切换
+        //  6. 遊戲選項卡切換
         // ============================================================
         const tabs = document.querySelectorAll('.game-tab');
         const panels = {
@@ -760,7 +755,7 @@
         });
 
         // ============================================================
-        //  7. 五子棋 (高难度)
+        //  7. 五子棋 (高難度 + 高亮最後落子)
         // ============================================================
         const gobanCanvas = document.getElementById('gobanCanvas');
         const gCtx = gobanCanvas.getContext('2d');
@@ -782,10 +777,7 @@
 
         function updateGobanStatusText() {
             const el = document.getElementById('gobanStatus');
-            if (gameOver) {
-                // 状态已经在游戏逻辑中设置，这里保持
-                return;
-            }
+            if (gameOver) return;
             if (gobanTurn === 'black') {
                 el.textContent = __('gobanBlackTurn');
             } else {
@@ -793,6 +785,7 @@
             }
         }
 
+        // 繪製棋盤（包含高光）
         function drawGoban() {
             const w = gobanCanvas.width,
                 h = gobanCanvas.height;
@@ -825,6 +818,11 @@
                 gCtx.arc(offset + x * CELL_SIZE, offset + y * CELL_SIZE, 5, 0, Math.PI * 2);
                 gCtx.fill();
             });
+
+            // 獲取最後一步（用於高光）
+            const lastMove = gobanHistory.length > 0 ? gobanHistory[gobanHistory.length - 1] : null;
+
+            // 繪製所有棋子
             for (let y = 0; y < BOARD_SIZE; y++) {
                 for (let x = 0; x < BOARD_SIZE; x++) {
                     const val = gobanBoard[y][x];
@@ -849,6 +847,30 @@
                     gCtx.shadowBlur = 0;
                 }
             }
+
+            // 高光最後一步（在棋子之上）
+            if (lastMove) {
+                const { row, col } = lastMove;
+                const cx = offset + col * CELL_SIZE;
+                const cy = offset + row * CELL_SIZE;
+                // 繪製發光光圈
+                gCtx.beginPath();
+                gCtx.arc(cx, cy, CELL_SIZE * 0.52, 0, Math.PI * 2);
+                gCtx.strokeStyle = '#ffaa00';
+                gCtx.lineWidth = 3;
+                gCtx.shadowColor = '#ffaa00';
+                gCtx.shadowBlur = 20;
+                gCtx.stroke();
+                gCtx.shadowBlur = 0;
+                // 再加一個內圈
+                gCtx.beginPath();
+                gCtx.arc(cx, cy, CELL_SIZE * 0.30, 0, Math.PI * 2);
+                gCtx.strokeStyle = 'rgba(255,170,0,0.6)';
+                gCtx.lineWidth = 2;
+                gCtx.stroke();
+            }
+
+            // 遊戲結束遮罩
             if (gameOver) {
                 gCtx.fillStyle = 'rgba(0,0,0,0.5)';
                 gCtx.fillRect(0, 0, w, h);
@@ -924,7 +946,7 @@
             setTimeout(() => { aiMove(); }, 80);
         }
 
-        // AI 评分
+        // AI 評分（高難度）
         function evaluatePoint(row, col, color) {
             if (gobanBoard[row][col]) return -1;
             let totalScore = 0;
@@ -1046,7 +1068,7 @@
         initGoban();
 
         // ============================================================
-        //  8. 俄罗斯方块
+        //  8. 俄羅斯方塊
         // ============================================================
         const tetrisCanvas = document.getElementById('tetrisCanvas');
         const tCtx = tetrisCanvas.getContext('2d');
@@ -1316,7 +1338,7 @@
         initTetris();
 
         // ============================================================
-        //  9. 绘画板
+        //  9. 繪畫板
         // ============================================================
         const paintCanvas = document.getElementById('paintCanvas');
         const pCtx = paintCanvas.getContext('2d');
@@ -1421,86 +1443,86 @@
         initPaint();
 
         // ============================================================
-        //  10. 小说生成 (双语词库)
+        //  10. 小說生成 (雙語詞庫，中文繁體)
         // ============================================================
-        // 中文词库
+        // 繁體中文詞庫
         const WORD_ZH = {
             world: [
-                '腐朽霓虹末世', '液态重力废土', '逆向时间僵尸纪元', '情绪畸变荒芜大陆',
-                '次元破碎骸骨星球', '混沌熵增死域', '镜像倒置深渊城', '血月永夜焦土',
-                '机械降神废墟', '量子坍缩荒原', '噬光黑域', '回声悖论迷宫',
-                '熔岩倒流灰烬界', '永冻脉冲冰原', '数据洪流虚拟废墟', '孢子寄生雨林'
+                '腐朽霓虹末世', '液態重力廢土', '逆向時間殭屍紀元', '情緒畸變荒蕪大陸',
+                '次元破碎骸骨星球', '混沌熵增死域', '鏡像倒置深淵城', '血月永夜焦土',
+                '機械降神廢墟', '量子坍縮荒原', '噬光黑域', '回聲悖論迷宮',
+                '熔岩倒流灰燼界', '永凍脈衝冰原', '數據洪流虛擬廢墟', '孢子寄生雨林'
             ],
             ability: [
-                '骨翼重生', '蛋黄神力回溯', '逆命吞灵', '幼态时空折叠', '怨念共生',
-                '因果律崩坏', '熵减神环', '记忆篡改之瞳', '万相归墟', '悖论装甲',
-                '灵魂刻印', '时序逆鳞', '噬神之牙', '虚无编织', '命运篡改',
-                '情绪具象化', '重力反转', '原子重构'
+                '骨翼重生', '蛋黃神力回溯', '逆命吞靈', '幼態時空折疊', '怨念共生',
+                '因果律崩壞', '熵減神環', '記憶篡改之瞳', '萬相歸墟', '悖論裝甲',
+                '靈魂刻印', '時序逆鱗', '噬神之牙', '虛無編織', '命運篡改',
+                '情緒具象化', '重力反轉', '原子重構'
             ],
             enemy: [
-                '畸变红眼奶娃', '同化吞噬奶娃神', '虚空繁殖奶娃族群', '背叛同源奶娃使徒',
-                '深渊凝视者', '腐化奶娃领主', '镜像复制体', '时间蛀虫',
-                '混沌奶娃聚合体', '末日使徒', '熵增蠕虫', '心魔寄生体',
-                '数据幽灵', '血肉巨像', '虚空猎手'
+                '畸變紅眼奶娃', '同化吞噬奶娃神', '虛空繁殖奶娃族群', '背叛同源奶娃使徒',
+                '深淵凝視者', '腐化奶娃領主', '鏡像複製體', '時間蛀蟲',
+                '混沌奶娃聚合體', '末日使徒', '熵增蠕蟲', '心魔寄生體',
+                '數據幽靈', '血肉巨像', '虛空獵手'
             ],
             rule: [
-                '死亡即重生但剥离情感', '吃掉同类即可篡改世界线', '黑夜会反向逆转生死',
-                '眼泪可以固化末世结界', '杀戮会随机触发世界重构', '记忆碎片能兑换神级能力',
-                '每过7天世界规则随机刷新', '同族相食会觉醒禁忌之力',
-                '绝望值满格将召唤远古邪神', '希望之光会灼烧变异体',
-                '时间流速受情绪影响', '物理法则局部失效', '声音可以具象化攻击'
+                '死亡即重生但剝離情感', '吃掉同類即可篡改世界線', '黑夜會反向逆轉生死',
+                '眼淚可以固化末世結界', '殺戮會隨機觸發世界重構', '記憶碎片能兌換神級能力',
+                '每過7天世界規則隨機刷新', '同族相食會覺醒禁忌之力',
+                '絕望值滿格將召喚遠古邪神', '希望之光會灼燒變異體',
+                '時間流速受情緒影響', '物理法則局部失效', '聲音可以具象化攻擊'
             ],
             plot: [
-                '前世被挚友奶娃背刺分食于祭坛', '献祭龙鳞保全人类却被污蔑为叛徒',
-                '主动堕入僵尸深渊换取复仇权限', '为守护蛋黄神域全员陨落血战',
-                '被同族设计封印在时间夹缝千年', '为救幼崽被奶娃军团围剿分尸',
-                '发现世界真相后选择自我毁灭重启', '在轮回中逐渐丧失人性与记忆',
-                '曾与人类盟约却被背叛导致全族覆灭', '体内封印着远古噬神之力却浑然不知',
-                '被选为末世祭品却意外觉醒', '在濒死之际窥见了世界源代码'
+                '前世被摯友奶娃背刺分食於祭壇', '獻祭龍鱗保全人類卻被污衊為叛徒',
+                '主動墮入殭屍深淵換取復仇權限', '為守護蛋黃神域全員隕落血戰',
+                '被同族設計封印在時間夾縫千年', '為救幼崽被奶娃軍團圍剿分屍',
+                '發現世界真相後選擇自我毀滅重啟', '在輪迴中逐漸喪失人性與記憶',
+                '曾與人類盟約卻被背叛導致全族覆滅', '體內封印著遠古噬神之力卻渾然不知',
+                '被選為末世祭品卻意外覺醒', '在瀕死之際窺見了世界源代碼'
             ],
             end: [
-                '双向泯灭重启世界，一切归零', '同化所有奶娃成为末世主神，俯瞰众生',
-                '放弃复仇驻守荒芜孤岛，终老一生', '打破轮回开启全新平行次元，未知旅程',
-                '吞噬世界核心成为新世界法则本身', '与宿敌融合成超越维度的存在',
-                '自我放逐于虚空裂缝，永远流浪', '唤醒远古神祇重塑万物秩序',
-                '以自身为祭品净化整个末世', '发现一切皆是虚拟幻境，选择醒来',
-                '成为新世界的守护者，永世孤独', '将末世封印入自己体内，换取和平'
+                '雙向泯滅重啟世界，一切歸零', '同化所有奶娃成為末世主神，俯瞰眾生',
+                '放棄復仇駐守荒蕪孤島，終老一生', '打破輪迴開啟全新平行次元，未知旅程',
+                '吞噬世界核心成為新世界法則本身', '與宿敵融合成超越維度的存在',
+                '自我放逐於虛空裂縫，永遠流浪', '喚醒遠古神祇重塑萬物秩序',
+                '以自身為祭品淨化整個末世', '發現一切皆是虛擬幻境，選擇醒來',
+                '成為新世界的守護者，永世孤獨', '將末世封印入自己體內，換取和平'
             ],
             twist: [
-                '然而奶龙发现，自己才是真正的末世源头',
-                '反转：所有奶娃都是奶龙分裂出的负面人格',
-                '惊天内幕：世界早已毁灭，一切只是奶龙的濒死幻想',
-                '奶龙觉醒记忆：它是远古神祇的最后一枚碎片',
-                '终极真相：奶娃族群其实是奶龙的后代，因变异而反噬',
-                '隐藏设定：每一次重生都会让世界更接近终极毁灭',
-                '奶龙触碰世界边缘，发现外面还有无数个平行末世',
-                '其实奶龙从未离开过祭坛，所有经历都是精神折磨',
-                '奶龙发现自己的记忆被篡改，真相截然相反',
-                '末世本身是一个巨大的实验场，奶龙是唯一的变量'
+                '然而奶龍發現，自己才是真正的末世源頭',
+                '反轉：所有奶娃都是奶龍分裂出的負面人格',
+                '驚天內幕：世界早已毀滅，一切只是奶龍的瀕死幻想',
+                '奶龍覺醒記憶：它是遠古神祇的最後一枚碎片',
+                '終極真相：奶娃族群其實是奶龍的後代，因變異而反噬',
+                '隱藏設定：每一次重生都會讓世界更接近終極毀滅',
+                '奶龍觸碰世界邊緣，發現外面還有無數個平行末世',
+                '其實奶龍從未離開過祭壇，所有經歷都是精神折磨',
+                '奶龍發現自己的記憶被篡改，真相截然相反',
+                '末世本身是一個巨大的實驗場，奶龍是唯一的變量'
             ],
             scene: [
-                '血月当空，骸骨铺就的荒原上，奶龙独自前行。',
-                '霓虹残骸中闪烁的数据流，映照着奶龙冰冷的眼神。',
-                '酸雨倾盆，奶龙在废墟中挖掘出前世的记忆碎片。',
-                '倒置的钟楼悬于天际，指针逆时针疯狂旋转。',
-                '焦土上盛开诡异的血色花朵，每一朵都藏着诅咒。',
-                '奶龙踏入镜像湖面，湖水映出无数个不同命运的自我。',
-                '天空裂开巨缝，蠕动的黑暗伸出触手试探地面。',
-                '废弃的机甲群中，奶龙发现了一具与己身相似的骸骨。',
-                '风暴中传来远古的呼唤，奶龙循声走向未知。',
-                '地表突然塌陷，奶龙坠入地底深处的光之遗迹。',
-                '奶龙在枯萎的巨树前，树皮上刻满了前世的预言。',
-                '海面浮现巨大的漩涡，奶龙纵身跃入其中。'
+                '血月當空，骸骨鋪就的荒原上，奶龍獨自前行。',
+                '霓虹殘骸中閃爍的數據流，映照著奶龍冰冷的眼神。',
+                '酸雨傾盆，奶龍在廢墟中挖掘出前世的記憶碎片。',
+                '倒置的鐘樓懸於天際，指針逆時針瘋狂旋轉。',
+                '焦土上盛開詭異的血色花朵，每一朵都藏著詛咒。',
+                '奶龍踏入鏡像湖面，湖水映出無數個不同命運的自我。',
+                '天空裂開巨縫，蠕動的黑暗伸出觸手試探地面。',
+                '廢棄的機甲群中，奶龍發現了一具與己身相似的骸骨。',
+                '風暴中傳來遠古的呼喚，奶龍循聲走向未知。',
+                '地表突然塌陷，奶龍墜入地底深處的光之遺跡。',
+                '奶龍在枯萎的巨樹前，樹皮上刻滿了前世的預言。',
+                '海面浮現巨大的漩渦，奶龍縱身躍入其中。'
             ],
-            name: ['烬', '骸', '霜', '胧', '魇', '墟', '渊', '凛', '噬', '苍', '冥', '幽', '绝', '荒', '寂', '灭', '殁'],
+            name: ['燼', '骸', '霜', '朧', '魘', '墟', '淵', '凜', '噬', '蒼', '冥', '幽', '絕', '荒', '寂', '滅', '歿'],
             title: [
-                '万次重生复仇录', '末世挽歌', '蛋黄神域陨落纪', '轮回猎杀',
-                '深渊觉醒', '混沌纪元', '终焉审判', '虚无彼岸',
-                '因果崩坏', '时序逆乱', '噬神之章', '归墟之途'
+                '萬次重生復仇錄', '末世輓歌', '蛋黃神域隕落紀', '輪迴獵殺',
+                '深淵覺醒', '混沌紀元', '終焉審判', '虛無彼岸',
+                '因果崩壞', '時序逆亂', '噬神之章', '歸墟之途'
             ]
         };
 
-        // 英文词库 (翻译)
+        // 英文詞庫
         const WORD_EN = {
             world: [
                 'Decaying Neon Apocalypse', 'Liquid Gravity Wasteland', 'Reverse Time Zombie Epoch', 'Emotional Aberration Wasteland',
@@ -1595,7 +1617,6 @@
             const name = pick(dict.name);
             const title = pick(dict.title);
 
-            // 章节标题从翻译获取
             const chPrologue = __('storyChapterPrologue');
             const chPast = __('storyChapterPast');
             const chAwaken = __('storyChapterAwaken');
@@ -1650,7 +1671,7 @@
                 const story = generateStory(currentLang);
                 storyBox.textContent = story;
                 LocalDB.set('lastNailongStory', story);
-                showToast('📜 ' + (currentLang === 'zh' ? '全新超长末世篇章生成完毕！' : 'New epic apocalypse chapter generated!'));
+                showToast('📜 ' + (currentLang === 'zh' ? '全新超長末世篇章生成完畢！' : 'New epic apocalypse chapter generated!'));
                 btn.disabled = false;
                 btn.textContent = __('storyGen');
             }, 300);
@@ -1661,14 +1682,13 @@
         if (oldStory) storyBox.textContent = oldStory;
 
         // ============================================================
-        //  11. 统一状态更新 (语言切换时调用)
+        //  11. 統一狀態更新
         // ============================================================
         function updateAllGameStatus() {
             updateGobanStatusText();
             updateTetrisStatusText();
             document.getElementById('paintStatus').textContent = __('paintStatus');
             updateEraserButton();
-            // 重新绘制可能包含文字的画布
             drawGoban();
             drawTetris();
         }
@@ -1681,10 +1701,10 @@
         const savedLang = LocalDB.get('nailongLang') || 'zh';
         applyLang(savedLang);
 
-        console.log('🐲 奶龙娱乐空间站 已启动 ✨');
-        console.log('📦 主题:', currentTheme, ' 语言:', currentLang);
-        console.log('🎮 游戏: 五子棋(高难度) | 俄罗斯方块 | 绘画板');
-        console.log('📖 末世文: 双语随机生成');
+        console.log('🐲 奶龍娛樂空間站 已啟動 ✨');
+        console.log('📦 主題:', currentTheme, ' 語言:', currentLang);
+        console.log('🎮 遊戲: 五子棋(高難度+高光) | 俄羅斯方塊 | 繪畫板');
+        console.log('📖 末世文: 雙語隨機生成');
     </script>
 </body>
 </html>
