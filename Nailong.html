@@ -218,14 +218,12 @@
         }
         .game-canvas-wrap {
             width: 100%;
-            max-width: 600px;
             border: 3px solid var(--yellow);
             border-radius: 12px;
             overflow: hidden;
             background: #0b0c14;
             position: relative;
         }
-        /* 各游戏不同宽高比 */
         #panel-goban .game-canvas-wrap {
             aspect-ratio: 1 / 1;
             max-width: 600px;
@@ -439,52 +437,52 @@
     <!-- ===== 模块1：游戏 ===== -->
     <div id="gameModule" class="module show">
         <div class="game-tabs" id="gameTabs">
-            <button class="game-tab active-tab" data-game="goban">♟ 五子棋</button>
-            <button class="game-tab" data-game="tetris">🧩 俄罗斯方块</button>
-            <button class="game-tab" data-game="paint">🎨 绘画板</button>
+            <button class="game-tab active-tab" data-game="goban" data-key="tabGoban">♟ 五子棋</button>
+            <button class="game-tab" data-game="tetris" data-key="tabTetris">🧩 俄罗斯方块</button>
+            <button class="game-tab" data-game="paint" data-key="tabPaint">🎨 绘画板</button>
         </div>
 
         <!-- 五子棋 -->
         <div class="game-panel active-panel" id="panel-goban">
-            <div class="game-status" id="gobanStatus">黑棋走</div>
+            <div class="game-status" id="gobanStatus" data-key="gobanBlackTurn">黑棋走</div>
             <div class="game-canvas-wrap">
                 <canvas id="gobanCanvas" width="700" height="700"></canvas>
             </div>
             <div class="game-control">
-                <button class="game-btn" id="gobanReset">🔄 新游戏</button>
-                <button class="game-btn" id="gobanUndo">↩ 悔棋</button>
+                <button class="game-btn" id="gobanReset" data-key="gobanNewGame">🔄 新游戏</button>
+                <button class="game-btn" id="gobanUndo" data-key="gobanUndo">↩ 悔棋</button>
             </div>
         </div>
 
         <!-- 俄罗斯方块 -->
         <div class="game-panel" id="panel-tetris">
-            <div class="game-status" id="tetrisStatus">得分: 0</div>
+            <div class="game-status" id="tetrisStatus" data-key="tetrisScore">得分: 0</div>
             <div class="game-canvas-wrap">
                 <canvas id="tetrisCanvas" width="300" height="600"></canvas>
             </div>
             <div class="game-control">
-                <button class="game-btn" id="tetrisStart">▶ 开始</button>
-                <button class="game-btn" id="tetrisPause">⏸ 暂停</button>
-                <button class="game-btn" id="tetrisReset">🔄 重置</button>
-                <span class="game-hint" style="color:var(--text-secondary);font-size:13px;">⬅⬇➡ 移动 · ⬆ 旋转</span>
+                <button class="game-btn" id="tetrisStart" data-key="tetrisStart">▶ 开始</button>
+                <button class="game-btn" id="tetrisPause" data-key="tetrisPause">⏸ 暂停</button>
+                <button class="game-btn" id="tetrisReset" data-key="tetrisReset">🔄 重置</button>
+                <span class="game-hint" data-key="tetrisHint" style="color:var(--text-secondary);font-size:13px;">⬅⬇➡ 移动 · ⬆ 旋转</span>
             </div>
         </div>
 
         <!-- 绘画板 -->
         <div class="game-panel" id="panel-paint">
-            <div class="game-status" id="paintStatus">🎨 自由绘画</div>
+            <div class="game-status" id="paintStatus" data-key="paintStatus">🎨 自由绘画</div>
             <div class="game-canvas-wrap">
                 <canvas id="paintCanvas" width="800" height="600"></canvas>
             </div>
             <div class="game-control" style="flex-wrap:wrap; gap:10px;">
                 <div class="color-picker-group">
-                    <label>颜色</label>
+                    <label data-key="paintColorLabel">颜色</label>
                     <input type="color" id="paintColor" value="#ffe100">
-                    <label>粗细</label>
+                    <label data-key="paintSizeLabel">粗细</label>
                     <input type="range" id="paintSize" min="2" max="30" value="8">
                 </div>
-                <button class="game-btn" id="paintClear">🗑 清空</button>
-                <button class="game-btn" id="paintEraser">🧽 橡皮</button>
+                <button class="game-btn" id="paintClear" data-key="paintClear">🗑 清空</button>
+                <button class="game-btn" id="paintEraser" data-key="paintEraser">🧽 橡皮</button>
             </div>
         </div>
     </div>
@@ -493,7 +491,7 @@
     <div id="storyModule" class="module">
         <div class="story-wrap">
             <div class="story-head">
-                <h2>🧟 <span data-key="storyTitle">抽象末世 · 奶龙重生复仇</span></h2>
+                <h2><span data-key="storyTitle">抽象末世 · 奶龙重生复仇</span></h2>
                 <button class="generate-story" id="createStory" data-key="storyGen">⚡ 生成全新篇章</button>
             </div>
             <div class="story-content" id="storyBox">
@@ -507,7 +505,7 @@
 
     <script>
         // ============================================================
-        //  1. 语言 & 主题
+        //  1. 多语言词库（全面覆盖）
         // ============================================================
         const LANG = {
             zh: {
@@ -518,9 +516,46 @@
                 langZh: '中文',
                 langEn: 'EN',
                 logoSub: '空间站',
+                tabGoban: '♟ 五子棋',
+                tabTetris: '🧩 俄罗斯方块',
+                tabPaint: '🎨 绘画板',
+                gobanBlackTurn: '黑棋走',
+                gobanWhiteTurn: '白棋走',
+                gobanAIThinking: 'AI思考中...',
+                gobanYouWin: '🎉 你赢了！',
+                gobanAIWin: '😵 AI赢了...',
+                gobanDraw: '🤝 平局',
+                gobanNewGame: '🔄 新游戏',
+                gobanUndo: '↩ 悔棋',
+                tetrisScore: '得分: {score}',
+                tetrisPaused: '⏸ 暂停',
+                tetrisGameOver: '💀 游戏结束',
+                tetrisStart: '▶ 开始',
+                tetrisPause: '⏸ 暂停',
+                tetrisReset: '🔄 重置',
+                tetrisHint: '⬅⬇➡ 移动 · ⬆ 旋转',
+                paintStatus: '🎨 自由绘画',
+                paintColorLabel: '颜色',
+                paintSizeLabel: '粗细',
+                paintClear: '🗑 清空',
+                paintEraser: '🧽 橡皮',
+                paintEraserActive: '✏️ 画笔',
                 storyTitle: '抽象末世 · 奶龙重生复仇',
                 storyGen: '⚡ 生成全新篇章',
                 storyPlaceholder: '点击右侧按钮，生成一篇独一无二的末世重生复仇故事，每次完全不同。',
+                // 故事章节标题（英文版另有）
+                storyChapterPrologue: '序章 · 末世铁律',
+                storyChapterPast: '前世 · 血与背叛',
+                storyChapterAwaken: '觉醒 · 禁忌之力',
+                storyChapterHunt: '征途 · 荒原猎杀',
+                storyChapterTwist: '惊天反转 · 真相浮现',
+                storyChapterFinal: '最终抉择 · 宿命终章',
+                storyFooter: '【本故事纯属抽象虚构 · 无科学逻辑 · 无世界观闭环 · 随机生成仅此一篇】',
+                storyFooter2: '🐲 奶龙专属 · 末世复仇史诗 · 万次重生永不完结',
+                storyTime: '✨ 生成时间：',
+                // 游戏内通用
+                gameOver: '游戏结束',
+                restart: '点击「重置」重新开始',
             },
             en: {
                 navGame: '🎮 Games',
@@ -530,43 +565,128 @@
                 langZh: '中文',
                 langEn: 'EN',
                 logoSub: 'Station',
-                storyTitle: 'Abstract Apocalypse · Revenge',
+                tabGoban: '♟ Gomoku',
+                tabTetris: '🧩 Tetris',
+                tabPaint: '🎨 Paint',
+                gobanBlackTurn: 'Black\'s turn',
+                gobanWhiteTurn: 'White\'s turn',
+                gobanAIThinking: 'AI thinking...',
+                gobanYouWin: '🎉 You win!',
+                gobanAIWin: '😵 AI wins...',
+                gobanDraw: '🤝 Draw',
+                gobanNewGame: '🔄 New Game',
+                gobanUndo: '↩ Undo',
+                tetrisScore: 'Score: {score}',
+                tetrisPaused: '⏸ Paused',
+                tetrisGameOver: '💀 GAME OVER',
+                tetrisStart: '▶ Start',
+                tetrisPause: '⏸ Pause',
+                tetrisReset: '🔄 Reset',
+                tetrisHint: '⬅⬇➡ Move · ⬆ Rotate',
+                paintStatus: '🎨 Free Paint',
+                paintColorLabel: 'Color',
+                paintSizeLabel: 'Size',
+                paintClear: '🗑 Clear',
+                paintEraser: '🧽 Eraser',
+                paintEraserActive: '✏️ Brush',
+                storyTitle: 'Abstract Apocalypse · Revenge Rebirth',
                 storyGen: '⚡ Generate New',
                 storyPlaceholder: 'Click to generate a unique apocalyptic revenge story. Completely different each time.',
+                // English story chapters
+                storyChapterPrologue: 'Prologue · Iron Law',
+                storyChapterPast: 'Past · Blood & Betrayal',
+                storyChapterAwaken: 'Awakening · Forbidden Power',
+                storyChapterHunt: 'Hunt · Wasteland Slaughter',
+                storyChapterTwist: 'Twist · Truth Revealed',
+                storyChapterFinal: 'Final Choice · Destiny',
+                storyFooter: '【Pure abstract fiction · No scientific logic · No closed-loop world view · Generated only once】',
+                storyFooter2: '🐲 Nailong Exclusive · Epic Revenge · Endless Rebirth',
+                storyTime: '✨ Generated at: ',
+                gameOver: 'GAME OVER',
+                restart: 'Click "Reset" to restart',
             }
         };
 
+        // ============================================================
+        //  2. 全局翻译函数 & 当前语言
+        // ============================================================
         let currentLang = 'zh';
-        let currentTheme = 'dark';
 
+        function __(key, ...args) {
+            let text = LANG[currentLang]?.[key];
+            if (text === undefined) {
+                // fallback to Chinese
+                text = LANG['zh'][key] || key;
+            }
+            // 替换 {0} 等占位符
+            if (args && args.length) {
+                for (let i = 0; i < args.length; i++) {
+                    text = text.replace(`{${i}}`, args[i]);
+                }
+            }
+            return text;
+        }
+
+        function __score(score) {
+            return __('tetrisScore').replace('{score}', score);
+        }
+
+        // ============================================================
+        //  3. 语言 & 主题 切换
+        // ============================================================
         function applyLang(lang) {
             currentLang = lang;
-            const dict = LANG[lang];
+            // 更新所有 data-key 元素
             document.querySelectorAll('[data-key]').forEach(el => {
                 const key = el.dataset.key;
-                if (dict[key] !== undefined) {
+                if (key) {
+                    let text = __(key);
                     if (el.tagName === 'INPUT' && el.placeholder !== undefined) {
-                        el.placeholder = dict[key];
+                        el.placeholder = text;
+                    } else if (el.tagName === 'BUTTON' && el.id !== 'createStory' && !el.dataset.game) {
+                        // 普通按钮
+                        el.textContent = text;
                     } else {
-                        el.textContent = dict[key];
+                        el.textContent = text;
                     }
                 }
             });
-            const logoSub = document.getElementById('logoSub');
-            if (logoSub) logoSub.textContent = dict.logoSub;
+            // 特殊处理：logo子标题
+            document.getElementById('logoSub').textContent = __('logoSub');
+            // 更新游戏状态（如果有动态状态，需要刷新）
+            updateAllGameStatus();
+            // 更新小说标题等
+            document.querySelector('.story-head h2 span').textContent = __('storyTitle');
+            // 更新生成按钮
+            document.getElementById('createStory').textContent = __('storyGen');
+            // 更新占位
+            document.querySelector('#storyBox span').textContent = __('storyPlaceholder');
+            // 更新选项卡按钮（已通过 data-key 更新）
+            // 更新五子棋状态
+            updateGobanStatusText();
+            // 更新俄罗斯方块状态
+            updateTetrisStatusText();
+            // 更新绘画板状态
+            document.getElementById('paintStatus').textContent = __('paintStatus');
+            // 更新橡皮按钮文字
+            updateEraserButton();
+            // 语言按钮高亮
             document.querySelectorAll('.lang-group .ctrl-btn').forEach(btn => {
                 btn.classList.toggle('active-ctrl', btn.dataset.lang === lang);
             });
+            // 重新绘制画布（可能包含文字）
+            drawGoban();
+            drawTetris();
         }
 
         function applyTheme(theme) {
-            currentTheme = theme;
             document.documentElement.setAttribute('data-theme', theme);
             document.querySelectorAll('.theme-group .ctrl-btn').forEach(btn => {
                 btn.classList.toggle('active-ctrl', btn.dataset.theme === theme);
             });
         }
 
+        // 主题切换事件
         document.querySelectorAll('.theme-group .ctrl-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 applyTheme(btn.dataset.theme);
@@ -589,7 +709,20 @@
         };
 
         // ============================================================
-        //  2. 导航切换
+        //  4. Toast
+        // ============================================================
+        const Toast = document.getElementById('toast');
+        let toastTimer = null;
+
+        function showToast(text) {
+            Toast.textContent = text;
+            Toast.style.display = 'block';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => { Toast.style.display = 'none'; }, 2200);
+        }
+
+        // ============================================================
+        //  5. 导航切换
         // ============================================================
         const navBtns = document.querySelectorAll('.nav-btn');
         const modules = document.querySelectorAll('.module');
@@ -604,20 +737,7 @@
         });
 
         // ============================================================
-        //  3. Toast
-        // ============================================================
-        const Toast = document.getElementById('toast');
-        let toastTimer = null;
-
-        function showToast(text) {
-            Toast.textContent = text;
-            Toast.style.display = 'block';
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => { Toast.style.display = 'none'; }, 2200);
-        }
-
-        // ============================================================
-        //  4. 游戏选项卡切换
+        //  6. 游戏选项卡切换
         // ============================================================
         const tabs = document.querySelectorAll('.game-tab');
         const panels = {
@@ -634,20 +754,17 @@
                 Object.keys(panels).forEach(key => {
                     panels[key].classList.toggle('active-panel', key === game);
                 });
-                // 重新绘制对应游戏
                 if (game === 'goban') drawGoban();
                 else if (game === 'tetris') drawTetris();
-                else if (game === 'paint') { /* 无需重绘 */ }
             });
         });
 
         // ============================================================
-        //  5. 五子棋 (人机对战 - 高难度)
+        //  7. 五子棋 (高难度)
         // ============================================================
         const gobanCanvas = document.getElementById('gobanCanvas');
         const gCtx = gobanCanvas.getContext('2d');
         const BOARD_SIZE = 15;
-        // 动态计算格子大小，确保棋盘占满画布
         let CELL_SIZE = gobanCanvas.width / (BOARD_SIZE + 1);
         let gobanBoard = [];
         let gobanTurn = 'black';
@@ -659,19 +776,32 @@
             gobanTurn = 'black';
             gameOver = false;
             gobanHistory = [];
-            document.getElementById('gobanStatus').textContent = '黑棋走';
+            updateGobanStatusText();
             drawGoban();
         }
 
+        function updateGobanStatusText() {
+            const el = document.getElementById('gobanStatus');
+            if (gameOver) {
+                // 状态已经在游戏逻辑中设置，这里保持
+                return;
+            }
+            if (gobanTurn === 'black') {
+                el.textContent = __('gobanBlackTurn');
+            } else {
+                el.textContent = __('gobanWhiteTurn');
+            }
+        }
+
         function drawGoban() {
-            const w = gobanCanvas.width, h = gobanCanvas.height;
+            const w = gobanCanvas.width,
+                h = gobanCanvas.height;
             gCtx.clearRect(0, 0, w, h);
             gCtx.fillStyle = '#d4b48c';
             gCtx.fillRect(0, 0, w, h);
-            // 网格
+            const offset = CELL_SIZE;
             gCtx.strokeStyle = '#000';
             gCtx.lineWidth = 1;
-            const offset = CELL_SIZE;
             for (let i = 0; i < BOARD_SIZE; i++) {
                 gCtx.beginPath();
                 gCtx.moveTo(offset, offset + i * CELL_SIZE);
@@ -682,7 +812,6 @@
                 gCtx.lineTo(offset + i * CELL_SIZE, offset + (BOARD_SIZE - 1) * CELL_SIZE);
                 gCtx.stroke();
             }
-            // 星位
             const stars = [
                 [3, 3],
                 [3, 11],
@@ -696,7 +825,6 @@
                 gCtx.arc(offset + x * CELL_SIZE, offset + y * CELL_SIZE, 5, 0, Math.PI * 2);
                 gCtx.fill();
             });
-            // 棋子
             for (let y = 0; y < BOARD_SIZE; y++) {
                 for (let x = 0; x < BOARD_SIZE; x++) {
                     const val = gobanBoard[y][x];
@@ -721,17 +849,28 @@
                     gCtx.shadowBlur = 0;
                 }
             }
+            if (gameOver) {
+                gCtx.fillStyle = 'rgba(0,0,0,0.5)';
+                gCtx.fillRect(0, 0, w, h);
+                gCtx.fillStyle = '#ffe100';
+                gCtx.font = 'bold 34px sans-serif';
+                gCtx.textAlign = 'center';
+                gCtx.textBaseline = 'middle';
+                gCtx.fillText(__('gameOver'), w / 2, h / 2 - 20);
+                gCtx.font = '18px sans-serif';
+                gCtx.fillStyle = '#fff';
+                gCtx.fillText(__('restart'), w / 2, h / 2 + 40);
+            }
         }
 
-        // 检查五子连珠
         function checkWin(row, col, color) {
-            const directions = [
+            const dirs = [
                 [1, 0],
                 [0, 1],
                 [1, 1],
                 [1, -1]
             ];
-            for (const [dx, dy] of directions) {
+            for (const [dx, dy] of dirs) {
                 let count = 1;
                 for (let step = 1; step < 5; step++) {
                     const nx = col + dx * step,
@@ -761,7 +900,6 @@
             return true;
         }
 
-        // 玩家下棋
         function gobanPlace(row, col) {
             if (gameOver) return;
             if (gobanTurn !== 'black') return;
@@ -770,22 +908,23 @@
             gobanHistory.push({ row, col, color: 'black' });
             drawGoban();
             if (checkWin(row, col, 'black')) {
-                document.getElementById('gobanStatus').textContent = '🎉 你赢了！';
+                document.getElementById('gobanStatus').textContent = __('gobanYouWin');
                 gameOver = true;
+                drawGoban();
                 return;
             }
             if (isBoardFull()) {
-                document.getElementById('gobanStatus').textContent = '🤝 平局';
+                document.getElementById('gobanStatus').textContent = __('gobanDraw');
                 gameOver = true;
+                drawGoban();
                 return;
             }
             gobanTurn = 'white';
-            document.getElementById('gobanStatus').textContent = 'AI思考中...';
+            document.getElementById('gobanStatus').textContent = __('gobanAIThinking');
             setTimeout(() => { aiMove(); }, 80);
         }
 
-        // ---------- 高级AI评分 (高难度) ----------
-        // 评估某个空位对某一方的价值
+        // AI 评分
         function evaluatePoint(row, col, color) {
             if (gobanBoard[row][col]) return -1;
             let totalScore = 0;
@@ -796,11 +935,9 @@
                 [1, -1]
             ];
             for (const [dx, dy] of dirs) {
-                // 计算该方向上连续同色棋子数及两端空位
                 let count = 1;
                 let openLeft = 0,
                     openRight = 0;
-                // 正方向
                 for (let step = 1; step < 5; step++) {
                     const nx = col + dx * step,
                         ny = row + dy * step;
@@ -808,7 +945,6 @@
                     if (gobanBoard[ny][nx] === color) count++;
                     else if (gobanBoard[ny][nx] === null) { openRight++; break; } else break;
                 }
-                // 反方向
                 for (let step = 1; step < 5; step++) {
                     const nx = col - dx * step,
                         ny = row - dy * step;
@@ -816,15 +952,14 @@
                     if (gobanBoard[ny][nx] === color) count++;
                     else if (gobanBoard[ny][nx] === null) { openLeft++; break; } else break;
                 }
-                // 评分：连子数权重极高，并且双活三、冲四等
                 let score = 0;
                 if (count >= 5) score += 100000;
                 else if (count === 4) {
-                    if (openLeft > 0 && openRight > 0) score += 50000; // 活四
-                    else if (openLeft > 0 || openRight > 0) score += 3000; // 冲四
+                    if (openLeft > 0 && openRight > 0) score += 50000;
+                    else if (openLeft > 0 || openRight > 0) score += 3000;
                 } else if (count === 3) {
-                    if (openLeft > 0 && openRight > 0) score += 5000; // 活三
-                    else if (openLeft > 0 || openRight > 0) score += 200; // 眠三
+                    if (openLeft > 0 && openRight > 0) score += 5000;
+                    else if (openLeft > 0 || openRight > 0) score += 200;
                 } else if (count === 2) {
                     if (openLeft > 0 && openRight > 0) score += 50;
                     else if (openLeft > 0 || openRight > 0) score += 10;
@@ -836,18 +971,15 @@
             return totalScore;
         }
 
-        // AI走棋：综合考虑进攻和防守，选取最高分
         function aiMove() {
             if (gameOver) return;
             let bestScore = -1;
             let bestMoves = [];
-            // 遍历所有空位，分别计算白棋（进攻）和黑棋（防守）的得分，加权求和
             for (let y = 0; y < BOARD_SIZE; y++) {
                 for (let x = 0; x < BOARD_SIZE; x++) {
                     if (gobanBoard[y][x]) continue;
                     const whiteScore = evaluatePoint(y, x, 'white');
                     const blackScore = evaluatePoint(y, x, 'black');
-                    // 防守权重稍高，让AI更倾向于堵玩家
                     const total = whiteScore * 1.2 + blackScore * 1.5;
                     if (total > bestScore) {
                         bestScore = total;
@@ -859,31 +991,32 @@
             }
             if (bestMoves.length === 0) {
                 if (isBoardFull()) {
-                    document.getElementById('gobanStatus').textContent = '🤝 平局';
+                    document.getElementById('gobanStatus').textContent = __('gobanDraw');
                     gameOver = true;
+                    drawGoban();
                 }
                 return;
             }
-            // 随机选择一个最优位置（增加一点随机性，避免每次相同）
             const move = bestMoves[Math.floor(Math.random() * bestMoves.length)];
             gobanBoard[move.row][move.col] = 'white';
             gobanHistory.push({ row: move.row, col: move.col, color: 'white' });
             drawGoban();
             if (checkWin(move.row, move.col, 'white')) {
-                document.getElementById('gobanStatus').textContent = '😵 AI赢了...';
+                document.getElementById('gobanStatus').textContent = __('gobanAIWin');
                 gameOver = true;
+                drawGoban();
                 return;
             }
             if (isBoardFull()) {
-                document.getElementById('gobanStatus').textContent = '🤝 平局';
+                document.getElementById('gobanStatus').textContent = __('gobanDraw');
                 gameOver = true;
+                drawGoban();
                 return;
             }
             gobanTurn = 'black';
-            document.getElementById('gobanStatus').textContent = '黑棋走';
+            document.getElementById('gobanStatus').textContent = __('gobanBlackTurn');
         }
 
-        // 五子棋事件
         gobanCanvas.addEventListener('click', (e) => {
             const rect = gobanCanvas.getBoundingClientRect();
             const scaleX = gobanCanvas.width / rect.width;
@@ -906,20 +1039,19 @@
                 if (last) gobanBoard[last.row][last.col] = null;
             }
             gobanTurn = 'black';
-            document.getElementById('gobanStatus').textContent = '黑棋走';
+            document.getElementById('gobanStatus').textContent = __('gobanBlackTurn');
             drawGoban();
         });
 
         initGoban();
 
         // ============================================================
-        //  6. 俄罗斯方块 (修复计分和显示)
+        //  8. 俄罗斯方块
         // ============================================================
         const tetrisCanvas = document.getElementById('tetrisCanvas');
         const tCtx = tetrisCanvas.getContext('2d');
         const TETRIS_COLS = 10,
             TETRIS_ROWS = 20;
-        // 动态计算块大小，确保填充画布
         let BLOCK_SIZE = tetrisCanvas.width / TETRIS_COLS;
         let tetrisBoard = [];
         let tetrisPiece = null;
@@ -931,31 +1063,31 @@
         const PIECES = [
             { shape: [
                     [1, 1, 1, 1]
-                ], color: '#54c0ff' }, // I
+                ], color: '#54c0ff' },
             { shape: [
                     [1, 1],
                     [1, 1]
-                ], color: '#ffe100' }, // O
+                ], color: '#ffe100' },
             { shape: [
                     [0, 1, 0],
                     [1, 1, 1]
-                ], color: '#ff6b8b' }, // T
+                ], color: '#ff6b8b' },
             { shape: [
                     [1, 0, 0],
                     [1, 1, 1]
-                ], color: '#ff4466' }, // L
+                ], color: '#ff4466' },
             { shape: [
                     [0, 0, 1],
                     [1, 1, 1]
-                ], color: '#44d47c' }, // J
+                ], color: '#44d47c' },
             { shape: [
                     [0, 1, 1],
                     [1, 1, 0]
-                ], color: '#ffaa22' }, // S
+                ], color: '#ffaa22' },
             { shape: [
                     [1, 1, 0],
                     [0, 1, 1]
-                ], color: '#9955ff' }, // Z
+                ], color: '#9955ff' },
         ];
 
         function initTetris() {
@@ -965,9 +1097,20 @@
             tetrisPaused = false;
             clearInterval(tetrisInterval);
             tetrisInterval = null;
-            document.getElementById('tetrisStatus').textContent = '得分: 0';
+            updateTetrisStatusText();
             spawnPiece();
             drawTetris();
+        }
+
+        function updateTetrisStatusText() {
+            const el = document.getElementById('tetrisStatus');
+            if (tetrisGameOver) {
+                el.textContent = __('tetrisGameOver');
+            } else if (tetrisPaused) {
+                el.textContent = __('tetrisPaused');
+            } else {
+                el.textContent = __score(tetrisScore);
+            }
         }
 
         function spawnPiece() {
@@ -982,7 +1125,7 @@
             };
             if (collision(tetrisPiece.shape, tetrisPiece.x, tetrisPiece.y)) {
                 tetrisGameOver = true;
-                document.getElementById('tetrisStatus').textContent = '💀 游戏结束';
+                document.getElementById('tetrisStatus').textContent = __('tetrisGameOver');
                 clearInterval(tetrisInterval);
                 tetrisInterval = null;
                 drawTetris();
@@ -1019,21 +1162,19 @@
                     }
                 }
             }
-            // 消除满行
             let cleared = 0;
             for (let row = TETRIS_ROWS - 1; row >= 0; ) {
                 if (tetrisBoard[row].every(cell => cell !== 0)) {
                     tetrisBoard.splice(row, 1);
                     tetrisBoard.unshift(Array(TETRIS_COLS).fill(0));
                     cleared++;
-                    // 继续检查同一行
                 } else {
                     row--;
                 }
             }
             if (cleared > 0) {
                 tetrisScore += cleared * 100;
-                document.getElementById('tetrisStatus').textContent = `得分: ${tetrisScore}`;
+                updateTetrisStatusText();
             }
             spawnPiece();
             drawTetris();
@@ -1059,7 +1200,6 @@
                 tetrisPiece.shape = rotated;
                 drawTetris();
             } else {
-                // 踢墙简单处理
                 if (!collision(rotated, tetrisPiece.x - 1, tetrisPiece.y)) {
                     tetrisPiece.shape = rotated;
                     tetrisPiece.x -= 1;
@@ -1078,7 +1218,6 @@
             tCtx.clearRect(0, 0, w, h);
             tCtx.fillStyle = '#0b0c14';
             tCtx.fillRect(0, 0, w, h);
-            // 绘制网格线（可选）
             tCtx.strokeStyle = '#1a1a2e';
             tCtx.lineWidth = 0.5;
             for (let row = 0; row <= TETRIS_ROWS; row++) {
@@ -1093,7 +1232,6 @@
                 tCtx.lineTo(col * BLOCK_SIZE, h);
                 tCtx.stroke();
             }
-            // 已固定的方块
             for (let row = 0; row < TETRIS_ROWS; row++) {
                 for (let col = 0; col < TETRIS_COLS; col++) {
                     const color = tetrisBoard[row][col];
@@ -1103,7 +1241,6 @@
                     }
                 }
             }
-            // 当前方块
             if (tetrisPiece) {
                 const { shape, x, y, color } = tetrisPiece;
                 tCtx.fillStyle = color;
@@ -1124,7 +1261,7 @@
                 tCtx.font = 'bold 32px sans-serif';
                 tCtx.textAlign = 'center';
                 tCtx.textBaseline = 'middle';
-                tCtx.fillText('💀 GAME OVER', w / 2, h / 2);
+                tCtx.fillText(__('tetrisGameOver'), w / 2, h / 2);
             }
         }
 
@@ -1144,7 +1281,7 @@
         document.getElementById('tetrisPause').addEventListener('click', () => {
             if (tetrisGameOver) return;
             tetrisPaused = !tetrisPaused;
-            document.getElementById('tetrisStatus').textContent = tetrisPaused ? '⏸ 暂停' : `得分: ${tetrisScore}`;
+            updateTetrisStatusText();
             drawTetris();
         });
         document.getElementById('tetrisReset').addEventListener('click', () => {
@@ -1153,7 +1290,6 @@
             initTetris();
         });
 
-        // 键盘
         document.addEventListener('keydown', (e) => {
             if (document.getElementById('panel-tetris').classList.contains('active-panel')) {
                 switch (e.key) {
@@ -1180,7 +1316,7 @@
         initTetris();
 
         // ============================================================
-        //  7. 绘画板
+        //  9. 绘画板
         // ============================================================
         const paintCanvas = document.getElementById('paintCanvas');
         const pCtx = paintCanvas.getContext('2d');
@@ -1232,9 +1368,7 @@
             lastY = y;
         }
 
-        function stopDrawing() {
-            isDrawing = false;
-        }
+        function stopDrawing() { isDrawing = false; }
 
         paintCanvas.addEventListener('mousedown', startDrawing);
         paintCanvas.addEventListener('mousemove', draw);
@@ -1261,7 +1395,7 @@
         document.getElementById('paintColor').addEventListener('input', (e) => {
             paintColor = e.target.value;
             isEraser = false;
-            document.getElementById('paintEraser').textContent = '🧽 橡皮';
+            updateEraserButton();
         });
         document.getElementById('paintSize').addEventListener('input', (e) => {
             paintSize = parseInt(e.target.value);
@@ -1272,17 +1406,25 @@
         });
         document.getElementById('paintEraser').addEventListener('click', () => {
             isEraser = !isEraser;
-            document.getElementById('paintEraser').textContent = isEraser ? '✏️ 画笔' : '🧽 橡皮';
+            updateEraserButton();
         });
+
+        function updateEraserButton() {
+            const btn = document.getElementById('paintEraser');
+            if (isEraser) {
+                btn.textContent = __('paintEraserActive');
+            } else {
+                btn.textContent = __('paintEraser');
+            }
+        }
 
         initPaint();
 
         // ============================================================
-        //  8. 小说生成
+        //  10. 小说生成 (双语词库)
         // ============================================================
-        const storyBox = document.getElementById('storyBox');
-
-        const WORD = {
+        // 中文词库
+        const WORD_ZH = {
             world: [
                 '腐朽霓虹末世', '液态重力废土', '逆向时间僵尸纪元', '情绪畸变荒芜大陆',
                 '次元破碎骸骨星球', '混沌熵增死域', '镜像倒置深渊城', '血月永夜焦土',
@@ -1358,68 +1500,159 @@
             ]
         };
 
+        // 英文词库 (翻译)
+        const WORD_EN = {
+            world: [
+                'Decaying Neon Apocalypse', 'Liquid Gravity Wasteland', 'Reverse Time Zombie Epoch', 'Emotional Aberration Wasteland',
+                'Dimensional Fracture Skeleton Planet', 'Chaos Entropy Dead Zone', 'Mirrored Abyss City', 'Blood Moon Eternal Scorch',
+                'Mecha God Ruins', 'Quantum Collapse Wasteland', 'Light-Eating Black Domain', 'Echo Paradox Labyrinth',
+                'Lava Reversal Ash Realm', 'Permafrost Pulse Icefield', 'Data Flood Virtual Ruins', 'Spore Parasite Rainforest'
+            ],
+            ability: [
+                'Bone Wing Rebirth', 'Yolk Divine Power Rewind', 'Fate-Swallowing Spirit', 'Juvenile Space-Time Fold', 'Resentment Symbiosis',
+                'Causality Collapse', 'Entropy Reduction Halo', 'Memory Tampering Eye', 'Myriad Return to Void', 'Paradox Armor',
+                'Soul Engraving', 'Temporal Reverse Scale', 'God-Eating Fang', 'Void Weaving', 'Destiny Alteration',
+                'Emotion Materialization', 'Gravity Reversal', 'Atomic Reconstruction'
+            ],
+            enemy: [
+                'Mutant Red-Eye Nailong', 'Assimilating Devourer Nailong God', 'Void Breeding Nailong Clan', 'Betrayer Nailong Apostle',
+                'Abyss Gazer', 'Corrupted Nailong Lord', 'Mirror Copy', 'Time Borer',
+                'Chaos Nailong Aggregate', 'Doom Apostle', 'Entropy Worm', 'Mind Parasite',
+                'Data Ghost', 'Flesh Colossus', 'Void Hunter'
+            ],
+            rule: [
+                'Death reborn but stripped of emotion', 'Eating kin rewrites worldlines', 'Night reverses life and death',
+                'Tears solidify apocalyptic barriers', 'Killing randomly triggers world reconstruction', 'Memory fragments can be exchanged for godly powers',
+                'World rules refresh every 7 days', 'Cannibalism awakens forbidden power',
+                'Max despair summons ancient evil gods', 'Hope light burns mutants',
+                'Time flow affected by emotions', 'Physical laws partially fail', 'Sound can materialize attacks'
+            ],
+            plot: [
+                'Betrayed and devoured by a close Nailong friend at the altar', 'Sacrificed dragon scales to save humans but was slandered as a traitor',
+                'Actively fell into the zombie abyss in exchange for revenge rights', 'Fought to the death to protect the Egg Yolk Divine Domain',
+                'Sealed in a time crack for millennia by kin', 'Killed while saving cubs from Nailong army',
+                'Discovered world truth and chose self-destruction restart', 'Gradually lost humanity and memory in cycles',
+                'Alliance with humans betrayed, leading to clan extinction', 'Unknowingly carried ancient god-eating power',
+                'Chosen as apocalypse sacrifice but unexpectedly awakened', 'Glimpsed the world\'s source code at the brink of death'
+            ],
+            end: [
+                'Mutual annihilation restarts the world, everything resets', 'Assimilate all Nailong to become the apocalypse god',
+                'Abandon revenge and guard a desolate island for life', 'Break the cycle to open a new parallel dimension',
+                'Devour the world core to become the new world law', 'Fuse with rival to transcend dimensions',
+                'Self-exile to wander the void forever', 'Awaken ancient deities to reshape the world order',
+                'Sacrifice self to purify the apocalypse', 'Discover everything is a virtual illusion, choose to wake up',
+                'Become the guardian of the new world, eternally lonely', 'Seal the apocalypse within self for peace'
+            ],
+            twist: [
+                'Yet Nailong discovers that it itself is the true source of the apocalypse',
+                'Twist: all Nailong are fragments of Nailong\'s split negative personality',
+                'Shocking secret: the world has long been destroyed, all is Nailong\'s dying fantasy',
+                'Nailong awakens to memory: it is the last fragment of an ancient deity',
+                'Ultimate truth: the Nailong race is actually Nailong\'s offspring, mutated and backfired',
+                'Hidden setting: each rebirth brings the world closer to ultimate destruction',
+                'Nailong touches the edge of the world, discovering countless parallel apocalypses outside',
+                'In fact, Nailong never left the altar, all experiences are mental torture',
+                'Nailong finds its memories tampered, the truth is completely opposite',
+                'The apocalypse itself is a massive experimental field, and Nailong is the only variable'
+            ],
+            scene: [
+                'Blood moon hangs high, on the bone-laden wasteland, Nailong walks alone.',
+                'Data streams flicker in neon ruins, reflecting Nailong\'s cold gaze.',
+                'Acid rain pours, Nailong digs out fragments of past memories from the ruins.',
+                'An inverted clock tower hangs in the sky, its hands spinning counterclockwise wildly.',
+                'Eerie blood-red flowers bloom on the scorched earth, each hiding a curse.',
+                'Nailong steps into a mirror lake, the water reflecting countless different fates.',
+                'A giant crack splits the sky, and writhing darkness probes the ground with tentacles.',
+                'Among abandoned mechs, Nailong finds a skeleton resembling its own.',
+                'A distant call comes from the storm, and Nailong follows it into the unknown.',
+                'The ground suddenly collapses, and Nailong falls into a subterranean light relic.',
+                'Before a withered giant tree, Nailong reads past prophecies carved on the bark.',
+                'A giant whirlpool appears on the sea, and Nailong leaps into it.'
+            ],
+            name: ['Ember', 'Bone', 'Frost', 'Mist', 'Nightmare', 'Ruins', 'Abyss', 'Cold', 'Devour', 'Gray', 'Dark', 'Ghost', 'Desolate', 'Silent', 'Annihilate', 'End'],
+            title: [
+                'Chronicles of Ten Thousand Rebirths', 'Apocalypse Elegy', 'Fall of the Yolk Divine Domain', 'Reincarnation Hunt',
+                'Abyss Awakening', 'Chaos Epoch', 'Final Judgment', 'Other Shore of Nothingness',
+                'Causality Collapse', 'Timeline Chaos', 'God-Eating Chapter', 'Path to Oblivion'
+            ]
+        };
+
         function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-        function generateEpicStory() {
-            const w = pick(WORD.world);
-            const a = pick(WORD.ability);
-            const e = pick(WORD.enemy);
-            const r = pick(WORD.rule);
-            const p = pick(WORD.plot);
-            const ed = pick(WORD.end);
-            const tw = pick(WORD.twist);
-            const sc1 = pick(WORD.scene);
-            const sc2 = pick(WORD.scene);
-            const sc3 = pick(WORD.scene);
-            const sc4 = pick(WORD.scene);
-            const name = pick(WORD.name);
-            const title = pick(WORD.title);
+        function generateStory(lang) {
+            const dict = lang === 'zh' ? WORD_ZH : WORD_EN;
+            const w = pick(dict.world);
+            const a = pick(dict.ability);
+            const e = pick(dict.enemy);
+            const r = pick(dict.rule);
+            const p = pick(dict.plot);
+            const ed = pick(dict.end);
+            const tw = pick(dict.twist);
+            const sc1 = pick(dict.scene);
+            const sc2 = pick(dict.scene);
+            const sc3 = pick(dict.scene);
+            const sc4 = pick(dict.scene);
+            const name = pick(dict.name);
+            const title = pick(dict.title);
+
+            // 章节标题从翻译获取
+            const chPrologue = __('storyChapterPrologue');
+            const chPast = __('storyChapterPast');
+            const chAwaken = __('storyChapterAwaken');
+            const chHunt = __('storyChapterHunt');
+            const chTwist = __('storyChapterTwist');
+            const chFinal = __('storyChapterFinal');
+            const footer = __('storyFooter');
+            const footer2 = __('storyFooter2');
+            const timeStr = __('storyTime') + new Date().toLocaleString();
 
             const parts = [
-                `# 《${w}》· 奶龙「${name}」${title}\n`,
-                `## ▎序章 · 末世铁律\n`,
-                `在这片支离破碎的${w}上，万物遵循着一条残酷的铁律：${r}。\n`,
-                `奶龙${name}生于浮空蛋黄神域，族群世代制衡地底僵尸族群。而地底深处，${e}正悄然崛起，觊觎着地表的一切。\n\n`,
-                `## ▎前世 · 血与背叛\n`,
-                `万次轮回之前，奶龙${name}历尽宿命劫难：${p}。\n`,
+                `# 《${w}》· Nailong「${name}」${title}\n`,
+                `## ▎${chPrologue}\n`,
+                `On this fragmented ${w}, all beings follow a cruel iron law: ${r}.\n`,
+                `Nailong ${name} was born in the floating Yolk Divine Domain, its clan balancing the underground zombie hordes for generations. Deep underground, ${e} rises quietly, coveting all on the surface.\n\n`,
+                `## ▎${chPast}\n`,
+                `Before ten thousand cycles, Nailong ${name} endured fateful calamities: ${p}.\n`,
                 `${sc1}\n`,
-                `末世酸雨腐蚀龙鳞，僵尸奶娃撕毁族群契约，啃食奶龙的情绪本源，将其封印在时间夹缝中，永世承受濒死痛感。\n\n`,
-                `## ▎觉醒 · 禁忌之力\n`,
-                `濒死刹那，奶龙${name}触发天赋异能【${a}】，挣脱生死判定，开启闭环重生。\n`,
+                `The apocalyptic acid rain corroded dragon scales, zombie Nailong tore up the clan contract, devouring Nailong's emotional source, sealing it in a time crack to suffer eternal dying pain.\n\n`,
+                `## ▎${chAwaken}\n`,
+                `At the brink of death, Nailong ${name} triggered the innate ability【${a}】, breaking free from life-and-death judgment and initiating a closed-loop rebirth.\n`,
                 `${sc2}\n`,
-                `每一次重生，世界逻辑都会随机篡改：树木流淌血液、僵尸惧怕黄色光源、奶娃会复刻奶龙神态博取同情、昼夜时间无序颠倒。\n`,
-                `没有绝对善恶，没有固定战力数值，所有规则随复仇进度随机崩塌重构。\n\n`,
-                `## ▎征途 · 荒原猎杀\n`,
-                `奶龙${name}不再救赎人类，不再心软共情同族。\n`,
+                `With each rebirth, the world's logic is randomly altered: trees bleed, zombies fear yellow light, Nailong mimic Nailong's expressions to gain sympathy, day and night reverse chaotically.\n`,
+                `There is no absolute good or evil, no fixed power values; all rules randomly collapse and reconstruct as revenge progresses.\n\n`,
+                `## ▎${chHunt}\n`,
+                `Nailong ${name} no longer saves humans, no longer sympathizes with its kin.\n`,
                 `${sc3}\n`,
-                `踏遍腐朽楼宇、骸骨荒原、倒置深海，猎杀所有异化奶娃，撕碎当年背叛真相。\n`,
-                `在无数次生死边缘，奶龙逐渐触摸到末世最深处的秘密……\n\n`,
-                `## ▎惊天反转 · 真相浮现\n`,
+                `Treading through decaying buildings, bone wastelands, and inverted deep seas, it hunts all mutated Nailong, tearing apart the truth of betrayal.\n`,
+                `At the edge of countless lives, Nailong gradually touches the deepest secret of the apocalypse...\n\n`,
+                `## ▎${chTwist}\n`,
                 `${tw}\n`,
                 `${sc4}\n`,
-                `这个发现彻底动摇了奶龙的复仇信念，也揭开了末世存在的真正意义。\n\n`,
-                `## ▎最终抉择 · 宿命终章\n`,
-                `本次轮回的最终宿命：${ed}。\n`,
-                `奶龙${name}站在时空的十字路口，凝视着无数个平行自我，做出了最终选择。\n\n`,
+                `This discovery shakes Nailong's revenge conviction and unveils the true meaning of the apocalypse's existence.\n\n`,
+                `## ▎${chFinal}\n`,
+                `The final destiny of this cycle: ${ed}.\n`,
+                `Nailong ${name} stands at the crossroads of time and space, gazing at countless parallel selves, making the ultimate choice.\n\n`,
                 `---\n`,
-                `【本故事纯属抽象虚构 · 无科学逻辑 · 无世界观闭环 · 随机生成仅此一篇】\n`,
-                `🐲 奶龙专属 · 末世复仇史诗 · 万次重生永不完结\n`,
-                `✨ 生成时间：${new Date().toLocaleString()}`
+                `${footer}\n`,
+                `${footer2}\n`,
+                `${timeStr}`
             ];
             return parts.join('\n');
         }
 
+        const storyBox = document.getElementById('storyBox');
+
         function generateAndSaveStory() {
             const btn = document.getElementById('createStory');
             btn.disabled = true;
-            btn.textContent = '⏳ 生成中...';
+            btn.textContent = '⏳ ...';
             setTimeout(() => {
-                const story = generateEpicStory();
+                const story = generateStory(currentLang);
                 storyBox.textContent = story;
                 LocalDB.set('lastNailongStory', story);
-                showToast('📜 全新超长末世篇章生成完毕！');
+                showToast('📜 ' + (currentLang === 'zh' ? '全新超长末世篇章生成完毕！' : 'New epic apocalypse chapter generated!'));
                 btn.disabled = false;
-                btn.textContent = LANG[currentLang].storyGen || '⚡ 生成全新篇章';
+                btn.textContent = __('storyGen');
             }, 300);
         }
 
@@ -1428,7 +1661,20 @@
         if (oldStory) storyBox.textContent = oldStory;
 
         // ============================================================
-        //  9. 初始化主题/语言
+        //  11. 统一状态更新 (语言切换时调用)
+        // ============================================================
+        function updateAllGameStatus() {
+            updateGobanStatusText();
+            updateTetrisStatusText();
+            document.getElementById('paintStatus').textContent = __('paintStatus');
+            updateEraserButton();
+            // 重新绘制可能包含文字的画布
+            drawGoban();
+            drawTetris();
+        }
+
+        // ============================================================
+        //  12. 初始化
         // ============================================================
         const savedTheme = LocalDB.get('nailongTheme') || 'dark';
         applyTheme(savedTheme);
@@ -1438,7 +1684,7 @@
         console.log('🐲 奶龙娱乐空间站 已启动 ✨');
         console.log('📦 主题:', currentTheme, ' 语言:', currentLang);
         console.log('🎮 游戏: 五子棋(高难度) | 俄罗斯方块 | 绘画板');
-        console.log('📖 末世文: 超丰富随机生成');
+        console.log('📖 末世文: 双语随机生成');
     </script>
 </body>
 </html>
