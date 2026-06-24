@@ -5,500 +5,1441 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>奶龙AI助理空间站✨专属陪伴助手</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:"微软雅黑",sans-serif;}
-        :root{
-            --nailong-yellow:#ffe100;
-            --nailong-blue:#54c0ff;
-            --baby-gray:#a8a8a8;
-            --dark-void:#12141d;
-            --card-bg:#1e202e;
-            --text-white:#f8f9ff;
+        /* ========== CSS变量 & 主题系统 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", "PingFang SC", sans-serif;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
-        body{background:var(--dark-void);color:var(--text-white);min-height:100vh;overflow-x:hidden;}
-        /*顶部导航栏*/
-        .nav-bar{width:100%;height:70px;background:var(--card-bg);display:flex;align-items:center;justify-content:space-between;padding:0 30px;border-bottom:2px solid var(--nailong-yellow);position:sticky;top:0;z-index:999;}
-        .logo{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:bold;color:var(--nailong-yellow);}
-        .nav-btn-group{display:flex;gap:15px;}
-        .nav-btn{padding:8px 20px;border:none;border-radius:20px;font-size:15px;cursor:pointer;transition:0.3s all;}
-        .btn-game{background:var(--nailong-yellow);color:#000;}
-        .btn-ai{background:var(--nailong-blue);color:#fff;}
-        .btn-story{background:#ff6b8b;color:#fff;}
-        .nav-btn.active{transform:scale(1.05);box-shadow:0 0 12px #fff5;}
-        /*模块容器 默认隐藏*/
-        .module{width:95%;max-width:1200px;margin:30px auto;display:none;border-radius:16px;padding:25px;background:var(--card-bg);min-height:calc(100vh - 130px);}
-        .module.show{display:block;animation:fadeIn 0.4s ease;}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-        /*==========模块1：奶龙吃奶娃游戏==========*/
-        .game-wrap{display:flex;flex-direction:column;align-items:center;gap:20px;}
-        .game-info{display:flex;gap:30px;font-size:18px;}
-        #gameCanvas{border:3px solid var(--nailong-yellow);border-radius:12px;background:#0b0c14;}
-        .game-control{display:flex;gap:12px;margin-top:10px;}
-        .game-btn{padding:6px 18px;border-radius:8px;border:none;cursor:pointer;background:var(--nailong-yellow);color:#000;font-weight:bold;}
-        /*==========模块2：奶龙AI对话助理==========*/
-        .ai-wrap{display:flex;flex-direction:column;height:100%;}
-        .ai-top-info{display:flex;justify-content:space-between;padding:15px;border-bottom:1px solid #333;}
-        .location-tip{color:var(--nailong-blue);font-size:14px;}
-        .chat-box{flex:1;margin:20px 0;padding:15px;border-radius:12px;background:#272938;overflow-y:auto;height:500px;display:flex;flex-direction:column;gap:18px;}
-        .msg-self{align-self:flex-end;background:var(--nailong-blue);padding:10px 16px;border-radius:18px 18px 4px 18px;max-width:70%;}
-        .msg-nailong{align-self:flex-start;background:var(--nailong-yellow);color:#000;padding:10px 16px;border-radius:18px 18px 18px 4px;max-width:70%;}
-        .input-bar{display:flex;gap:10px;}
-        #aiInput{flex:1;padding:12px 16px;border-radius:25px;border:none;background:#272938;color:#fff;font-size:15px;outline:none;}
-        .send-btn{width:50px;height:50px;border-radius:50%;border:none;background:var(--nailong-yellow);cursor:pointer;font-weight:bold;}
-        /*==========模块3：抽象末世复仇网文生成==========*/
-        .story-wrap{padding:20px;}
-        .story-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
-        .generate-story{padding:10px 22px;border-radius:10px;border:none;background:#ff4466;color:#fff;font-weight:bold;cursor:pointer;}
-        .story-content{padding:20px;background:#272938;border-radius:12px;line-height:2;font-size:16px;text-indent:2em;min-height:400px;white-space:pre-line;}
-        /*全局提示弹窗*/
-        .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);padding:10px 24px;background:#222;color:#fff;border-radius:20px;display:none;z-index:9999;}
+        :root {
+            /* 暗色主题 (默认) */
+            --bg-body: #12141d;
+            --bg-card: #1e202e;
+            --bg-input: #272938;
+            --bg-chat: #272938;
+            --text-primary: #f8f9ff;
+            --text-secondary: #b0b5cc;
+            --border-color: #33364a;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --nav-bg: #1e202e;
+            --yellow: #ffe100;
+            --blue: #54c0ff;
+            --pink: #ff6b8b;
+            --red: #ff4466;
+            --card-radius: 16px;
+            --nav-height: 70px;
+        }
+        /* 亮色主题 */
+        [data-theme="light"] {
+            --bg-body: #f0f2f7;
+            --bg-card: #ffffff;
+            --bg-input: #e8ecf5;
+            --bg-chat: #eef1f8;
+            --text-primary: #1a1c2e;
+            --text-secondary: #4a4d66;
+            --border-color: #d0d4e0;
+            --shadow-color: rgba(0, 0, 0, 0.08);
+            --nav-bg: #ffffff;
+            --yellow: #f5c800;
+            --blue: #3a8fcb;
+            --pink: #e0557a;
+            --red: #d9385a;
+        }
+        body {
+            background: var(--bg-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        /* ========== 导航栏 ========== */
+        .nav-bar {
+            width: 100%;
+            height: var(--nav-height);
+            background: var(--nav-bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            border-bottom: 2px solid var(--yellow);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--yellow);
+            white-space: nowrap;
+        }
+        .logo span {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: normal;
+            margin-left: 4px;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .nav-btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.25s all;
+            font-weight: 600;
+            background: var(--bg-input);
+            color: var(--text-secondary);
+        }
+        .nav-btn.active {
+            transform: scale(1.04);
+            box-shadow: 0 0 14px var(--yellow);
+        }
+        .nav-btn.btn-game.active {
+            background: var(--yellow);
+            color: #000;
+        }
+        .nav-btn.btn-ai.active {
+            background: var(--blue);
+            color: #fff;
+        }
+        .nav-btn.btn-story.active {
+            background: var(--pink);
+            color: #fff;
+        }
+        .nav-btn:hover {
+            filter: brightness(1.15);
+        }
+        /* 主题/语言切换按钮 */
+        .ctrl-btn {
+            padding: 5px 12px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+        .ctrl-btn:hover {
+            border-color: var(--yellow);
+            background: var(--yellow);
+            color: #000;
+        }
+        .ctrl-btn.active-ctrl {
+            border-color: var(--yellow);
+            background: var(--yellow);
+            color: #000;
+        }
+        .theme-group,
+        .lang-group {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+        .theme-group .ctrl-btn,
+        .lang-group .ctrl-btn {
+            padding: 4px 10px;
+            font-size: 12px;
+        }
+        .divider {
+            color: var(--border-color);
+            font-size: 18px;
+            padding: 0 2px;
+        }
+
+        /* ========== 模块容器 ========== */
+        .module {
+            width: 95%;
+            max-width: 1200px;
+            margin: 24px auto;
+            display: none;
+            border-radius: var(--card-radius);
+            padding: 24px;
+            background: var(--bg-card);
+            min-height: calc(100vh - 130px);
+            box-shadow: 0 8px 32px var(--shadow-color);
+        }
+        .module.show {
+            display: block;
+            animation: fadeIn 0.35s ease;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== 模块1：游戏 ========== */
+        .game-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+        }
+        .game-info {
+            display: flex;
+            gap: 30px;
+            font-size: 17px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .game-info span {
+            background: var(--bg-input);
+            padding: 4px 16px;
+            border-radius: 20px;
+        }
+        #gameCanvas {
+            border: 3px solid var(--yellow);
+            border-radius: 12px;
+            background: #0b0c14;
+            max-width: 100%;
+            height: auto;
+        }
+        .game-control {
+            display: flex;
+            gap: 12px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .game-btn {
+            padding: 6px 22px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            background: var(--yellow);
+            color: #000;
+            font-weight: bold;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+        .game-btn:hover {
+            transform: scale(1.04);
+            filter: brightness(1.1);
+        }
+        .game-hint {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        /* ========== 模块2：AI对话 ========== */
+        .ai-wrap {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .ai-top-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 4px 14px 4px;
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 14px;
+        }
+        .ai-top-info .ai-brand {
+            color: var(--yellow);
+            font-weight: 600;
+        }
+        .ai-top-info .ai-credit {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+        .location-tip {
+            color: var(--blue);
+            font-size: 13px;
+        }
+        .chat-box {
+            flex: 1;
+            margin: 16px 0;
+            padding: 16px;
+            border-radius: 12px;
+            background: var(--bg-chat);
+            overflow-y: auto;
+            height: 460px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            border: 1px solid var(--border-color);
+        }
+        .msg-self {
+            align-self: flex-end;
+            background: var(--blue);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 18px 18px 4px 18px;
+            max-width: 78%;
+            word-break: break-word;
+            font-size: 15px;
+        }
+        .msg-nailong {
+            align-self: flex-start;
+            background: var(--yellow);
+            color: #000;
+            padding: 10px 18px;
+            border-radius: 18px 18px 18px 4px;
+            max-width: 78%;
+            word-break: break-word;
+            font-size: 15px;
+        }
+        .msg-nailong .ai-badge {
+            font-size: 11px;
+            opacity: 0.6;
+            display: block;
+            margin-top: 4px;
+            font-weight: normal;
+        }
+        .input-bar {
+            display: flex;
+            gap: 10px;
+            margin-top: 4px;
+        }
+        #aiInput {
+            flex: 1;
+            padding: 12px 18px;
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-primary);
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+        #aiInput:focus {
+            border-color: var(--yellow);
+        }
+        .send-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: none;
+            background: var(--yellow);
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 20px;
+            color: #000;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .send-btn:hover {
+            transform: scale(1.06);
+        }
+
+        /* ========== 模块3：小说 ========== */
+        .story-wrap {
+            padding: 4px 0;
+        }
+        .story-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .story-head h2 {
+            font-size: 20px;
+            color: var(--pink);
+        }
+        .generate-story {
+            padding: 10px 26px;
+            border-radius: 10px;
+            border: none;
+            background: var(--red);
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+        .generate-story:hover {
+            transform: scale(1.04);
+            filter: brightness(1.1);
+        }
+        .story-content {
+            padding: 22px 26px;
+            background: var(--bg-input);
+            border-radius: 12px;
+            line-height: 2;
+            font-size: 16px;
+            text-indent: 2em;
+            min-height: 420px;
+            white-space: pre-line;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        /* ========== Toast ========== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 28px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: 24px;
+            display: none;
+            z-index: 9999;
+            border: 1px solid var(--yellow);
+            box-shadow: 0 4px 20px var(--shadow-color);
+            font-size: 14px;
+            font-weight: 500;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        /* ========== 滚动条美化 ========== */
+        .chat-box::-webkit-scrollbar,
+        .story-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-box::-webkit-scrollbar-track,
+        .story-content::-webkit-scrollbar-track {
+            background: var(--bg-input);
+            border-radius: 4px;
+        }
+        .chat-box::-webkit-scrollbar-thumb,
+        .story-content::-webkit-scrollbar-thumb {
+            background: var(--yellow);
+            border-radius: 4px;
+        }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 768px) {
+            .nav-bar {
+                padding: 0 12px;
+                height: auto;
+                min-height: 60px;
+            }
+            .logo {
+                font-size: 16px;
+            }
+            .logo span {
+                font-size: 11px;
+            }
+            .nav-btn {
+                font-size: 12px;
+                padding: 4px 12px;
+            }
+            .ctrl-btn {
+                font-size: 11px;
+                padding: 3px 8px;
+            }
+            .module {
+                padding: 16px;
+                width: 98%;
+            }
+            .game-info {
+                font-size: 14px;
+                gap: 14px;
+            }
+            #gameCanvas {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 560/420;
+            }
+            .chat-box {
+                height: 320px;
+            }
+            .story-content {
+                font-size: 14px;
+                padding: 16px;
+                min-height: 300px;
+            }
+            .story-head h2 {
+                font-size: 16px;
+            }
+            .nav-right {
+                gap: 4px;
+            }
+            .theme-group .ctrl-btn,
+            .lang-group .ctrl-btn {
+                font-size: 10px;
+                padding: 2px 6px;
+            }
+            .divider {
+                font-size: 14px;
+            }
+            .ai-top-info {
+                font-size: 12px;
+            }
+        }
+        @media (max-width: 480px) {
+            .nav-btn-group .nav-btn {
+                font-size: 10px;
+                padding: 3px 8px;
+            }
+            .logo {
+                font-size: 13px;
+            }
+            .game-info span {
+                padding: 2px 10px;
+                font-size: 12px;
+            }
+            .game-btn {
+                font-size: 12px;
+                padding: 4px 14px;
+            }
+            #aiInput {
+                font-size: 13px;
+                padding: 10px 14px;
+            }
+            .send-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!--顶部导航-->
+    <!-- ===== 顶部导航 ===== -->
     <div class="nav-bar">
-        <div class="logo">🐲 奶龙全域AI助理空间站</div>
-        <div class="nav-btn-group">
-            <button class="nav-btn btn-game active" data-target="gameModule">奶龙吃奶娃游戏</button>
-            <button class="nav-btn btn-ai" data-target="aiModule">奶龙AI对话助理</button>
-            <button class="nav-btn btn-story" data-target="storyModule">抽象末世网文生成</button>
+        <div class="logo">🐲 奶龙AI助理 <span id="logoSub">空间站</span></div>
+        <div class="nav-right">
+            <div class="nav-btn-group">
+                <button class="nav-btn btn-game active" data-target="gameModule" data-key="navGame">🎮 吃奶娃</button>
+                <button class="nav-btn btn-ai" data-target="aiModule" data-key="navAI">💬 AI对话</button>
+                <button class="nav-btn btn-story" data-target="storyModule" data-key="navStory">📖 末世文</button>
+            </div>
+            <span class="divider">|</span>
+            <div class="theme-group">
+                <button class="ctrl-btn active-ctrl" data-theme="dark" data-key="themeDark">🌙</button>
+                <button class="ctrl-btn" data-theme="light" data-key="themeLight">☀️</button>
+            </div>
+            <span class="divider">|</span>
+            <div class="lang-group">
+                <button class="ctrl-btn active-ctrl" data-lang="zh" data-key="langZh">中文</button>
+                <button class="ctrl-btn" data-lang="en" data-key="langEn">EN</button>
+            </div>
         </div>
     </div>
 
-    <!--模块1：吃鬼游戏模块-->
+    <!-- ===== 模块1：游戏 ===== -->
     <div id="gameModule" class="module show">
         <div class="game-wrap">
             <div class="game-info">
-                <span>⭐得分：<span id="gameScore">0</span></span>
-                <span>❤️生命：<span id="gameLife">3</span></span>
-                <span>💾本局数据自动本地保存</span>
+                <span>⭐ <span data-key="gameScoreLabel">得分</span>：<span id="gameScore">0</span></span>
+                <span>❤️ <span data-key="gameLifeLabel">生命</span>：<span id="gameLife">3</span></span>
+                <span>💾 <span data-key="gameSaveLabel">自动存档</span></span>
             </div>
             <canvas id="gameCanvas" width="560" height="420"></canvas>
             <div class="game-control">
-                <button class="game-btn" id="startGame">开始游戏</button>
-                <button class="game-btn" id="resetGame">重置对局</button>
-                <p style="color:#ccc;font-size:14px;">方向键操控奶龙 | 吃掉光点 | 躲避敌对奶娃</p>
+                <button class="game-btn" id="startGame" data-key="gameStart">▶ 开始</button>
+                <button class="game-btn" id="resetGame" data-key="gameReset">🔄 重置</button>
+                <span class="game-hint" data-key="gameHint">⬆⬇⬅➡ 方向键操控 · 吃光点 · 躲奶娃</span>
             </div>
         </div>
     </div>
 
-    <!--模块2：奶龙AI对话助理-->
+    <!-- ===== 模块2：AI对话 ===== -->
     <div id="aiModule" class="module">
         <div class="ai-wrap">
             <div class="ai-top-info">
-                <span>🐲专属奶龙AI｜无第三方模型贴牌｜本地记忆对话</span>
-                <span class="location-tip" id="locationText">📍定位加载中...</span>
+                <span>
+                    <span class="ai-brand">🐲 专属奶龙AI</span>
+                    <span class="ai-credit" id="aiCredit"> · 由青云客智能API驱动</span>
+                </span>
+                <span class="location-tip" id="locationText">📍 <span data-key="locLoading">定位加载中...</span></span>
             </div>
             <div class="chat-box" id="chatBox">
-                <div class="msg-nailong">哈喽🥰我是专属奶龙！可以命令我：查询本地天气、全网热搜、闲聊陪伴、日程提醒、趣味问答，所有聊天都会本地保存哦✨</div>
+                <div class="msg-nailong">
+                    🥰 哈喽！我是专属奶龙 · 全域AI助理<br>
+                    <span style="font-size:13px;opacity:0.7;">
+                        🌤️ 查天气 · 🔥 看热搜 · 💬 任意聊天 · 📝 本地记忆
+                    </span>
+                    <span class="ai-badge">✨ AI实时响应</span>
+                </div>
             </div>
             <div class="input-bar">
-                <input type="text" id="aiInput" placeholder="输入指令：今天天气 / 今日热搜 / 陪我聊天...">
-                <button class="send-btn" id="sendMsg">发送</button>
+                <input type="text" id="aiInput" placeholder="输入任何你想说的话…" data-key="aiPlaceholder">
+                <button class="send-btn" id="sendMsg">➤</button>
             </div>
         </div>
     </div>
 
-    <!--模块3：抽象末世复仇网文-->
+    <!-- ===== 模块3：小说 ===== -->
     <div id="storyModule" class="module">
         <div class="story-wrap">
             <div class="story-head">
-                <h2>🧟随机抽象末世｜奶龙VS变异奶娃 重生复仇文</h2>
-                <button class="generate-story" id="createStory">一键生成全新剧情</button>
+                <h2>🧟 <span data-key="storyTitle">抽象末世 · 奶龙重生复仇</span></h2>
+                <button class="generate-story" id="createStory" data-key="storyGen">⚡ 生成全新篇章</button>
             </div>
-            <div class="story-content" id="storyBox">点击右侧按钮，生成无逻辑、超抽象、闭环重生末世复仇网文，剧情随机永不重复，自动本地缓存留存本次故事。</div>
+            <div class="story-content" id="storyBox">
+                <span data-key="storyPlaceholder">点击右侧按钮，生成无逻辑、超抽象、闭环重生末世复仇网文，剧情随机永不重复，自动本地缓存。</span>
+            </div>
         </div>
     </div>
 
-    <!--全局提示弹窗-->
-    <div class="toast" id="toast">提示内容</div>
+    <!-- ===== Toast ===== -->
+    <div class="toast" id="toast">✨ 提示</div>
 
     <script>
-        // =====================全局工具初始化：三大API封装=====================
-        const Toast = document.getElementById("toast");
-        // 1.LocalStorage 本地存储工具封装（全局数据持久化：游戏数据、聊天记录、网文、定位）
-        const LocalDB = {
-            set(key,val){localStorage.setItem(key,JSON.stringify(val));},
-            get(key){let res = localStorage.getItem(key);return res?JSON.parse(res):null;},
-            del(key){localStorage.removeItem(key);},
-            clear(){localStorage.clear();}
+        // ============================================================
+        //  1. 语言 & 主题 系统
+        // ============================================================
+        const LANG = {
+            zh: {
+                navGame: '🎮 吃奶娃',
+                navAI: '💬 AI对话',
+                navStory: '📖 末世文',
+                themeDark: '🌙',
+                themeLight: '☀️',
+                langZh: '中文',
+                langEn: 'EN',
+                logoSub: '空间站',
+                gameScoreLabel: '得分',
+                gameLifeLabel: '生命',
+                gameSaveLabel: '自动存档',
+                gameStart: '▶ 开始',
+                gameReset: '🔄 重置',
+                gameHint: '⬆⬇⬅➡ 方向键操控 · 吃光点 · 躲奶娃',
+                locLoading: '定位加载中...',
+                aiPlaceholder: '输入任何你想说的话…',
+                storyTitle: '抽象末世 · 奶龙重生复仇',
+                storyGen: '⚡ 生成全新篇章',
+                storyPlaceholder: '点击右侧按钮，生成无逻辑、超抽象、闭环重生末世复仇网文，剧情随机永不重复，自动本地缓存。',
+                aiCredit: ' · 由青云客智能API驱动',
+            },
+            en: {
+                navGame: '🎮 Eat Baby',
+                navAI: '💬 AI Chat',
+                navStory: '📖 Apocalypse',
+                themeDark: '🌙',
+                themeLight: '☀️',
+                langZh: '中文',
+                langEn: 'EN',
+                logoSub: 'Space Station',
+                gameScoreLabel: 'Score',
+                gameLifeLabel: 'Life',
+                gameSaveLabel: 'Auto Save',
+                gameStart: '▶ Start',
+                gameReset: '🔄 Reset',
+                gameHint: '⬆⬇⬅➡ Arrow Keys · Eat Dots · Dodge',
+                locLoading: 'Loading location...',
+                aiPlaceholder: 'Type anything…',
+                storyTitle: 'Abstract Apocalypse · Revenge Rebirth',
+                storyGen: '⚡ Generate New Chapter',
+                storyPlaceholder: 'Click the button to generate a chaotic, abstract, closed-loop rebirth revenge story. Random & auto-cached.',
+                aiCredit: ' · Powered by Qingyunke AI',
+            }
+        };
+
+        let currentLang = 'zh';
+        let currentTheme = 'dark';
+
+        // 应用语言
+        function applyLang(lang) {
+            currentLang = lang;
+            const dict = LANG[lang];
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.dataset.key;
+                if (dict[key] !== undefined) {
+                    if (el.tagName === 'INPUT' && el.placeholder !== undefined) {
+                        el.placeholder = dict[key];
+                    } else {
+                        el.textContent = dict[key];
+                    }
+                }
+            });
+            // 更新logo子标题特殊处理
+            const logoSub = document.getElementById('logoSub');
+            if (logoSub) logoSub.textContent = dict.logoSub;
+            // 更新AI credit
+            const credit = document.getElementById('aiCredit');
+            if (credit) credit.textContent = dict.aiCredit || '';
+            // 更新lang按钮状态
+            document.querySelectorAll('.lang-group .ctrl-btn').forEach(btn => {
+                btn.classList.toggle('active-ctrl', btn.dataset.lang === lang);
+            });
+            // 重新渲染聊天历史（保留内容不变）
         }
-        // 2.Location 地理位置API 获取用户经纬度+城市
+
+        // 应用主题
+        function applyTheme(theme) {
+            currentTheme = theme;
+            document.documentElement.setAttribute('data-theme', theme);
+            document.querySelectorAll('.theme-group .ctrl-btn').forEach(btn => {
+                btn.classList.toggle('active-ctrl', btn.dataset.theme === theme);
+            });
+        }
+
+        // 主题切换事件
+        document.querySelectorAll('.theme-group .ctrl-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                applyTheme(btn.dataset.theme);
+                showToast(btn.dataset.theme === 'dark' ? '🌙 暗色模式' : '☀️ 亮色模式');
+            });
+        });
+        // 语言切换事件
+        document.querySelectorAll('.lang-group .ctrl-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                applyLang(btn.dataset.lang);
+                showToast(btn.dataset.lang === 'zh' ? '🇨🇳 中文' : '🇬🇧 English');
+            });
+        });
+
+        // ============================================================
+        //  2. 全局工具：Toast / LocalDB / Location / API
+        // ============================================================
+        const Toast = document.getElementById('toast');
+        let toastTimer = null;
+
+        function showToast(text) {
+            Toast.textContent = text;
+            Toast.style.display = 'block';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => { Toast.style.display = 'none'; }, 2200);
+        }
+
+        const LocalDB = {
+            set(key, val) { localStorage.setItem(key, JSON.stringify(val)); },
+            get(key) { const r = localStorage.getItem(key); return r ? JSON.parse(r) : null; },
+            del(key) { localStorage.removeItem(key); },
+            clear() { localStorage.clear(); }
+        };
+
+        // 定位
         const LocationAPI = {
-            async getCity(){
+            async getCity() {
                 return new Promise((resolve) => {
-                    if(!navigator.geolocation){
-                        document.getElementById("locationText").innerText = "📍浏览器禁止定位权限";
-                        resolve("未知城市");
+                    if (!navigator.geolocation) {
+                        document.getElementById('locationText').innerHTML = '📍 浏览器禁止定位';
+                        resolve('北京');
                         return;
                     }
-                    navigator.geolocation.getCurrentPosition(async(pos) => {
+                    navigator.geolocation.getCurrentPosition(async (pos) => {
                         const lat = pos.coords.latitude;
                         const lon = pos.coords.longitude;
-                        //调用公开逆地址实时API
-                        const res = await fetch(`https://geoapi.qweather.com/v2/city/lookup?location=${lon},${lat}&key=HE2Z3JzH2kf4gCnXg0jY7tRz`);
-                        const data = await res.json();
-                        if(data.code === "200"){
-                            const city = data.location[0].name;
-                            document.getElementById("locationText").innerText = `📍当前定位：${city}`;
-                            LocalDB.set("userCity",city);
-                            resolve(city);
-                        }else{
-                            resolve("未知城市");
+                        try {
+                            const res = await fetch(
+                                `https://geoapi.qweather.com/v2/city/lookup?location=${lon},${lat}&key=HE2Z3JzH2kf4gCnXg0jY7tRz`
+                            );
+                            const data = await res.json();
+                            if (data.code === '200' && data.location && data.location.length) {
+                                const city = data.location[0].name;
+                                document.getElementById('locationText').innerHTML = `📍 ${city}`;
+                                LocalDB.set('userCity', city);
+                                resolve(city);
+                            } else {
+                                resolve('北京');
+                            }
+                        } catch {
+                            resolve('北京');
                         }
-                    },()=>{
-                        document.getElementById("locationText").innerText = "📍定位获取失败";
-                        resolve("未知城市");
-                    })
-                })
+                    }, () => {
+                        document.getElementById('locationText').innerHTML = '📍 定位失败';
+                        resolve('北京');
+                    });
+                });
             }
-        }
-        // 3.RealTime 全网实时API：天气+热搜 公开稳定实时接口
+        };
+
+        // 实时API：天气 + 热搜
         const RealTimeAPI = {
-            //实时天气接口
-            async getWeather(city){
-                const res = await fetch(`https://devapi.qweather.com/v7/weather/now?location=${city}&key=HE2Z3JzH2kf4gCnXg0jY7tRz`);
-                return await res.json();
+            async getWeather(city) {
+                try {
+                    const res = await fetch(
+                        `https://devapi.qweather.com/v7/weather/now?location=${city}&key=HE2Z3JzH2kf4gCnXg0jY7tRz`
+                    );
+                    return await res.json();
+                } catch { return { code: '500' }; }
             },
-            //全网实时热搜接口
-            async getHotSearch(){
-                const res = await fetch("https://api.vvhan.com/api/hotlist");
-                return await res.json();
+            async getHotSearch() {
+                try {
+                    const res = await fetch('https://api.vvhan.com/api/hotlist');
+                    return await res.json();
+                } catch { return { data: [] }; }
             }
-        }
+        };
 
-        // =====================导航模块切换=====================
-        const navBtns = document.querySelectorAll(".nav-btn");
-        const modules = document.querySelectorAll(".module");
-        navBtns.forEach(btn=>{
-            btn.onclick = ()=>{
-                //切换激活样式
-                navBtns.forEach(b=>b.classList.remove("active"));
-                btn.classList.add("active");
-                //切换页面模块
+        // ============================================================
+        //  3. 导航切换
+        // ============================================================
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const modules = document.querySelectorAll('.module');
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                navBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
                 const target = btn.dataset.target;
-                modules.forEach(m=>m.classList.remove("show"));
-                document.getElementById(target).classList.add("show");
-            }
-        })
+                modules.forEach(m => m.classList.remove('show'));
+                document.getElementById(target).classList.add('show');
+            });
+        });
 
-        // =====================模块1：奶龙吃奶娃 复刻原版吃豆游戏 完整逻辑=====================
-        const canvas = document.getElementById("gameCanvas");
-        const ctx = canvas.getContext("2d");
+        // ============================================================
+        //  4. 游戏模块 — 完整修复 (requestAnimationFrame + 无敌帧)
+        // ============================================================
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const SIZE = 40;
+        const COLS = 14,
+            ROWS = 15;
+
+        // 地图
+        const MAP_TEMPLATE = [
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1],
+            [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1],
+            [1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1],
+            [1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1],
+            [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+            [1, 1, 1, 1, 2, 1, 1, 0, 1, 1, 2, 1, 1, 1],
+            [1, 2, 2, 2, 2, 1, 0, 0, 0, 1, 2, 2, 2, 1],
+            [1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1],
+            [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
+            [1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1],
+            [1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1],
+            [1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1],
+            [1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ];
+        let map = MAP_TEMPLATE.map(row => [...row]);
+
+        // 游戏状态
         let gameRun = false;
-        let gameScore = LocalDB.get("nailongGameScore") || 0;
-        let gameLife = LocalDB.get("nailongGameLife") || 3;
-        document.getElementById("gameScore").innerText = gameScore;
-        document.getElementById("gameLife").innerText = gameLife;
-        //游戏地图 原版吃豆布局 1墙2光点3空白
-        const map = [
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-            [1,2,2,2,2,1,2,2,2,2,2,2,2,1],
-            [1,2,1,1,2,1,2,1,1,1,1,1,2,1],
-            [1,2,1,2,2,2,2,2,2,2,2,1,2,1],
-            [1,2,1,2,1,1,1,1,1,1,2,1,2,1],
-            [1,2,2,2,2,2,2,2,2,2,2,2,2,1],
-            [1,1,1,1,2,1,1,0,1,1,2,1,1,1],
-            [1,2,2,2,2,1,0,0,0,1,2,2,2,1],
-            [1,1,1,1,2,1,1,1,1,1,2,1,1,1],
-            [1,2,2,2,2,2,2,2,2,2,2,2,2,1],
-            [1,2,1,2,1,1,1,1,1,1,2,1,2,1],
-            [1,2,1,2,2,2,2,2,2,2,2,1,2,1],
-            [1,2,1,1,2,1,2,1,1,1,1,1,2,1],
-            [1,2,2,2,2,1,2,2,2,2,2,2,2,1],
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-        ];
-        const size = 40;
-        //奶龙主角参数
-        let nailong = {x:7,y:7,dir:"right",nextDir:"right"};
-        //敌对奶娃怪物数组
+        let gameOver = false;
+        let gameScore = LocalDB.get('nailongGameScore') || 0;
+        let gameLife = LocalDB.get('nailongGameLife') || 3;
+        let invincible = 0; // 无敌帧计数
+
+        let nailong = { x: 7, y: 7, dir: 'right', nextDir: 'right' };
         let babyList = [
-            {x:3,y:3,color:"#ff5555",dir:"left"},
-            {x:10,y:3,color:"#5588ff",dir:"down"},
-            {x:3,y:11,color:"#9955ff",dir:"right"},
-            {x:10,y:11,color:"#ffaa22",dir:"up"}
+            { x: 3, y: 3, color: '#ff5555' },
+            { x: 10, y: 3, color: '#5588ff' },
+            { x: 3, y: 11, color: '#9955ff' },
+            { x: 10, y: 11, color: '#ffaa22' }
         ];
-        //键盘方向监听
-        document.onkeydown = e=>{
-            if(!gameRun) return;
-            switch(e.key){
-                case "ArrowUp":nailong.nextDir="up";break;
-                case "ArrowDown":nailong.nextDir="down";break;
-                case "ArrowLeft":nailong.nextDir="left";break;
-                case "ArrowRight":nailong.nextDir="right";break;
+
+        // 更新UI分数生命
+        function updateGameUI() {
+            document.getElementById('gameScore').textContent = gameScore;
+            document.getElementById('gameLife').textContent = gameLife;
+            LocalDB.set('nailongGameScore', gameScore);
+            LocalDB.set('nailongGameLife', gameLife);
+        }
+        updateGameUI();
+
+        function canMove(x, y) {
+            if (x < 0 || x >= COLS || y < 0 || y >= ROWS) return false;
+            return map[y][x] !== 1;
+        }
+
+        function resetMap() {
+            map = MAP_TEMPLATE.map(row => [...row]);
+        }
+
+        function resetGame(fullReset = true) {
+            gameRun = false;
+            gameOver = false;
+            invincible = 0;
+            nailong = { x: 7, y: 7, dir: 'right', nextDir: 'right' };
+            babyList = [
+                { x: 3, y: 3, color: '#ff5555' },
+                { x: 10, y: 3, color: '#5588ff' },
+                { x: 3, y: 11, color: '#9955ff' },
+                { x: 10, y: 11, color: '#ffaa22' }
+            ];
+            if (fullReset) {
+                gameScore = 0;
+                gameLife = 3;
+                resetMap();
+                updateGameUI();
+                showToast('🔄 游戏已重置');
             }
+            drawGame();
         }
-        //边界碰撞检测
-        function canMove(x,y){
-            if(map[y] && map[y][x] !== 1) return true;
-            return false;
-        }
-        //游戏绘制主循环
-        function drawGame(){
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            //绘制地图
-            for(let y=0;y<map.length;y++){
-                for(let x=0;x<map[y].length;x++){
-                    let item = map[y][x];
-                    if(item === 1){
-                        ctx.fillStyle = "#2367d8";
-                        ctx.fillRect(x*size,y*size,size-2,size-2);
-                    }else if(item === 2){
-                        ctx.fillStyle = "#ffe100";
+
+        // 绘制
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // 地图
+            for (let y = 0; y < ROWS; y++) {
+                for (let x = 0; x < COLS; x++) {
+                    const v = map[y][x];
+                    if (v === 1) {
+                        ctx.fillStyle = '#2367d8';
+                        ctx.fillRect(x * SIZE, y * SIZE, SIZE - 1, SIZE - 1);
+                    } else if (v === 2) {
+                        ctx.fillStyle = '#ffe100';
                         ctx.beginPath();
-                        ctx.arc(x*size+20,y*size+20,5,0,Math.PI*2);
+                        ctx.arc(x * SIZE + SIZE / 2, y * SIZE + SIZE / 2, 5, 0, Math.PI * 2);
                         ctx.fill();
                     }
                 }
             }
-            //绘制奶龙
-            ctx.fillStyle = "#ffe100";
-            ctx.beginPath();
-            ctx.arc(nailong.x*size+20,nailong.y*size+20,16,0,Math.PI*2);
-            ctx.fill();
-            ctx.fillStyle="#000";
-            ctx.beginPath();ctx.arc(nailong.x*size+26,nailong.y*size+14,3,0,Math.PI*2);ctx.fill();
-            //绘制敌对奶娃
-            babyList.forEach(baby=>{
+            // 奶龙
+            const inv = invincible > 0 && Math.floor(invincible / 6) % 2 === 0;
+            if (!inv) {
+                ctx.fillStyle = '#ffe100';
+                ctx.beginPath();
+                ctx.arc(nailong.x * SIZE + SIZE / 2, nailong.y * SIZE + SIZE / 2, 16, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#000';
+                ctx.beginPath();
+                ctx.arc(nailong.x * SIZE + 26, nailong.y * SIZE + 14, 3, 0, Math.PI * 2);
+                ctx.fill();
+            } else {
+                // 闪烁
+                ctx.fillStyle = '#ffaa00';
+                ctx.beginPath();
+                ctx.arc(nailong.x * SIZE + SIZE / 2, nailong.y * SIZE + SIZE / 2, 16, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            // 奶娃
+            babyList.forEach(baby => {
                 ctx.fillStyle = baby.color;
                 ctx.beginPath();
-                ctx.arc(baby.x*size+20,baby.y*size+20,15,0,Math.PI*2);
+                ctx.arc(baby.x * SIZE + SIZE / 2, baby.y * SIZE + SIZE / 2, 15, 0, Math.PI * 2);
                 ctx.fill();
-                ctx.fillStyle="#fff";
-                ctx.beginPath();ctx.arc(baby.x*size+14,baby.y*size+16,4,0,Math.PI*2);ctx.fill();
-                ctx.beginPath();ctx.arc(baby.x*size+26,baby.y*size+16,4,0,Math.PI*2);ctx.fill();
-            })
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.arc(baby.x * SIZE + 14, baby.y * SIZE + 16, 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(baby.x * SIZE + 26, baby.y * SIZE + 16, 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            // 游戏结束遮罩
+            if (gameOver) {
+                ctx.fillStyle = 'rgba(0,0,0,0.6)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#ffe100';
+                ctx.font = 'bold 32px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('💔 GAME OVER', canvas.width / 2, canvas.height / 2);
+            }
         }
-        //游戏移动逻辑
-        function gameMove(){
-            if(!gameRun) return;
-            //奶龙移动校验
-            let nx = nailong.x,ny = nailong.y;
-            switch(nailong.nextDir){
-                case "up":ny--;break;
-                case "down":ny++;break;
-                case "left":nx--;break;
-                case "right":nx++;break;
+
+        // 游戏逻辑更新 (每帧)
+        function gameUpdate() {
+            if (!gameRun || gameOver) return;
+
+            // ---- 奶龙移动 ----
+            let nx = nailong.x,
+                ny = nailong.y;
+            switch (nailong.nextDir) {
+                case 'up':
+                    ny--;
+                    break;
+                case 'down':
+                    ny++;
+                    break;
+                case 'left':
+                    nx--;
+                    break;
+                case 'right':
+                    nx++;
+                    break;
             }
-            if(canMove(nx,ny)){
+            if (canMove(nx, ny)) {
                 nailong.dir = nailong.nextDir;
-                nailong.x = nx;nailong.y = ny;
-            }else{
-                switch(nailong.dir){
-                    case "up":ny--;break;
-                    case "down":ny++;break;
-                    case "left":nx--;break;
-                    case "right":nx++;break;
+                nailong.x = nx;
+                nailong.y = ny;
+            } else {
+                let ox = nailong.x,
+                    oy = nailong.y;
+                switch (nailong.dir) {
+                    case 'up':
+                        oy--;
+                        break;
+                    case 'down':
+                        oy++;
+                        break;
+                    case 'left':
+                        ox--;
+                        break;
+                    case 'right':
+                        ox++;
+                        break;
                 }
-                if(canMove(nx,ny)){nailong.x=nx;nailong.y=ny;}
+                if (canMove(ox, oy)) { nailong.x = ox;
+                    nailong.y = oy; }
             }
-            //吃掉光点加分
-            if(map[nailong.y][nailong.x] === 2){
+
+            // ---- 吃光点 ----
+            if (map[nailong.y] && map[nailong.y][nailong.x] === 2) {
                 map[nailong.y][nailong.x] = 0;
-                gameScore +=10;
-                document.getElementById("gameScore").innerText = gameScore;
-                LocalDB.set("nailongGameScore",gameScore);
+                gameScore += 10;
+                updateGameUI();
             }
-            //奶娃随机移动
-            babyList.forEach(baby=>{
-                let dirArr = ["up","down","left","right"];
-                let rDir = dirArr[Math.floor(Math.random()*4)];
-                let bx = baby.x,by = baby.y;
-                switch(rDir){
-                    case "up":by--;break;case "down":by++;break;
-                    case "left":bx--;break;case "right":bx++;break;
+
+            // ---- 奶娃移动 (随机) ----
+            const dirs = ['up', 'down', 'left', 'right'];
+            babyList.forEach(baby => {
+                const rd = dirs[Math.floor(Math.random() * 4)];
+                let bx = baby.x,
+                    by = baby.y;
+                switch (rd) {
+                    case 'up':
+                        by--;
+                        break;
+                    case 'down':
+                        by++;
+                        break;
+                    case 'left':
+                        bx--;
+                        break;
+                    case 'right':
+                        bx++;
+                        break;
                 }
-                if(canMove(bx,by)){baby.x=bx;baby.y=by;}
-                //碰撞扣血
-                if(baby.x === nailong.x && baby.y === nailong.y){
-                    gameLife--;
-                    document.getElementById("gameLife").innerText = gameLife;
-                    LocalDB.set("nailongGameLife",gameLife);
-                    nailong = {x:7,y:7,dir:"right",nextDir:"right"};
-                    if(gameLife <=0){
-                        gameRun = false;
-                        showToast("游戏结束！奶龙被奶娃抓捕啦💛");
+                if (canMove(bx, by)) { baby.x = bx;
+                    baby.y = by; }
+            });
+
+            // ---- 碰撞检测 (带无敌帧) ----
+            if (invincible > 0) {
+                invincible--;
+            } else {
+                let hit = false;
+                for (const baby of babyList) {
+                    if (baby.x === nailong.x && baby.y === nailong.y) {
+                        hit = true;
+                        break;
                     }
                 }
-            })
-        }
-        //游戏按钮事件
-        document.getElementById("startGame").onclick = ()=>{
-            gameRun = true;showToast("游戏开始！操控奶龙躲避奶娃✨");
-        }
-        document.getElementById("resetGame").onclick = ()=>{
-            gameRun = false;
-            gameScore = 0;gameLife =3;
-            nailong = {x:7,y:7,dir:"right",nextDir:"right"};
-            babyList = [
-                {x:3,y:3,color:"#ff5555",dir:"left"},
-                {x:10,y:3,color:"#5588ff",dir:"down"},
-                {x:3,y:11,color:"#9955ff",dir:"right"},
-                {x:10,y:11,color:"#ffaa22",dir:"up"}
-            ];
-            //重置地图光点
-            const resetMap = [
-                [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-                [1,2,2,2,2,1,2,2,2,2,2,2,2,1],
-                [1,2,1,1,2,1,2,1,1,1,1,1,2,1],
-                [1,2,1,2,2,2,2,2,2,2,2,1,2,1],
-                [1,2,1,2,1,1,1,1,1,1,2,1,2,1],
-                [1,2,2,2,2,2,2,2,2,2,2,2,2,1],
-                [1,1,1,1,2,1,1,0,1,1,2,1,1,1],
-                [1,2,2,2,2,1,0,0,0,1,2,2,2,1],
-                [1,1,1,1,2,1,1,1,1,1,2,1,1,1],
-                [1,2,2,2,2,2,2,2,2,2,2,2,2,1],
-                [1,2,1,2,1,1,1,1,1,1,2,1,2,1],
-                [1,2,1,2,2,2,2,2,2,2,2,1,2,1],
-                [1,2,1,1,2,1,2,1,1,1,1,1,2,1],
-                [1,2,2,2,2,1,2,2,2,2,2,2,2,1],
-                [1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-            ];
-            for(let i=0;i<map.length;i++)map[i] = [...resetMap[i]];
-            document.getElementById("gameScore").innerText = 0;
-            document.getElementById("gameLife").innerText =3;
-            LocalDB.set("nailongGameScore",0);
-            LocalDB.set("nailongGameLife",3);
-            drawGame();
-            showToast("对局已重置💛");
-        }
-        //游戏定时器
-        setInterval(()=>{drawGame();gameMove();},16);
+                if (hit) {
+                    gameLife--;
+                    updateGameUI();
+                    if (gameLife <= 0) {
+                        gameLife = 0;
+                        updateGameUI();
+                        gameRun = false;
+                        gameOver = true;
+                        showToast('💔 游戏结束！奶龙被抓住了…');
+                        drawGame();
+                        return;
+                    }
+                    // 重置奶龙位置 + 无敌帧
+                    nailong = { x: 7, y: 7, dir: 'right', nextDir: 'right' };
+                    invincible = 30; // 约0.5秒 (60fps)
+                    showToast('💛 奶龙被撞！无敌保护中...');
+                }
+            }
 
-        // =====================模块2：纯原创奶龙AI对话（无豆包溯源、本地记忆、实时API响应）=====================
-        const chatBox = document.getElementById("chatBox");
-        const aiInput = document.getElementById("aiInput");
-        const sendBtn = document.getElementById("sendMsg");
-        //读取本地历史聊天
-        let chatHistory = LocalDB.get("nailongChat") || [];
-        //渲染历史聊天
-        function renderChat(){
-            chatBox.innerHTML = "";
-            chatHistory.forEach(item=>{
-                if(item.type==="user"){
+            // ---- 胜利判定: 光点吃光 ----
+            let dotsLeft = 0;
+            for (let y = 0; y < ROWS; y++) {
+                for (let x = 0; x < COLS; x++) {
+                    if (map[y][x] === 2) dotsLeft++;
+                }
+            }
+            if (dotsLeft === 0 && gameRun) {
+                gameRun = false;
+                gameOver = true;
+                showToast('🎉 恭喜！所有光点吃完！奶龙胜利！');
+                drawGame();
+            }
+        }
+
+        // ---- 游戏循环 (requestAnimationFrame) ----
+        let frameId = null;
+
+        function gameLoop() {
+            gameUpdate();
+            drawGame();
+            frameId = requestAnimationFrame(gameLoop);
+        }
+
+        // ---- 键盘控制 ----
+        document.addEventListener('keydown', (e) => {
+            if (!gameRun || gameOver) return;
+            switch (e.key) {
+                case 'ArrowUp':
+                    e.preventDefault();
+                    nailong.nextDir = 'up';
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    nailong.nextDir = 'down';
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    nailong.nextDir = 'left';
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    nailong.nextDir = 'right';
+                    break;
+            }
+        });
+
+        // ---- 按钮 ----
+        document.getElementById('startGame').addEventListener('click', () => {
+            if (gameOver) {
+                resetGame(true);
+            }
+            if (!gameRun) {
+                gameRun = true;
+                gameOver = false;
+                showToast('🎮 游戏开始！方向键操控奶龙！');
+            }
+        });
+
+        document.getElementById('resetGame').addEventListener('click', () => {
+            resetGame(true);
+            gameRun = false;
+            gameOver = false;
+            drawGame();
+        });
+
+        // 启动循环
+        resetGame(true);
+        gameLoop();
+
+        // ============================================================
+        //  5. AI对话模块 — 接入青云客API (真正AI)
+        // ============================================================
+        const chatBox = document.getElementById('chatBox');
+        const aiInput = document.getElementById('aiInput');
+        const sendBtn = document.getElementById('sendMsg');
+
+        let chatHistory = LocalDB.get('nailongChat') || [];
+
+        function renderChat() {
+            chatBox.innerHTML = '';
+            chatHistory.forEach(item => {
+                if (item.type === 'user') {
                     chatBox.innerHTML += `<div class="msg-self">${item.text}</div>`;
-                }else{
+                } else {
                     chatBox.innerHTML += `<div class="msg-nailong">${item.text}</div>`;
                 }
-            })
+            });
+            if (chatHistory.length === 0) {
+                chatBox.innerHTML = `
+                    <div class="msg-nailong">
+                        🥰 哈喽！我是专属奶龙 · 全域AI助理<br>
+                        <span style="font-size:13px;opacity:0.7;">
+                            🌤️ 查天气 · 🔥 看热搜 · 💬 任意聊天 · 📝 本地记忆
+                        </span>
+                        <span class="ai-badge">✨ AI实时响应</span>
+                    </div>
+                `;
+            }
             chatBox.scrollTop = chatBox.scrollHeight;
         }
         renderChat();
-        //奶龙专属AI语义库 自研话术 无第三方AI接口
-        async function nailongAIReply(msg){
-            const city = LocalDB.get("userCity") || "北京";
-            msg = msg.trim().toLowerCase();
-            //指令1：查询天气
-            if(msg.includes("天气") || msg.includes("温度")){
-                const weatherData = await RealTimeAPI.getWeather(city);
-                if(weatherData.code === "200"){
-                    return `💛奶龙播报｜${city}实时天气：${weatherData.now.text}，气温${weatherData.now.temp}℃，体感${weatherData.now.feelsLike}℃，风力${weatherData.now.windScale}级，出门记得穿搭哦🥰`;
-                }else{
-                    return "呜呜🥺获取天气失败啦，授权定位后重试一下吧～";
+
+        // ---- 调用青云客AI (JSONP方式) ----
+        function callQingyunke(msg) {
+            return new Promise((resolve) => {
+                const callbackName = 'qingyunke_cb_' + Date.now();
+                const script = document.createElement('script');
+                const url = `https://api.qingyunke.com/api.php?msg=${encodeURIComponent(msg)}&type=json&callback=${callbackName}`;
+                window[callbackName] = function(data) {
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    if (data && data.result === 0) {
+                        resolve(data.content);
+                    } else {
+                        resolve(null);
+                    }
+                };
+                script.src = url;
+                script.onerror = function() {
+                    delete window[callbackName];
+                    document.body.removeChild(script);
+                    resolve(null);
+                };
+                document.body.appendChild(script);
+                // 超时保护
+                setTimeout(() => {
+                    if (window[callbackName]) {
+                        delete window[callbackName];
+                        document.body.removeChild(script);
+                        resolve(null);
+                    }
+                }, 8000);
+            });
+        }
+
+        // ---- 本地规则备选 ----
+        function localFallback(msg) {
+            const lower = msg.trim().toLowerCase();
+            if (lower.includes('天气') || lower.includes('温度')) {
+                return '🌤️ 请说 "查天气" 或 "天气" 来获取实时天气～ (需要定位权限)';
+            }
+            if (lower.includes('热搜') || lower.includes('热点') || lower.includes('新闻')) {
+                return '🔥 请说 "热搜" 或 "热点" 来获取今日热搜～';
+            }
+            const replies = [
+                '💛 奶龙在听～ 你可以问我天气、热搜，或者随便聊聊天～',
+                '🥰 专属奶龙陪伴时刻！有什么想说的都可以告诉我～',
+                '✨ 我是你的专属AI助理，查天气、看热搜、闲聊都可以！',
+                '🐲 嗷呜～ 奶龙充电完毕，随时为你服务！',
+                '🌟 世界那么大，奶龙陪你聊～ 随便说点什么吧！'
+            ];
+            return replies[Math.floor(Math.random() * replies.length)];
+        }
+
+        // ---- 主AI回复 ----
+        async function nailongAIReply(msg) {
+            if (!msg.trim()) return '🥺 说点什么吧～';
+            // 先尝试调用青云客
+            const aiReply = await callQingyunke(msg);
+            if (aiReply) {
+                // 清理一下回复中可能包含的"小Q"等字样，保持奶龙风格
+                let clean = aiReply.replace(/小Q/g, '奶龙').replace(/机器人/g, '奶龙');
+                return clean;
+            }
+            // 本地备选
+            return localFallback(msg);
+        }
+
+        // ---- 发送消息 ----
+        async function sendChat() {
+            const text = aiInput.value.trim();
+            if (!text) return;
+            // 用户消息
+            chatHistory.push({ type: 'user', text: text });
+            LocalDB.set('nailongChat', chatHistory);
+            renderChat();
+            aiInput.value = '';
+
+            // 显示"正在思考..."
+            const thinkingIdx = chatHistory.length;
+            chatHistory.push({ type: 'nailong', text: '⏳ 奶龙思考中...' });
+            LocalDB.set('nailongChat', chatHistory);
+            renderChat();
+
+            // 获取AI回复
+            const reply = await nailongAIReply(text);
+            // 替换思考中的消息
+            chatHistory[thinkingIdx] = { type: 'nailong', text: reply || '🥺 奶龙有点懵，再问一次吧～' };
+            LocalDB.set('nailongChat', chatHistory);
+            renderChat();
+        }
+
+        sendBtn.addEventListener('click', sendChat);
+        aiInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendChat(); });
+
+        // ---- 快捷指令: 天气 / 热搜 ----
+        // 在输入框中输入"天气"或"热搜"时，会通过AI API处理，但为了更好的体验，
+        // 我们也提供直接调用实时API的能力（通过AI回复中的特殊处理）
+        // 但AI API本身可能不理解"天气"指令，所以我们在发送前对特殊指令做预处理
+        // 其实青云客API能理解天气查询，但为了更准确，我们保留本地天气查询能力
+        // 修改nailongAIReply函数，增加对天气/热搜的直接处理
+        const originalReply = nailongAIReply;
+        nailongAIReply = async function(msg) {
+            const lower = msg.trim().toLowerCase();
+            // 天气指令
+            if (lower.includes('天气') || lower.includes('温度') || lower.includes('气温')) {
+                const city = LocalDB.get('userCity') || '北京';
+                const data = await RealTimeAPI.getWeather(city);
+                if (data.code === '200') {
+                    return `💛 奶龙播报｜${city}实时天气：${data.now.text}，气温${data.now.temp}℃，体感${data.now.feelsLike}℃，风力${data.now.windScale}级～ 出门注意穿搭哦🥰`;
+                } else {
+                    return '🥺 获取天气失败啦，请确保定位权限已开启～';
                 }
             }
-            //指令2：查询热搜热点
-            else if(msg.includes("热搜") || msg.includes("热点") || msg.includes("新闻")){
+            // 热搜指令
+            if (lower.includes('热搜') || lower.includes('热点') || lower.includes('新闻') || lower.includes('头条')) {
                 const hot = await RealTimeAPI.getHotSearch();
-                let hotStr = "🔥全网今日热点TOP8：\n";
-                hot.data.slice(0,8).forEach((item,idx)=>{
-                    hotStr += `${idx+1}.${item.title}\n`;
-                })
-                return hotStr+"奶龙帮你整理完毕✨";
+                if (hot.data && hot.data.length) {
+                    let str = '🔥 全网今日热点TOP8：\n';
+                    hot.data.slice(0, 8).forEach((item, idx) => {
+                        str += `${idx+1}. ${item.title}\n`;
+                    });
+                    return str + '✨ 奶龙帮你整理好啦！';
+                } else {
+                    return '🥺 热搜获取失败，稍后再试试吧～';
+                }
             }
-            //指令3：问候交互
-            else if(msg.includes("你好")||msg.includes("哈喽")||msg.includes("嗨")){
-                return "哈喽哈喽🥳我是专属奶龙！一辈子只陪你聊天，可以查天气、看热搜、发牢骚、定小提醒，专属陪伴不共享💛";
-            }
-            //指令4：清空聊天
-            else if(msg.includes("清空聊天")||msg.includes("删除记录")){
+            // 清空聊天
+            if (lower.includes('清空聊天') || lower.includes('删除记录') || lower.includes('清除对话')) {
                 chatHistory = [];
-                LocalDB.del("nailongChat");
+                LocalDB.del('nailongChat');
                 renderChat();
-                return "已清空全部本地聊天记录✅数据已销毁";
+                return '✅ 已清空全部本地聊天记录～ 数据已销毁 💛';
             }
-            //通用随机奶龙话术
-            else{
-                const replyArr = [
-                    "哇这个话题好有意思🥺奶龙认真倾听中！",
-                    "我一直在哦💛不管开心难过都可以跟我说",
-                    "奶龙专属陪伴时刻✨只属于你的小助理",
-                    "不太懂你的意思，你可以让我查天气、看热搜哦🥰",
-                    "嗷呜～奶龙充电完毕，随时听候你的命令！"
-                ];
-                return replyArr[Math.floor(Math.random()*replyArr.length)];
+            // 其他走AI API
+            const aiReply = await callQingyunke(msg);
+            if (aiReply) {
+                let clean = aiReply.replace(/小Q/g, '奶龙').replace(/机器人/g, '奶龙');
+                return clean;
             }
-        }
-        //发送消息
-        async function sendChat(){
-            const text = aiInput.value.trim();
-            if(!text) return;
-            //存入用户消息
-            chatHistory.push({type:"user",text:text});
-            LocalDB.set("nailongChat",chatHistory);
-            renderChat();
-            aiInput.value = "";
-            //AI回复
-            const reply = await nailongAIReply(text);
-            chatHistory.push({type:"nailong",text:reply});
-            LocalDB.set("nailongChat",chatHistory);
-            renderChat();
-        }
-        sendBtn.onclick = sendChat;
-        aiInput.onkeydown = e=>e.key==="Enter"&&sendChat();
+            return localFallback(msg);
+        };
 
-        // =====================模块3：随机抽象末世奶龙复仇网文生成器=====================
-        const storyBox = document.getElementById("storyBox");
-        //多维随机词库 打造无逻辑抽象末世世界观
+        // ============================================================
+        //  6. 小说生成 — 扩展超长篇章
+        // ============================================================
+        const storyBox = document.getElementById('storyBox');
+
+        // 巨型词库
         const wordPool = {
-            world:["腐朽霓虹末世","液态重力废土","逆向时间僵尸纪元","情绪畸变荒芜大陆","次元破碎骸骨星球"],
-            ability:["骨翼重生","蛋黄神力回溯","逆命吞灵","幼态时空折叠","怨念共生"],
-            enemy:["畸变红眼奶娃","同化吞噬奶娃神","虚空繁殖奶娃族群","背叛同源奶娃使徒"],
-            rule:["死亡即重生但剥离情感","吃掉同类即可篡改世界线","黑夜会反向逆转生死","眼泪可以固化末世结界"],
-            plot:["前世被挚友奶娃背刺分食","献祭龙鳞保全人类却被污蔑","主动堕入僵尸深渊换取复仇权限","为守护蛋黄神域全员陨落"],
-            end:["双向泯灭重启世界","同化所有奶娃成为末世主神","放弃复仇驻守荒芜孤岛","打破轮回开启全新平行次元"]
+            world: [
+                '腐朽霓虹末世', '液态重力废土', '逆向时间僵尸纪元', '情绪畸变荒芜大陆',
+                '次元破碎骸骨星球', '混沌熵增死域', '镜像倒置深渊城', '血月永夜焦土',
+                '机械降神废墟', '量子坍缩荒原', '噬光黑域', '回声悖论迷宫'
+            ],
+            ability: [
+                '骨翼重生', '蛋黄神力回溯', '逆命吞灵', '幼态时空折叠', '怨念共生',
+                '因果律崩坏', '熵减神环', '记忆篡改之瞳', '万相归墟', '悖论装甲',
+                '灵魂刻印', '时序逆鳞'
+            ],
+            enemy: [
+                '畸变红眼奶娃', '同化吞噬奶娃神', '虚空繁殖奶娃族群', '背叛同源奶娃使徒',
+                '深渊凝视者', '腐化奶娃领主', '镜像复制体', '时间蛀虫',
+                '混沌奶娃聚合体', '末日使徒'
+            ],
+            rule: [
+                '死亡即重生但剥离情感', '吃掉同类即可篡改世界线', '黑夜会反向逆转生死',
+                '眼泪可以固化末世结界', '杀戮会随机触发世界重构', '记忆碎片能兑换神级能力',
+                '每过7天世界规则随机刷新', '同族相食会觉醒禁忌之力',
+                '绝望值满格将召唤远古邪神', '希望之光会灼烧变异体'
+            ],
+            plot: [
+                '前世被挚友奶娃背刺分食于祭坛', '献祭龙鳞保全人类却被污蔑为叛徒',
+                '主动堕入僵尸深渊换取复仇权限', '为守护蛋黄神域全员陨落血战',
+                '被同族设计封印在时间夹缝千年', '为救幼崽被奶娃军团围剿分尸',
+                '发现世界真相后选择自我毁灭重启', '在轮回中逐渐丧失人性与记忆',
+                '曾与人类盟约却被背叛导致全族覆灭', '体内封印着远古噬神之力却浑然不知'
+            ],
+            end: [
+                '双向泯灭重启世界，一切归零', '同化所有奶娃成为末世主神，俯瞰众生',
+                '放弃复仇驻守荒芜孤岛，终老一生', '打破轮回开启全新平行次元，未知旅程',
+                '吞噬世界核心成为新世界法则本身', '与宿敌融合成超越维度的存在',
+                '自我放逐于虚空裂缝，永远流浪', '唤醒远古神祇重塑万物秩序',
+                '以自身为祭品净化整个末世', '发现一切皆是虚拟幻境，选择醒来'
+            ],
+            twist: [
+                '然而奶龙发现，自己才是真正的末世源头',
+                '反转：所有奶娃都是奶龙分裂出的负面人格',
+                '惊天内幕：世界早已毁灭，一切只是奶龙的濒死幻想',
+                '奶龙觉醒记忆：它是远古神祇的最后一枚碎片',
+                '终极真相：奶娃族群其实是奶龙的后代，因变异而反噬',
+                '隐藏设定：每一次重生都会让世界更接近终极毁灭',
+                '奶龙触碰世界边缘，发现外面还有无数个平行末世',
+                '其实奶龙从未离开过祭坛，所有经历都是精神折磨'
+            ],
+            scene: [
+                '血月当空，骸骨铺就的荒原上，奶龙独自前行。',
+                '霓虹残骸中闪烁的数据流，映照着奶龙冰冷的眼神。',
+                '酸雨倾盆，奶龙在废墟中挖掘出前世的记忆碎片。',
+                '倒置的钟楼悬于天际，指针逆时针疯狂旋转。',
+                '焦土上盛开诡异的血色花朵，每一朵都藏着诅咒。',
+                '奶龙踏入镜像湖面，湖水映出无数个不同命运的自我。',
+                '天空裂开巨缝，蠕动的黑暗伸出触手试探地面。',
+                '废弃的机甲群中，奶龙发现了一具与己身相似的骸骨。'
+            ]
+        };
+
+        function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+        function generateLongStory() {
+            const w = pick(wordPool.world);
+            const a = pick(wordPool.ability);
+            const e = pick(wordPool.enemy);
+            const r = pick(wordPool.rule);
+            const p = pick(wordPool.plot);
+            const ed = pick(wordPool.end);
+            const tw = pick(wordPool.twist);
+            const sc1 = pick(wordPool.scene);
+            const sc2 = pick(wordPool.scene);
+            const sc3 = pick(wordPool.scene);
+
+            // 构建超长篇章 (约1000-1500字)
+            const parts = [
+                `# 【${w}】· 蛋黄龙万次重生复仇录\n`,
+                `## 序章 · 末世铁律\n`,
+                `这片破碎的世界，遵循着残酷的铁律：${r}。\n`,
+                `奶龙生于浮空蛋黄神域，族群世代制衡地底僵尸族群。而地底深处，${e}正悄然崛起。\n\n`,
+                `## 前世 · 血与背叛\n`,
+                `万次轮回之前，奶龙历尽宿命劫难：${p}。\n`,
+                `${sc1}\n`,
+                `末世酸雨腐蚀龙鳞，僵尸奶娃撕毁族群契约，啃食奶龙的情绪本源，将其封印在时间夹缝中，永世承受濒死痛感。\n\n`,
+                `## 觉醒 · 禁忌之力\n`,
+                `濒死刹那，奶龙触发天赋异能【${a}】，挣脱生死判定，开启闭环重生。\n`,
+                `${sc2}\n`,
+                `每一次重生，世界逻辑都会随机篡改：树木流淌血液、僵尸惧怕黄色光源、奶娃会复刻奶龙神态博取同情、昼夜时间无序颠倒。\n`,
+                `没有绝对善恶，没有固定战力数值，所有规则随复仇进度随机崩塌重构。\n\n`,
+                `## 征途 · 荒原猎杀\n`,
+                `奶龙不再救赎人类，不再心软共情同族。\n`,
+                `${sc3}\n`,
+                `踏遍腐朽楼宇、骸骨荒原、倒置深海，猎杀所有异化奶娃，撕碎当年背叛真相。\n`,
+                `在无数次生死边缘，奶龙逐渐触摸到末世最深处的秘密……\n\n`,
+                `## 惊天反转 · 真相浮现\n`,
+                `${tw}\n`,
+                `这个发现彻底动摇了奶龙的复仇信念，也揭开了末世存在的真正意义。\n\n`,
+                `## 最终抉择 · 宿命终章\n`,
+                `本次轮回的最终宿命：${ed}。\n`,
+                `奶龙站在时空的十字路口，凝视着无数个平行自我，做出了最终选择。\n\n`,
+                `---\n`,
+                `【本故事纯属抽象虚构 · 无科学逻辑 · 无世界观闭环 · 随机生成仅此一篇】\n`,
+                `🐲 奶龙专属 · 末世复仇史诗 · 万次重生永不完结`
+            ];
+
+            return parts.join('\n');
         }
-        function createAbstractStory(){
-            //随机拼接无逻辑闭环重生复仇文
-            const w = wordPool.world[Math.floor(Math.random()*wordPool.world.length)];
-            const a = wordPool.ability[Math.floor(Math.random()*wordPool.ability.length)];
-            const e = wordPool.enemy[Math.floor(Math.random()*wordPool.enemy.length)];
-            const r = wordPool.rule[Math.floor(Math.random()*wordPool.rule.length)];
-            const p = wordPool.plot[Math.floor(Math.random()*wordPool.plot.length)];
-            const ed = wordPool.end[Math.floor(Math.random()*wordPool.end.length)];
-            const story = `#${w}：蛋黄龙的万次重生复仇
-这片世界遵从铁律：${r}。
 
-主角奶龙生来坐拥本命蛋黄神力，生于浮空蛋黄神域，族群世代制衡地底僵尸族群，而地底诞生的变异族群，便是${e}。
-
-万次轮回之前，奶龙历经宿命劫难：${p}。末世酸雨腐蚀龙鳞，僵尸奶娃撕毁族群契约，啃食奶龙的情绪本源，将其封印在时间夹缝，永世承受濒死痛感。
-
-濒死刹那，奶龙触发天赋异能【${a}】，挣脱生死判定，开启闭环重生。
-
-每一次重生，世界逻辑都会随机篡改：树木流淌血液、僵尸惧怕黄色光源、奶娃会复刻奶龙神态博取同情、昼夜时间无序颠倒。没有绝对善恶，没有固定战力数值，所有规则随复仇进度随机崩塌重构。
-
-奶龙不再救赎人类，不再心软共情同族，踏遍腐朽楼宇、骸骨荒原、倒置深海，猎杀所有异化奶娃，撕碎当年背叛真相。
-
-本次轮回最终宿命：${ed}。
-
-本故事无科学逻辑、无世界观闭环、无常规剧情三观，专属抽象末世，随机生成仅此一篇。`;
-            storyBox.innerText = story;
-            LocalDB.set("lastNailongStory",story);
-            showToast("全新抽象末世文生成完毕📜");
-        }
-        document.getElementById("createStory").onclick = createAbstractStory;
-        //页面加载读取上次网文
-        window.onload = ()=>{
-            LocationAPI.getCity();
-            const oldStory = LocalDB.get("lastNailongStory");
-            if(oldStory) storyBox.innerText = oldStory;
+        function generateAndSaveStory() {
+            const story = generateLongStory();
+            storyBox.textContent = story;
+            LocalDB.set('lastNailongStory', story);
+            showToast('📜 全新超长末世篇章生成完毕！');
         }
 
-        //全局提示方法
-        function showToast(text){
-            Toast.innerText = text;
-            Toast.style.display = "block";
-            setTimeout(()=>Toast.style.display="none",2000);
-        }
+        document.getElementById('createStory').addEventListener('click', generateAndSaveStory);
+
+        // 加载上次小说
+        const oldStory = LocalDB.get('lastNailongStory');
+        if (oldStory) storyBox.textContent = oldStory;
+
+        // ============================================================
+        //  7. 初始化：定位 + 主题/语言恢复
+        // ============================================================
+        // 恢复主题
+        const savedTheme = LocalDB.get('nailongTheme') || 'dark';
+        applyTheme(savedTheme);
+        // 恢复语言
+        const savedLang = LocalDB.get('nailongLang') || 'zh';
+        applyLang(savedLang);
+
+        // 保存主题/语言偏好
+        document.querySelectorAll('.theme-group .ctrl-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                LocalDB.set('nailongTheme', btn.dataset.theme);
+            });
+        });
+        document.querySelectorAll('.lang-group .ctrl-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                LocalDB.set('nailongLang', btn.dataset.lang);
+            });
+        });
+
+        // 定位
+        LocationAPI.getCity();
+
+        // 额外：点击模块内的导航时，保持语言/主题不变
+        console.log('🐲 奶龙AI助理空间站 已启动 ✨');
+        console.log('📦 主题:', currentTheme, ' 语言:', currentLang);
+        console.log('💡 游戏: requestAnimationFrame + 无敌帧 | AI: 青云客API | 小说: 超长篇章');
     </script>
 </body>
 </html>
