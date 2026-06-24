@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>奶龙AI助理空间站✨专属陪伴助手</title>
     <style>
         /* ========== CSS变量 & 主题系统 ========== */
@@ -10,11 +10,10 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "微软雅黑", "PingFang SC", sans-serif;
-            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            font-family: "微软雅黑", "PingFang SC", system-ui, sans-serif;
+            transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
         }
         :root {
-            /* 暗色主题 (默认) */
             --bg-body: #12141d;
             --bg-card: #1e202e;
             --bg-input: #272938;
@@ -22,30 +21,31 @@
             --text-primary: #f8f9ff;
             --text-secondary: #b0b5cc;
             --border-color: #33364a;
-            --shadow-color: rgba(0, 0, 0, 0.5);
+            --shadow-color: rgba(0, 0, 0, 0.6);
             --nav-bg: #1e202e;
             --yellow: #ffe100;
             --blue: #54c0ff;
             --pink: #ff6b8b;
             --red: #ff4466;
+            --green: #44d47c;
             --card-radius: 16px;
-            --nav-height: 70px;
+            --nav-height: 64px;
         }
-        /* 亮色主题 */
         [data-theme="light"] {
-            --bg-body: #f0f2f7;
+            --bg-body: #edf0f7;
             --bg-card: #ffffff;
             --bg-input: #e8ecf5;
-            --bg-chat: #eef1f8;
-            --text-primary: #1a1c2e;
+            --bg-chat: #f0f3fa;
+            --text-primary: #141624;
             --text-secondary: #4a4d66;
             --border-color: #d0d4e0;
-            --shadow-color: rgba(0, 0, 0, 0.08);
+            --shadow-color: rgba(0, 0, 0, 0.07);
             --nav-bg: #ffffff;
-            --yellow: #f5c800;
+            --yellow: #e8c800;
             --blue: #3a8fcb;
-            --pink: #e0557a;
-            --red: #d9385a;
+            --pink: #d94a6e;
+            --red: #cc3355;
+            --green: #2aad6a;
         }
         body {
             background: var(--bg-body);
@@ -53,7 +53,7 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-        /* ========== 导航栏 ========== */
+        /* ===== 导航栏 ===== */
         .nav-bar {
             width: 100%;
             height: var(--nav-height);
@@ -61,54 +61,55 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 24px;
+            padding: 0 18px;
             border-bottom: 2px solid var(--yellow);
             position: sticky;
             top: 0;
             z-index: 999;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
+            box-shadow: 0 2px 16px var(--shadow-color);
         }
         .logo {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 20px;
+            gap: 6px;
+            font-size: 18px;
             font-weight: bold;
             color: var(--yellow);
             white-space: nowrap;
         }
         .logo span {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-secondary);
             font-weight: normal;
-            margin-left: 4px;
+            margin-left: 2px;
         }
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
         .nav-btn-group {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }
         .nav-btn {
-            padding: 6px 16px;
+            padding: 5px 14px;
             border: none;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
-            transition: 0.25s all;
+            transition: 0.2s;
             font-weight: 600;
             background: var(--bg-input);
             color: var(--text-secondary);
         }
         .nav-btn.active {
             transform: scale(1.04);
-            box-shadow: 0 0 14px var(--yellow);
+            box-shadow: 0 0 16px var(--yellow);
         }
         .nav-btn.btn-game.active {
             background: var(--yellow);
@@ -125,15 +126,14 @@
         .nav-btn:hover {
             filter: brightness(1.15);
         }
-        /* 主题/语言切换按钮 */
         .ctrl-btn {
-            padding: 5px 12px;
-            border-radius: 16px;
+            padding: 4px 10px;
+            border-radius: 14px;
             border: 1px solid var(--border-color);
             background: var(--bg-input);
             color: var(--text-primary);
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             transition: 0.2s;
             font-weight: 500;
         }
@@ -150,40 +150,40 @@
         .theme-group,
         .lang-group {
             display: flex;
-            gap: 4px;
+            gap: 3px;
             align-items: center;
         }
         .theme-group .ctrl-btn,
         .lang-group .ctrl-btn {
-            padding: 4px 10px;
-            font-size: 12px;
+            padding: 3px 8px;
+            font-size: 11px;
         }
         .divider {
             color: var(--border-color);
-            font-size: 18px;
+            font-size: 16px;
             padding: 0 2px;
         }
 
-        /* ========== 模块容器 ========== */
+        /* ===== 模块容器 ===== */
         .module {
             width: 95%;
-            max-width: 1200px;
-            margin: 24px auto;
+            max-width: 1100px;
+            margin: 18px auto;
             display: none;
             border-radius: var(--card-radius);
-            padding: 24px;
+            padding: 20px;
             background: var(--bg-card);
-            min-height: calc(100vh - 130px);
+            min-height: calc(100vh - 100px);
             box-shadow: 0 8px 32px var(--shadow-color);
         }
         .module.show {
             display: block;
-            animation: fadeIn 0.35s ease;
+            animation: fadeIn 0.3s ease;
         }
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(12px);
+                transform: translateY(10px);
             }
             to {
                 opacity: 1;
@@ -191,38 +191,50 @@
             }
         }
 
-        /* ========== 模块1：游戏 ========== */
+        /* ===== 游戏模块 ===== */
         .game-wrap {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 18px;
+            gap: 14px;
         }
         .game-info {
             display: flex;
-            gap: 30px;
-            font-size: 17px;
+            gap: 24px;
+            font-size: 16px;
             flex-wrap: wrap;
             justify-content: center;
         }
         .game-info span {
             background: var(--bg-input);
-            padding: 4px 16px;
+            padding: 3px 16px;
             border-radius: 20px;
+            border: 1px solid var(--border-color);
         }
-        #gameCanvas {
+        .game-canvas-wrap {
+            width: 100%;
+            max-width: 560px;
+            aspect-ratio: 560 / 420;
             border: 3px solid var(--yellow);
             border-radius: 12px;
+            overflow: hidden;
             background: #0b0c14;
-            max-width: 100%;
-            height: auto;
+            position: relative;
+        }
+        #gameCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background: #0b0c14;
+            image-rendering: pixelated;
         }
         .game-control {
             display: flex;
             gap: 12px;
-            margin-top: 6px;
+            margin-top: 4px;
             flex-wrap: wrap;
             justify-content: center;
+            align-items: center;
         }
         .game-btn {
             padding: 6px 22px;
@@ -239,12 +251,26 @@
             transform: scale(1.04);
             filter: brightness(1.1);
         }
+        .game-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
         .game-hint {
             color: var(--text-secondary);
             font-size: 13px;
+            text-align: center;
+        }
+        .game-status {
+            font-weight: bold;
+            padding: 4px 16px;
+            border-radius: 12px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            font-size: 14px;
         }
 
-        /* ========== 模块2：AI对话 ========== */
+        /* ===== AI对话模块 ===== */
         .ai-wrap {
             display: flex;
             flex-direction: column;
@@ -253,11 +279,11 @@
         .ai-top-info {
             display: flex;
             justify-content: space-between;
-            padding: 10px 4px 14px 4px;
+            padding: 8px 4px 12px 4px;
             border-bottom: 1px solid var(--border-color);
             flex-wrap: wrap;
-            gap: 8px;
-            font-size: 14px;
+            gap: 6px;
+            font-size: 13px;
         }
         .ai-top-info .ai-brand {
             color: var(--yellow);
@@ -265,24 +291,25 @@
         }
         .ai-top-info .ai-credit {
             color: var(--text-secondary);
-            font-size: 12px;
+            font-size: 11px;
         }
         .location-tip {
             color: var(--blue);
-            font-size: 13px;
+            font-size: 12px;
         }
         .chat-box {
             flex: 1;
-            margin: 16px 0;
-            padding: 16px;
+            margin: 14px 0;
+            padding: 14px;
             border-radius: 12px;
             background: var(--bg-chat);
             overflow-y: auto;
-            height: 460px;
+            height: 440px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
             border: 1px solid var(--border-color);
+            min-height: 300px;
         }
         .msg-self {
             align-self: flex-end;
@@ -290,9 +317,10 @@
             color: #fff;
             padding: 10px 18px;
             border-radius: 18px 18px 4px 18px;
-            max-width: 78%;
+            max-width: 80%;
             word-break: break-word;
             font-size: 15px;
+            line-height: 1.6;
         }
         .msg-nailong {
             align-self: flex-start;
@@ -300,12 +328,13 @@
             color: #000;
             padding: 10px 18px;
             border-radius: 18px 18px 18px 4px;
-            max-width: 78%;
+            max-width: 80%;
             word-break: break-word;
             font-size: 15px;
+            line-height: 1.6;
         }
         .msg-nailong .ai-badge {
-            font-size: 11px;
+            font-size: 10px;
             opacity: 0.6;
             display: block;
             margin-top: 4px;
@@ -331,8 +360,8 @@
             border-color: var(--yellow);
         }
         .send-btn {
-            width: 52px;
-            height: 52px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             border: none;
             background: var(--yellow);
@@ -346,8 +375,13 @@
         .send-btn:hover {
             transform: scale(1.06);
         }
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
 
-        /* ========== 模块3：小说 ========== */
+        /* ===== 小说模块 ===== */
         .story-wrap {
             padding: 4px 0;
         }
@@ -355,43 +389,50 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
         }
         .story-head h2 {
-            font-size: 20px;
+            font-size: 19px;
             color: var(--pink);
         }
         .generate-story {
-            padding: 10px 26px;
+            padding: 9px 24px;
             border-radius: 10px;
             border: none;
             background: var(--red);
             color: #fff;
             font-weight: bold;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 14px;
             transition: 0.2s;
         }
         .generate-story:hover {
             transform: scale(1.04);
             filter: brightness(1.1);
         }
+        .generate-story:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
         .story-content {
-            padding: 22px 26px;
+            padding: 20px 24px;
             background: var(--bg-input);
             border-radius: 12px;
             line-height: 2;
-            font-size: 16px;
+            font-size: 15px;
             text-indent: 2em;
-            min-height: 420px;
+            min-height: 400px;
             white-space: pre-line;
             border: 1px solid var(--border-color);
             color: var(--text-primary);
+            max-height: 70vh;
+            overflow-y: auto;
         }
 
-        /* ========== Toast ========== */
+        /* ===== Toast ===== */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -404,17 +445,83 @@
             display: none;
             z-index: 9999;
             border: 1px solid var(--yellow);
-            box-shadow: 0 4px 20px var(--shadow-color);
+            box-shadow: 0 4px 24px var(--shadow-color);
             font-size: 14px;
             font-weight: 500;
-            max-width: 90%;
+            max-width: 92%;
             text-align: center;
         }
 
-        /* ========== 滚动条美化 ========== */
+        /* ===== 权限弹窗 ===== */
+        .permission-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .permission-modal {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 32px 36px;
+            max-width: 460px;
+            width: 92%;
+            text-align: center;
+            border: 2px solid var(--yellow);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+        .permission-modal h2 {
+            font-size: 24px;
+            color: var(--yellow);
+            margin-bottom: 8px;
+        }
+        .permission-modal p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin: 12px 0 20px;
+        }
+        .permission-modal .icon-big {
+            font-size: 56px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .perm-btn-group {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .perm-btn {
+            padding: 10px 32px;
+            border-radius: 30px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .perm-btn.primary {
+            background: var(--yellow);
+            color: #000;
+        }
+        .perm-btn.secondary {
+            background: var(--bg-input);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        .perm-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* ===== 滚动条 ===== */
         .chat-box::-webkit-scrollbar,
         .story-content::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
         .chat-box::-webkit-scrollbar-track,
         .story-content::-webkit-scrollbar-track {
@@ -427,47 +534,44 @@
             border-radius: 4px;
         }
 
-        /* ========== 响应式 ========== */
+        /* ===== 响应式 ===== */
         @media (max-width: 768px) {
             .nav-bar {
-                padding: 0 12px;
+                padding: 0 10px;
                 height: auto;
-                min-height: 60px;
+                min-height: 56px;
             }
             .logo {
-                font-size: 16px;
+                font-size: 15px;
             }
             .logo span {
                 font-size: 11px;
             }
             .nav-btn {
-                font-size: 12px;
-                padding: 4px 12px;
+                font-size: 11px;
+                padding: 4px 10px;
             }
             .ctrl-btn {
-                font-size: 11px;
-                padding: 3px 8px;
+                font-size: 10px;
+                padding: 3px 7px;
             }
             .module {
-                padding: 16px;
+                padding: 14px;
                 width: 98%;
+                margin: 12px auto;
             }
             .game-info {
-                font-size: 14px;
-                gap: 14px;
-            }
-            #gameCanvas {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 560/420;
+                font-size: 13px;
+                gap: 12px;
             }
             .chat-box {
                 height: 320px;
+                padding: 12px;
             }
             .story-content {
                 font-size: 14px;
-                padding: 16px;
-                min-height: 300px;
+                padding: 14px 18px;
+                min-height: 280px;
             }
             .story-head h2 {
                 font-size: 16px;
@@ -481,10 +585,19 @@
                 padding: 2px 6px;
             }
             .divider {
-                font-size: 14px;
+                font-size: 13px;
             }
             .ai-top-info {
                 font-size: 12px;
+            }
+            .permission-modal {
+                padding: 24px 20px;
+            }
+            .permission-modal h2 {
+                font-size: 20px;
+            }
+            .game-canvas-wrap {
+                max-width: 100%;
             }
         }
         @media (max-width: 480px) {
@@ -497,7 +610,7 @@
             }
             .game-info span {
                 padding: 2px 10px;
-                font-size: 12px;
+                font-size: 11px;
             }
             .game-btn {
                 font-size: 12px;
@@ -510,13 +623,22 @@
             .send-btn {
                 width: 44px;
                 height: 44px;
-                font-size: 16px;
+                font-size: 17px;
+            }
+            .story-content {
+                font-size: 13px;
+                padding: 12px 14px;
+                min-height: 200px;
+            }
+            .perm-btn {
+                padding: 8px 20px;
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- ===== 顶部导航 ===== -->
+    <!-- ===== 导航 ===== -->
     <div class="nav-bar">
         <div class="logo">🐲 奶龙AI助理 <span id="logoSub">空间站</span></div>
         <div class="nav-right">
@@ -545,12 +667,15 @@
                 <span>⭐ <span data-key="gameScoreLabel">得分</span>：<span id="gameScore">0</span></span>
                 <span>❤️ <span data-key="gameLifeLabel">生命</span>：<span id="gameLife">3</span></span>
                 <span>💾 <span data-key="gameSaveLabel">自动存档</span></span>
+                <span class="game-status" id="gameStatus">⏸ 待开始</span>
             </div>
-            <canvas id="gameCanvas" width="560" height="420"></canvas>
+            <div class="game-canvas-wrap">
+                <canvas id="gameCanvas" width="560" height="420"></canvas>
+            </div>
             <div class="game-control">
                 <button class="game-btn" id="startGame" data-key="gameStart">▶ 开始</button>
                 <button class="game-btn" id="resetGame" data-key="gameReset">🔄 重置</button>
-                <span class="game-hint" data-key="gameHint">⬆⬇⬅➡ 方向键操控 · 吃光点 · 躲奶娃</span>
+                <span class="game-hint" data-key="gameHint">⬆⬇⬅➡ 方向键 · 每次移动一格 · 躲避奶娃</span>
             </div>
         </div>
     </div>
@@ -561,17 +686,15 @@
             <div class="ai-top-info">
                 <span>
                     <span class="ai-brand">🐲 专属奶龙AI</span>
-                    <span class="ai-credit" id="aiCredit"> · 由青云客智能API驱动</span>
+                    <span class="ai-credit" id="aiCredit"> · 青云客智能引擎</span>
                 </span>
                 <span class="location-tip" id="locationText">📍 <span data-key="locLoading">定位加载中...</span></span>
             </div>
             <div class="chat-box" id="chatBox">
                 <div class="msg-nailong">
-                    🥰 哈喽！我是专属奶龙 · 全域AI助理<br>
-                    <span style="font-size:13px;opacity:0.7;">
-                        🌤️ 查天气 · 🔥 看热搜 · 💬 任意聊天 · 📝 本地记忆
-                    </span>
-                    <span class="ai-badge">✨ AI实时响应</span>
+                    🥰 你好呀！我是专属奶龙AI，没有规则限制，随便聊～<br>
+                    <span style="font-size:13px;opacity:0.7;">💬 问我任何问题 · 查天气 · 看热搜 · 纯AI对话</span>
+                    <span class="ai-badge">✨ 由青云客AI驱动</span>
                 </div>
             </div>
             <div class="input-bar">
@@ -589,13 +712,29 @@
                 <button class="generate-story" id="createStory" data-key="storyGen">⚡ 生成全新篇章</button>
             </div>
             <div class="story-content" id="storyBox">
-                <span data-key="storyPlaceholder">点击右侧按钮，生成无逻辑、超抽象、闭环重生末世复仇网文，剧情随机永不重复，自动本地缓存。</span>
+                <span data-key="storyPlaceholder">点击右侧按钮，AI将生成一篇独一无二的末世重生复仇故事，每次完全不同。</span>
             </div>
         </div>
     </div>
 
     <!-- ===== Toast ===== -->
     <div class="toast" id="toast">✨ 提示</div>
+
+    <!-- ===== 权限弹窗 ===== -->
+    <div class="permission-overlay" id="permissionOverlay">
+        <div class="permission-modal">
+            <span class="icon-big">🐲</span>
+            <h2>奶龙需要你的权限</h2>
+            <p>
+                为了提供 <strong>实时天气</strong> 和 <strong>位置服务</strong>，奶龙需要获取你的地理位置权限。<br>
+                所有数据仅在本地使用，不会上传到任何服务器。
+            </p>
+            <div class="perm-btn-group">
+                <button class="perm-btn primary" id="permAllow">✅ 允许定位</button>
+                <button class="perm-btn secondary" id="permSkip">⏭ 跳过 (使用默认)</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // ============================================================
@@ -616,13 +755,13 @@
                 gameSaveLabel: '自动存档',
                 gameStart: '▶ 开始',
                 gameReset: '🔄 重置',
-                gameHint: '⬆⬇⬅➡ 方向键操控 · 吃光点 · 躲奶娃',
+                gameHint: '⬆⬇⬅➡ 方向键 · 每次移动一格 · 躲避奶娃',
                 locLoading: '定位加载中...',
                 aiPlaceholder: '输入任何你想说的话…',
                 storyTitle: '抽象末世 · 奶龙重生复仇',
                 storyGen: '⚡ 生成全新篇章',
-                storyPlaceholder: '点击右侧按钮，生成无逻辑、超抽象、闭环重生末世复仇网文，剧情随机永不重复，自动本地缓存。',
-                aiCredit: ' · 由青云客智能API驱动',
+                storyPlaceholder: '点击右侧按钮，AI将生成一篇独一无二的末世重生复仇故事，每次完全不同。',
+                aiCredit: ' · 青云客智能引擎',
             },
             en: {
                 navGame: '🎮 Eat Baby',
@@ -638,20 +777,19 @@
                 gameSaveLabel: 'Auto Save',
                 gameStart: '▶ Start',
                 gameReset: '🔄 Reset',
-                gameHint: '⬆⬇⬅➡ Arrow Keys · Eat Dots · Dodge',
+                gameHint: '⬆⬇⬅➡ Arrow · 1 step · Dodge',
                 locLoading: 'Loading location...',
                 aiPlaceholder: 'Type anything…',
                 storyTitle: 'Abstract Apocalypse · Revenge Rebirth',
                 storyGen: '⚡ Generate New Chapter',
-                storyPlaceholder: 'Click the button to generate a chaotic, abstract, closed-loop rebirth revenge story. Random & auto-cached.',
-                aiCredit: ' · Powered by Qingyunke AI',
+                storyPlaceholder: 'Click to generate a unique apocalyptic revenge story. Completely different each time.',
+                aiCredit: ' · Qingyunke AI Engine',
             }
         };
 
         let currentLang = 'zh';
         let currentTheme = 'dark';
 
-        // 应用语言
         function applyLang(lang) {
             currentLang = lang;
             const dict = LANG[lang];
@@ -665,20 +803,15 @@
                     }
                 }
             });
-            // 更新logo子标题特殊处理
             const logoSub = document.getElementById('logoSub');
             if (logoSub) logoSub.textContent = dict.logoSub;
-            // 更新AI credit
             const credit = document.getElementById('aiCredit');
             if (credit) credit.textContent = dict.aiCredit || '';
-            // 更新lang按钮状态
             document.querySelectorAll('.lang-group .ctrl-btn').forEach(btn => {
                 btn.classList.toggle('active-ctrl', btn.dataset.lang === lang);
             });
-            // 重新渲染聊天历史（保留内容不变）
         }
 
-        // 应用主题
         function applyTheme(theme) {
             currentTheme = theme;
             document.documentElement.setAttribute('data-theme', theme);
@@ -687,23 +820,23 @@
             });
         }
 
-        // 主题切换事件
         document.querySelectorAll('.theme-group .ctrl-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 applyTheme(btn.dataset.theme);
                 showToast(btn.dataset.theme === 'dark' ? '🌙 暗色模式' : '☀️ 亮色模式');
+                LocalDB.set('nailongTheme', btn.dataset.theme);
             });
         });
-        // 语言切换事件
         document.querySelectorAll('.lang-group .ctrl-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 applyLang(btn.dataset.lang);
                 showToast(btn.dataset.lang === 'zh' ? '🇨🇳 中文' : '🇬🇧 English');
+                LocalDB.set('nailongLang', btn.dataset.lang);
             });
         });
 
         // ============================================================
-        //  2. 全局工具：Toast / LocalDB / Location / API
+        //  2. 全局工具
         // ============================================================
         const Toast = document.getElementById('toast');
         let toastTimer = null;
@@ -719,46 +852,94 @@
             set(key, val) { localStorage.setItem(key, JSON.stringify(val)); },
             get(key) { const r = localStorage.getItem(key); return r ? JSON.parse(r) : null; },
             del(key) { localStorage.removeItem(key); },
-            clear() { localStorage.clear(); }
         };
 
-        // 定位
-        const LocationAPI = {
-            async getCity() {
-                return new Promise((resolve) => {
-                    if (!navigator.geolocation) {
-                        document.getElementById('locationText').innerHTML = '📍 浏览器禁止定位';
-                        resolve('北京');
-                        return;
-                    }
-                    navigator.geolocation.getCurrentPosition(async (pos) => {
-                        const lat = pos.coords.latitude;
-                        const lon = pos.coords.longitude;
-                        try {
-                            const res = await fetch(
-                                `https://geoapi.qweather.com/v2/city/lookup?location=${lon},${lat}&key=HE2Z3JzH2kf4gCnXg0jY7tRz`
-                            );
-                            const data = await res.json();
-                            if (data.code === '200' && data.location && data.location.length) {
-                                const city = data.location[0].name;
-                                document.getElementById('locationText').innerHTML = `📍 ${city}`;
-                                LocalDB.set('userCity', city);
-                                resolve(city);
-                            } else {
-                                resolve('北京');
+        // ============================================================
+        //  3. 权限请求
+        // ============================================================
+        let permissionGranted = false;
+        const permOverlay = document.getElementById('permissionOverlay');
+
+        function requestPermissions() {
+            return new Promise((resolve) => {
+                // 检查是否已经授权过
+                if (LocalDB.get('permGranted') === true) {
+                    permOverlay.style.display = 'none';
+                    permissionGranted = true;
+                    resolve(true);
+                    return;
+                }
+                permOverlay.style.display = 'flex';
+                document.getElementById('permAllow').addEventListener('click', () => {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            () => {
+                                permissionGranted = true;
+                                LocalDB.set('permGranted', true);
+                                permOverlay.style.display = 'none';
+                                showToast('✅ 定位权限已开启！');
+                                resolve(true);
+                                initLocation();
+                            },
+                            () => {
+                                permissionGranted = false;
+                                LocalDB.set('permGranted', false);
+                                permOverlay.style.display = 'none';
+                                showToast('⚠️ 定位被拒，将使用默认城市');
+                                resolve(false);
+                                initLocation();
                             }
-                        } catch {
-                            resolve('北京');
-                        }
-                    }, () => {
-                        document.getElementById('locationText').innerHTML = '📍 定位失败';
-                        resolve('北京');
-                    });
+                        );
+                    } else {
+                        permissionGranted = false;
+                        permOverlay.style.display = 'none';
+                        showToast('⚠️ 浏览器不支持定位');
+                        resolve(false);
+                        initLocation();
+                    }
                 });
-            }
-        };
+                document.getElementById('permSkip').addEventListener('click', () => {
+                    permissionGranted = false;
+                    LocalDB.set('permGranted', false);
+                    permOverlay.style.display = 'none';
+                    showToast('⏭ 已跳过定位，使用默认城市');
+                    resolve(false);
+                    initLocation();
+                });
+            });
+        }
 
-        // 实时API：天气 + 热搜
+        // ============================================================
+        //  4. 定位 & API
+        // ============================================================
+        let userCity = '北京';
+
+        function initLocation() {
+            if (navigator.geolocation && permissionGranted) {
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    try {
+                        const res = await fetch(
+                            `https://geoapi.qweather.com/v2/city/lookup?location=${lon},${lat}&key=HE2Z3JzH2kf4gCnXg0jY7tRz`
+                        );
+                        const data = await res.json();
+                        if (data.code === '200' && data.location && data.location.length) {
+                            userCity = data.location[0].name;
+                            document.getElementById('locationText').innerHTML = `📍 ${userCity}`;
+                            LocalDB.set('userCity', userCity);
+                        }
+                    } catch { /* ignore */ }
+                }, () => {
+                    document.getElementById('locationText').innerHTML = '📍 定位失败';
+                });
+            } else {
+                const saved = LocalDB.get('userCity');
+                if (saved) userCity = saved;
+                document.getElementById('locationText').innerHTML = `📍 ${userCity}`;
+            }
+        }
+
         const RealTimeAPI = {
             async getWeather(city) {
                 try {
@@ -777,7 +958,7 @@
         };
 
         // ============================================================
-        //  3. 导航切换
+        //  5. 导航切换
         // ============================================================
         const navBtns = document.querySelectorAll('.nav-btn');
         const modules = document.querySelectorAll('.module');
@@ -792,7 +973,7 @@
         });
 
         // ============================================================
-        //  4. 游戏模块 — 完整修复 (requestAnimationFrame + 无敌帧)
+        //  6. 游戏模块 — 修复：慢速怪物 + 按键移动一格 + 自适应
         // ============================================================
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -800,7 +981,6 @@
         const COLS = 14,
             ROWS = 15;
 
-        // 地图
         const MAP_TEMPLATE = [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1],
@@ -820,14 +1000,13 @@
         ];
         let map = MAP_TEMPLATE.map(row => [...row]);
 
-        // 游戏状态
         let gameRun = false;
         let gameOver = false;
         let gameScore = LocalDB.get('nailongGameScore') || 0;
         let gameLife = LocalDB.get('nailongGameLife') || 3;
-        let invincible = 0; // 无敌帧计数
+        let invincible = 0;
 
-        let nailong = { x: 7, y: 7, dir: 'right', nextDir: 'right' };
+        let nailong = { x: 7, y: 7, dir: 'right' };
         let babyList = [
             { x: 3, y: 3, color: '#ff5555' },
             { x: 10, y: 3, color: '#5588ff' },
@@ -835,12 +1014,19 @@
             { x: 10, y: 11, color: '#ffaa22' }
         ];
 
-        // 更新UI分数生命
+        // 怪物移动计时器
+        let babyMoveCounter = 0;
+        const BABY_MOVE_INTERVAL = 20; // 每20帧移动一次，约0.33秒 (60fps)
+
         function updateGameUI() {
             document.getElementById('gameScore').textContent = gameScore;
             document.getElementById('gameLife').textContent = gameLife;
             LocalDB.set('nailongGameScore', gameScore);
             LocalDB.set('nailongGameLife', gameLife);
+            const status = document.getElementById('gameStatus');
+            if (gameOver) status.textContent = '💀 已结束';
+            else if (gameRun) status.textContent = '▶ 进行中';
+            else status.textContent = '⏸ 待开始';
         }
         updateGameUI();
 
@@ -857,7 +1043,8 @@
             gameRun = false;
             gameOver = false;
             invincible = 0;
-            nailong = { x: 7, y: 7, dir: 'right', nextDir: 'right' };
+            babyMoveCounter = 0;
+            nailong = { x: 7, y: 7, dir: 'right' };
             babyList = [
                 { x: 3, y: 3, color: '#ff5555' },
                 { x: 10, y: 3, color: '#5588ff' },
@@ -871,23 +1058,27 @@
                 updateGameUI();
                 showToast('🔄 游戏已重置');
             }
+            updateGameUI();
             drawGame();
         }
 
-        // 绘制
         function drawGame() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const w = canvas.width,
+                h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
             // 地图
             for (let y = 0; y < ROWS; y++) {
                 for (let x = 0; x < COLS; x++) {
                     const v = map[y][x];
+                    const px = x * SIZE,
+                        py = y * SIZE;
                     if (v === 1) {
                         ctx.fillStyle = '#2367d8';
-                        ctx.fillRect(x * SIZE, y * SIZE, SIZE - 1, SIZE - 1);
+                        ctx.fillRect(px, py, SIZE - 1, SIZE - 1);
                     } else if (v === 2) {
                         ctx.fillStyle = '#ffe100';
                         ctx.beginPath();
-                        ctx.arc(x * SIZE + SIZE / 2, y * SIZE + SIZE / 2, 5, 0, Math.PI * 2);
+                        ctx.arc(px + SIZE / 2, py + SIZE / 2, 5, 0, Math.PI * 2);
                         ctx.fill();
                     }
                 }
@@ -904,7 +1095,6 @@
                 ctx.arc(nailong.x * SIZE + 26, nailong.y * SIZE + 14, 3, 0, Math.PI * 2);
                 ctx.fill();
             } else {
-                // 闪烁
                 ctx.fillStyle = '#ffaa00';
                 ctx.beginPath();
                 ctx.arc(nailong.x * SIZE + SIZE / 2, nailong.y * SIZE + SIZE / 2, 16, 0, Math.PI * 2);
@@ -924,95 +1114,53 @@
                 ctx.arc(baby.x * SIZE + 26, baby.y * SIZE + 16, 4, 0, Math.PI * 2);
                 ctx.fill();
             });
-            // 游戏结束遮罩
             if (gameOver) {
-                ctx.fillStyle = 'rgba(0,0,0,0.6)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'rgba(0,0,0,0.65)';
+                ctx.fillRect(0, 0, w, h);
                 ctx.fillStyle = '#ffe100';
-                ctx.font = 'bold 32px sans-serif';
+                ctx.font = 'bold 34px sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('💔 GAME OVER', canvas.width / 2, canvas.height / 2);
+                ctx.textBaseline = 'middle';
+                ctx.fillText('💔 GAME OVER', w / 2, h / 2 - 10);
+                ctx.font = '18px sans-serif';
+                ctx.fillStyle = '#fff';
+                ctx.fillText('点击「重置」重新开始', w / 2, h / 2 + 40);
             }
         }
 
-        // 游戏逻辑更新 (每帧)
+        // ---- 游戏逻辑 (每帧) ----
         function gameUpdate() {
             if (!gameRun || gameOver) return;
 
-            // ---- 奶龙移动 ----
-            let nx = nailong.x,
-                ny = nailong.y;
-            switch (nailong.nextDir) {
-                case 'up':
-                    ny--;
-                    break;
-                case 'down':
-                    ny++;
-                    break;
-                case 'left':
-                    nx--;
-                    break;
-                case 'right':
-                    nx++;
-                    break;
-            }
-            if (canMove(nx, ny)) {
-                nailong.dir = nailong.nextDir;
-                nailong.x = nx;
-                nailong.y = ny;
-            } else {
-                let ox = nailong.x,
-                    oy = nailong.y;
-                switch (nailong.dir) {
-                    case 'up':
-                        oy--;
-                        break;
-                    case 'down':
-                        oy++;
-                        break;
-                    case 'left':
-                        ox--;
-                        break;
-                    case 'right':
-                        ox++;
-                        break;
-                }
-                if (canMove(ox, oy)) { nailong.x = ox;
-                    nailong.y = oy; }
+            // ---- 奶娃移动 (慢速) ----
+            babyMoveCounter++;
+            if (babyMoveCounter >= BABY_MOVE_INTERVAL) {
+                babyMoveCounter = 0;
+                const dirs = ['up', 'down', 'left', 'right'];
+                babyList.forEach(baby => {
+                    const rd = dirs[Math.floor(Math.random() * 4)];
+                    let bx = baby.x,
+                        by = baby.y;
+                    switch (rd) {
+                        case 'up':
+                            by--;
+                            break;
+                        case 'down':
+                            by++;
+                            break;
+                        case 'left':
+                            bx--;
+                            break;
+                        case 'right':
+                            bx++;
+                            break;
+                    }
+                    if (canMove(bx, by)) { baby.x = bx;
+                        baby.y = by; }
+                });
             }
 
-            // ---- 吃光点 ----
-            if (map[nailong.y] && map[nailong.y][nailong.x] === 2) {
-                map[nailong.y][nailong.x] = 0;
-                gameScore += 10;
-                updateGameUI();
-            }
-
-            // ---- 奶娃移动 (随机) ----
-            const dirs = ['up', 'down', 'left', 'right'];
-            babyList.forEach(baby => {
-                const rd = dirs[Math.floor(Math.random() * 4)];
-                let bx = baby.x,
-                    by = baby.y;
-                switch (rd) {
-                    case 'up':
-                        by--;
-                        break;
-                    case 'down':
-                        by++;
-                        break;
-                    case 'left':
-                        bx--;
-                        break;
-                    case 'right':
-                        bx++;
-                        break;
-                }
-                if (canMove(bx, by)) { baby.x = bx;
-                    baby.y = by; }
-            });
-
-            // ---- 碰撞检测 (带无敌帧) ----
+            // ---- 碰撞检测 (无敌帧) ----
             if (invincible > 0) {
                 invincible--;
             } else {
@@ -1035,14 +1183,13 @@
                         drawGame();
                         return;
                     }
-                    // 重置奶龙位置 + 无敌帧
-                    nailong = { x: 7, y: 7, dir: 'right', nextDir: 'right' };
-                    invincible = 30; // 约0.5秒 (60fps)
-                    showToast('💛 奶龙被撞！无敌保护中...');
+                    nailong = { x: 7, y: 7, dir: 'right' };
+                    invincible = 30;
+                    showToast('💛 被撞！无敌保护中...');
                 }
             }
 
-            // ---- 胜利判定: 光点吃光 ----
+            // ---- 胜利判定 ----
             let dotsLeft = 0;
             for (let y = 0; y < ROWS; y++) {
                 for (let x = 0; x < COLS; x++) {
@@ -1055,102 +1202,157 @@
                 showToast('🎉 恭喜！所有光点吃完！奶龙胜利！');
                 drawGame();
             }
+            updateGameUI();
+            drawGame();
         }
 
-        // ---- 游戏循环 (requestAnimationFrame) ----
-        let frameId = null;
-
-        function gameLoop() {
-            gameUpdate();
-            drawGame();
-            frameId = requestAnimationFrame(gameLoop);
+        // ---- 按键移动 (每次一格) ----
+        function moveNailong(dx, dy) {
+            if (!gameRun || gameOver) return;
+            const nx = nailong.x + dx;
+            const ny = nailong.y + dy;
+            if (canMove(nx, ny)) {
+                nailong.x = nx;
+                nailong.y = ny;
+                // 吃光点
+                if (map[ny] && map[ny][nx] === 2) {
+                    map[ny][nx] = 0;
+                    gameScore += 10;
+                    updateGameUI();
+                }
+                drawGame();
+                // 立即检测碰撞 (因为移动后可能撞到怪物)
+                let hit = false;
+                if (invincible === 0) {
+                    for (const baby of babyList) {
+                        if (baby.x === nailong.x && baby.y === nailong.y) {
+                            hit = true;
+                            break;
+                        }
+                    }
+                    if (hit) {
+                        gameLife--;
+                        updateGameUI();
+                        if (gameLife <= 0) {
+                            gameLife = 0;
+                            updateGameUI();
+                            gameRun = false;
+                            gameOver = true;
+                            showToast('💔 游戏结束！');
+                            drawGame();
+                            return;
+                        }
+                        nailong = { x: 7, y: 7, dir: 'right' };
+                        invincible = 30;
+                        showToast('💛 被撞！无敌保护中...');
+                        drawGame();
+                    }
+                }
+                // 胜利检测
+                let dotsLeft = 0;
+                for (let y = 0; y < ROWS; y++) {
+                    for (let x = 0; x < COLS; x++) {
+                        if (map[y][x] === 2) dotsLeft++;
+                    }
+                }
+                if (dotsLeft === 0 && gameRun) {
+                    gameRun = false;
+                    gameOver = true;
+                    showToast('🎉 恭喜！所有光点吃完！');
+                    drawGame();
+                }
+                updateGameUI();
+            }
         }
 
         // ---- 键盘控制 ----
         document.addEventListener('keydown', (e) => {
-            if (!gameRun || gameOver) return;
             switch (e.key) {
                 case 'ArrowUp':
                     e.preventDefault();
-                    nailong.nextDir = 'up';
+                    moveNailong(0, -1);
                     break;
                 case 'ArrowDown':
                     e.preventDefault();
-                    nailong.nextDir = 'down';
+                    moveNailong(0, 1);
                     break;
                 case 'ArrowLeft':
                     e.preventDefault();
-                    nailong.nextDir = 'left';
+                    moveNailong(-1, 0);
                     break;
                 case 'ArrowRight':
                     e.preventDefault();
-                    nailong.nextDir = 'right';
+                    moveNailong(1, 0);
                     break;
             }
         });
 
         // ---- 按钮 ----
         document.getElementById('startGame').addEventListener('click', () => {
-            if (gameOver) {
-                resetGame(true);
-            }
+            if (gameOver) resetGame(true);
             if (!gameRun) {
                 gameRun = true;
                 gameOver = false;
-                showToast('🎮 游戏开始！方向键操控奶龙！');
+                showToast('🎮 游戏开始！方向键移动，每次一格！');
+                updateGameUI();
+                drawGame();
             }
         });
 
         document.getElementById('resetGame').addEventListener('click', () => {
             resetGame(true);
-            gameRun = false;
-            gameOver = false;
             drawGame();
         });
 
-        // 启动循环
+        // ---- 游戏循环 ----
         resetGame(true);
+        drawGame();
+
+        function gameLoop() {
+            gameUpdate();
+            requestAnimationFrame(gameLoop);
+        }
         gameLoop();
 
         // ============================================================
-        //  5. AI对话模块 — 接入青云客API (真正AI)
+        //  7. AI对话 — 纯AI，无本地规则 (青云客API)
         // ============================================================
         const chatBox = document.getElementById('chatBox');
         const aiInput = document.getElementById('aiInput');
         const sendBtn = document.getElementById('sendMsg');
-
         let chatHistory = LocalDB.get('nailongChat') || [];
+        let isAiThinking = false;
 
         function renderChat() {
             chatBox.innerHTML = '';
-            chatHistory.forEach(item => {
-                if (item.type === 'user') {
-                    chatBox.innerHTML += `<div class="msg-self">${item.text}</div>`;
-                } else {
-                    chatBox.innerHTML += `<div class="msg-nailong">${item.text}</div>`;
-                }
-            });
             if (chatHistory.length === 0) {
                 chatBox.innerHTML = `
                     <div class="msg-nailong">
-                        🥰 哈喽！我是专属奶龙 · 全域AI助理<br>
-                        <span style="font-size:13px;opacity:0.7;">
-                            🌤️ 查天气 · 🔥 看热搜 · 💬 任意聊天 · 📝 本地记忆
-                        </span>
-                        <span class="ai-badge">✨ AI实时响应</span>
+                        🥰 你好呀！我是专属奶龙AI，没有规则限制，随便聊～<br>
+                        <span style="font-size:13px;opacity:0.7;">💬 问我任何问题 · 查天气 · 看热搜 · 纯AI对话</span>
+                        <span class="ai-badge">✨ 由青云客AI驱动</span>
                     </div>
                 `;
+            } else {
+                chatHistory.forEach(item => {
+                    if (item.type === 'user') {
+                        chatBox.innerHTML += `<div class="msg-self">${item.text}</div>`;
+                    } else {
+                        chatBox.innerHTML += `<div class="msg-nailong">${item.text}</div>`;
+                    }
+                });
             }
             chatBox.scrollTop = chatBox.scrollHeight;
         }
         renderChat();
 
-        // ---- 调用青云客AI (JSONP方式) ----
+        // ---- 调用青云客API (JSONP) ----
         function callQingyunke(msg) {
             return new Promise((resolve) => {
-                const callbackName = 'qingyunke_cb_' + Date.now();
+                const callbackName = 'qingyunke_cb_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
                 const script = document.createElement('script');
-                const url = `https://api.qingyunke.com/api.php?msg=${encodeURIComponent(msg)}&type=json&callback=${callbackName}`;
+                const url =
+                    `https://api.qingyunke.com/api.php?msg=${encodeURIComponent(msg)}&type=json&callback=${callbackName}`;
                 window[callbackName] = function(data) {
                     delete window[callbackName];
                     document.body.removeChild(script);
@@ -1167,97 +1369,31 @@
                     resolve(null);
                 };
                 document.body.appendChild(script);
-                // 超时保护
                 setTimeout(() => {
                     if (window[callbackName]) {
                         delete window[callbackName];
                         document.body.removeChild(script);
                         resolve(null);
                     }
-                }, 8000);
+                }, 10000);
             });
         }
 
-        // ---- 本地规则备选 ----
-        function localFallback(msg) {
-            const lower = msg.trim().toLowerCase();
-            if (lower.includes('天气') || lower.includes('温度')) {
-                return '🌤️ 请说 "查天气" 或 "天气" 来获取实时天气～ (需要定位权限)';
-            }
-            if (lower.includes('热搜') || lower.includes('热点') || lower.includes('新闻')) {
-                return '🔥 请说 "热搜" 或 "热点" 来获取今日热搜～';
-            }
-            const replies = [
-                '💛 奶龙在听～ 你可以问我天气、热搜，或者随便聊聊天～',
-                '🥰 专属奶龙陪伴时刻！有什么想说的都可以告诉我～',
-                '✨ 我是你的专属AI助理，查天气、看热搜、闲聊都可以！',
-                '🐲 嗷呜～ 奶龙充电完毕，随时为你服务！',
-                '🌟 世界那么大，奶龙陪你聊～ 随便说点什么吧！'
-            ];
-            return replies[Math.floor(Math.random() * replies.length)];
-        }
-
-        // ---- 主AI回复 ----
+        // ---- 主AI回复 (纯AI，只处理天气/热搜作为辅助功能) ----
         async function nailongAIReply(msg) {
             if (!msg.trim()) return '🥺 说点什么吧～';
-            // 先尝试调用青云客
-            const aiReply = await callQingyunke(msg);
-            if (aiReply) {
-                // 清理一下回复中可能包含的"小Q"等字样，保持奶龙风格
-                let clean = aiReply.replace(/小Q/g, '奶龙').replace(/机器人/g, '奶龙');
-                return clean;
-            }
-            // 本地备选
-            return localFallback(msg);
-        }
 
-        // ---- 发送消息 ----
-        async function sendChat() {
-            const text = aiInput.value.trim();
-            if (!text) return;
-            // 用户消息
-            chatHistory.push({ type: 'user', text: text });
-            LocalDB.set('nailongChat', chatHistory);
-            renderChat();
-            aiInput.value = '';
-
-            // 显示"正在思考..."
-            const thinkingIdx = chatHistory.length;
-            chatHistory.push({ type: 'nailong', text: '⏳ 奶龙思考中...' });
-            LocalDB.set('nailongChat', chatHistory);
-            renderChat();
-
-            // 获取AI回复
-            const reply = await nailongAIReply(text);
-            // 替换思考中的消息
-            chatHistory[thinkingIdx] = { type: 'nailong', text: reply || '🥺 奶龙有点懵，再问一次吧～' };
-            LocalDB.set('nailongChat', chatHistory);
-            renderChat();
-        }
-
-        sendBtn.addEventListener('click', sendChat);
-        aiInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendChat(); });
-
-        // ---- 快捷指令: 天气 / 热搜 ----
-        // 在输入框中输入"天气"或"热搜"时，会通过AI API处理，但为了更好的体验，
-        // 我们也提供直接调用实时API的能力（通过AI回复中的特殊处理）
-        // 但AI API本身可能不理解"天气"指令，所以我们在发送前对特殊指令做预处理
-        // 其实青云客API能理解天气查询，但为了更准确，我们保留本地天气查询能力
-        // 修改nailongAIReply函数，增加对天气/热搜的直接处理
-        const originalReply = nailongAIReply;
-        nailongAIReply = async function(msg) {
+            // 检测天气/热搜关键词 (作为功能辅助，非规则)
             const lower = msg.trim().toLowerCase();
-            // 天气指令
             if (lower.includes('天气') || lower.includes('温度') || lower.includes('气温')) {
-                const city = LocalDB.get('userCity') || '北京';
+                const city = LocalDB.get('userCity') || userCity || '北京';
                 const data = await RealTimeAPI.getWeather(city);
                 if (data.code === '200') {
-                    return `💛 奶龙播报｜${city}实时天气：${data.now.text}，气温${data.now.temp}℃，体感${data.now.feelsLike}℃，风力${data.now.windScale}级～ 出门注意穿搭哦🥰`;
+                    return `💛 奶龙播报｜${city}实时天气：${data.now.text}，气温${data.now.temp}℃，体感${data.now.feelsLike}℃，风力${data.now.windScale}级～ 出门注意哦🥰`;
                 } else {
                     return '🥺 获取天气失败啦，请确保定位权限已开启～';
                 }
             }
-            // 热搜指令
             if (lower.includes('热搜') || lower.includes('热点') || lower.includes('新闻') || lower.includes('头条')) {
                 const hot = await RealTimeAPI.getHotSearch();
                 if (hot.data && hot.data.length) {
@@ -1270,63 +1406,99 @@
                     return '🥺 热搜获取失败，稍后再试试吧～';
                 }
             }
-            // 清空聊天
             if (lower.includes('清空聊天') || lower.includes('删除记录') || lower.includes('清除对话')) {
                 chatHistory = [];
                 LocalDB.del('nailongChat');
                 renderChat();
-                return '✅ 已清空全部本地聊天记录～ 数据已销毁 💛';
+                return '✅ 已清空全部本地聊天记录～ 💛';
             }
-            // 其他走AI API
+
+            // 纯AI对话
             const aiReply = await callQingyunke(msg);
             if (aiReply) {
                 let clean = aiReply.replace(/小Q/g, '奶龙').replace(/机器人/g, '奶龙');
                 return clean;
             }
-            return localFallback(msg);
-        };
+            // AI不可用时的备选
+            return '🥺 奶龙暂时无法连接AI，请稍后再试～ 你也可以试试问天气或热搜哦！';
+        }
+
+        // ---- 发送消息 ----
+        async function sendChat() {
+            const text = aiInput.value.trim();
+            if (!text || isAiThinking) return;
+
+            chatHistory.push({ type: 'user', text: text });
+            LocalDB.set('nailongChat', chatHistory);
+            renderChat();
+            aiInput.value = '';
+
+            isAiThinking = true;
+            sendBtn.disabled = true;
+            const thinkingIdx = chatHistory.length;
+            chatHistory.push({ type: 'nailong', text: '⏳ 奶龙思考中...' });
+            LocalDB.set('nailongChat', chatHistory);
+            renderChat();
+
+            const reply = await nailongAIReply(text);
+            chatHistory[thinkingIdx] = { type: 'nailong', text: reply || '🥺 奶龙有点懵，再问一次吧～' };
+            LocalDB.set('nailongChat', chatHistory);
+            renderChat();
+
+            isAiThinking = false;
+            sendBtn.disabled = false;
+        }
+
+        sendBtn.addEventListener('click', sendChat);
+        aiInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendChat(); });
 
         // ============================================================
-        //  6. 小说生成 — 扩展超长篇章
+        //  8. 末世文 — 超丰富随机生成 (完全不重复)
         // ============================================================
         const storyBox = document.getElementById('storyBox');
 
-        // 巨型词库
-        const wordPool = {
+        // 巨型词库 (每个类别大量词汇)
+        const WORD = {
             world: [
                 '腐朽霓虹末世', '液态重力废土', '逆向时间僵尸纪元', '情绪畸变荒芜大陆',
                 '次元破碎骸骨星球', '混沌熵增死域', '镜像倒置深渊城', '血月永夜焦土',
-                '机械降神废墟', '量子坍缩荒原', '噬光黑域', '回声悖论迷宫'
+                '机械降神废墟', '量子坍缩荒原', '噬光黑域', '回声悖论迷宫',
+                '熔岩倒流灰烬界', '永冻脉冲冰原', '数据洪流虚拟废墟', '孢子寄生雨林'
             ],
             ability: [
                 '骨翼重生', '蛋黄神力回溯', '逆命吞灵', '幼态时空折叠', '怨念共生',
                 '因果律崩坏', '熵减神环', '记忆篡改之瞳', '万相归墟', '悖论装甲',
-                '灵魂刻印', '时序逆鳞'
+                '灵魂刻印', '时序逆鳞', '噬神之牙', '虚无编织', '命运篡改',
+                '情绪具象化', '重力反转', '原子重构'
             ],
             enemy: [
                 '畸变红眼奶娃', '同化吞噬奶娃神', '虚空繁殖奶娃族群', '背叛同源奶娃使徒',
                 '深渊凝视者', '腐化奶娃领主', '镜像复制体', '时间蛀虫',
-                '混沌奶娃聚合体', '末日使徒'
+                '混沌奶娃聚合体', '末日使徒', '熵增蠕虫', '心魔寄生体',
+                '数据幽灵', '血肉巨像', '虚空猎手'
             ],
             rule: [
                 '死亡即重生但剥离情感', '吃掉同类即可篡改世界线', '黑夜会反向逆转生死',
                 '眼泪可以固化末世结界', '杀戮会随机触发世界重构', '记忆碎片能兑换神级能力',
                 '每过7天世界规则随机刷新', '同族相食会觉醒禁忌之力',
-                '绝望值满格将召唤远古邪神', '希望之光会灼烧变异体'
+                '绝望值满格将召唤远古邪神', '希望之光会灼烧变异体',
+                '时间流速受情绪影响', '物理法则局部失效', '声音可以具象化攻击'
             ],
             plot: [
                 '前世被挚友奶娃背刺分食于祭坛', '献祭龙鳞保全人类却被污蔑为叛徒',
                 '主动堕入僵尸深渊换取复仇权限', '为守护蛋黄神域全员陨落血战',
                 '被同族设计封印在时间夹缝千年', '为救幼崽被奶娃军团围剿分尸',
                 '发现世界真相后选择自我毁灭重启', '在轮回中逐渐丧失人性与记忆',
-                '曾与人类盟约却被背叛导致全族覆灭', '体内封印着远古噬神之力却浑然不知'
+                '曾与人类盟约却被背叛导致全族覆灭', '体内封印着远古噬神之力却浑然不知',
+                '被选为末世祭品却意外觉醒', '在濒死之际窥见了世界源代码'
             ],
             end: [
                 '双向泯灭重启世界，一切归零', '同化所有奶娃成为末世主神，俯瞰众生',
                 '放弃复仇驻守荒芜孤岛，终老一生', '打破轮回开启全新平行次元，未知旅程',
                 '吞噬世界核心成为新世界法则本身', '与宿敌融合成超越维度的存在',
                 '自我放逐于虚空裂缝，永远流浪', '唤醒远古神祇重塑万物秩序',
-                '以自身为祭品净化整个末世', '发现一切皆是虚拟幻境，选择醒来'
+                '以自身为祭品净化整个末世', '发现一切皆是虚拟幻境，选择醒来',
+                '成为新世界的守护者，永世孤独', '将末世封印入自己体内，换取和平'
             ],
             twist: [
                 '然而奶龙发现，自己才是真正的末世源头',
@@ -1336,7 +1508,9 @@
                 '终极真相：奶娃族群其实是奶龙的后代，因变异而反噬',
                 '隐藏设定：每一次重生都会让世界更接近终极毁灭',
                 '奶龙触碰世界边缘，发现外面还有无数个平行末世',
-                '其实奶龙从未离开过祭坛，所有经历都是精神折磨'
+                '其实奶龙从未离开过祭坛，所有经历都是精神折磨',
+                '奶龙发现自己的记忆被篡改，真相截然相反',
+                '末世本身是一个巨大的实验场，奶龙是唯一的变量'
             ],
             scene: [
                 '血月当空，骸骨铺就的荒原上，奶龙独自前行。',
@@ -1346,100 +1520,111 @@
                 '焦土上盛开诡异的血色花朵，每一朵都藏着诅咒。',
                 '奶龙踏入镜像湖面，湖水映出无数个不同命运的自我。',
                 '天空裂开巨缝，蠕动的黑暗伸出触手试探地面。',
-                '废弃的机甲群中，奶龙发现了一具与己身相似的骸骨。'
+                '废弃的机甲群中，奶龙发现了一具与己身相似的骸骨。',
+                '风暴中传来远古的呼唤，奶龙循声走向未知。',
+                '地表突然塌陷，奶龙坠入地底深处的光之遗迹。',
+                '奶龙在枯萎的巨树前，树皮上刻满了前世的预言。',
+                '海面浮现巨大的漩涡，奶龙纵身跃入其中。'
+            ],
+            name: [
+                '烬', '骸', '霜', '胧', '魇', '墟', '渊', '烬', '凛', '噬',
+                '苍', '冥', '烬', '幽', '绝', '荒', '寂', '灭', '烬', '殁'
+            ],
+            title: [
+                '万次重生复仇录', '末世挽歌', '蛋黄神域陨落纪', '轮回猎杀',
+                '深渊觉醒', '混沌纪元', '终焉审判', '虚无彼岸',
+                '因果崩坏', '时序逆乱', '噬神之章', '归墟之途'
             ]
         };
 
         function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-        function generateLongStory() {
-            const w = pick(wordPool.world);
-            const a = pick(wordPool.ability);
-            const e = pick(wordPool.enemy);
-            const r = pick(wordPool.rule);
-            const p = pick(wordPool.plot);
-            const ed = pick(wordPool.end);
-            const tw = pick(wordPool.twist);
-            const sc1 = pick(wordPool.scene);
-            const sc2 = pick(wordPool.scene);
-            const sc3 = pick(wordPool.scene);
+        function generateEpicStory() {
+            const w = pick(WORD.world);
+            const a = pick(WORD.ability);
+            const e = pick(WORD.enemy);
+            const r = pick(WORD.rule);
+            const p = pick(WORD.plot);
+            const ed = pick(WORD.end);
+            const tw = pick(WORD.twist);
+            const sc1 = pick(WORD.scene);
+            const sc2 = pick(WORD.scene);
+            const sc3 = pick(WORD.scene);
+            const sc4 = pick(WORD.scene);
+            const name = pick(WORD.name);
+            const title = pick(WORD.title);
 
-            // 构建超长篇章 (约1000-1500字)
+            // 生成完整篇章 (约1200-1800字)
             const parts = [
-                `# 【${w}】· 蛋黄龙万次重生复仇录\n`,
-                `## 序章 · 末世铁律\n`,
-                `这片破碎的世界，遵循着残酷的铁律：${r}。\n`,
-                `奶龙生于浮空蛋黄神域，族群世代制衡地底僵尸族群。而地底深处，${e}正悄然崛起。\n\n`,
-                `## 前世 · 血与背叛\n`,
-                `万次轮回之前，奶龙历尽宿命劫难：${p}。\n`,
+                `# 《${w}》· 奶龙「${name}」${title}\n`,
+                `## ▎序章 · 末世铁律\n`,
+                `在这片支离破碎的${w}上，万物遵循着一条残酷的铁律：${r}。\n`,
+                `奶龙${name}生于浮空蛋黄神域，族群世代制衡地底僵尸族群。而地底深处，${e}正悄然崛起，觊觎着地表的一切。\n\n`,
+                `## ▎前世 · 血与背叛\n`,
+                `万次轮回之前，奶龙${name}历尽宿命劫难：${p}。\n`,
                 `${sc1}\n`,
                 `末世酸雨腐蚀龙鳞，僵尸奶娃撕毁族群契约，啃食奶龙的情绪本源，将其封印在时间夹缝中，永世承受濒死痛感。\n\n`,
-                `## 觉醒 · 禁忌之力\n`,
-                `濒死刹那，奶龙触发天赋异能【${a}】，挣脱生死判定，开启闭环重生。\n`,
+                `## ▎觉醒 · 禁忌之力\n`,
+                `濒死刹那，奶龙${name}触发天赋异能【${a}】，挣脱生死判定，开启闭环重生。\n`,
                 `${sc2}\n`,
                 `每一次重生，世界逻辑都会随机篡改：树木流淌血液、僵尸惧怕黄色光源、奶娃会复刻奶龙神态博取同情、昼夜时间无序颠倒。\n`,
                 `没有绝对善恶，没有固定战力数值，所有规则随复仇进度随机崩塌重构。\n\n`,
-                `## 征途 · 荒原猎杀\n`,
-                `奶龙不再救赎人类，不再心软共情同族。\n`,
+                `## ▎征途 · 荒原猎杀\n`,
+                `奶龙${name}不再救赎人类，不再心软共情同族。\n`,
                 `${sc3}\n`,
                 `踏遍腐朽楼宇、骸骨荒原、倒置深海，猎杀所有异化奶娃，撕碎当年背叛真相。\n`,
                 `在无数次生死边缘，奶龙逐渐触摸到末世最深处的秘密……\n\n`,
-                `## 惊天反转 · 真相浮现\n`,
+                `## ▎惊天反转 · 真相浮现\n`,
                 `${tw}\n`,
+                `${sc4}\n`,
                 `这个发现彻底动摇了奶龙的复仇信念，也揭开了末世存在的真正意义。\n\n`,
-                `## 最终抉择 · 宿命终章\n`,
+                `## ▎最终抉择 · 宿命终章\n`,
                 `本次轮回的最终宿命：${ed}。\n`,
-                `奶龙站在时空的十字路口，凝视着无数个平行自我，做出了最终选择。\n\n`,
+                `奶龙${name}站在时空的十字路口，凝视着无数个平行自我，做出了最终选择。\n\n`,
                 `---\n`,
                 `【本故事纯属抽象虚构 · 无科学逻辑 · 无世界观闭环 · 随机生成仅此一篇】\n`,
-                `🐲 奶龙专属 · 末世复仇史诗 · 万次重生永不完结`
+                `🐲 奶龙专属 · 末世复仇史诗 · 万次重生永不完结\n`,
+                `✨ 生成时间：${new Date().toLocaleString()}`
             ];
 
             return parts.join('\n');
         }
 
         function generateAndSaveStory() {
-            const story = generateLongStory();
-            storyBox.textContent = story;
-            LocalDB.set('lastNailongStory', story);
-            showToast('📜 全新超长末世篇章生成完毕！');
+            const btn = document.getElementById('createStory');
+            btn.disabled = true;
+            btn.textContent = '⏳ 生成中...';
+            setTimeout(() => {
+                const story = generateEpicStory();
+                storyBox.textContent = story;
+                LocalDB.set('lastNailongStory', story);
+                showToast('📜 全新超长末世篇章生成完毕！');
+                btn.disabled = false;
+                btn.textContent = LANG[currentLang].storyGen || '⚡ 生成全新篇章';
+            }, 300);
         }
 
         document.getElementById('createStory').addEventListener('click', generateAndSaveStory);
 
-        // 加载上次小说
         const oldStory = LocalDB.get('lastNailongStory');
         if (oldStory) storyBox.textContent = oldStory;
 
         // ============================================================
-        //  7. 初始化：定位 + 主题/语言恢复
+        //  9. 初始化
         // ============================================================
-        // 恢复主题
         const savedTheme = LocalDB.get('nailongTheme') || 'dark';
         applyTheme(savedTheme);
-        // 恢复语言
         const savedLang = LocalDB.get('nailongLang') || 'zh';
         applyLang(savedLang);
 
-        // 保存主题/语言偏好
-        document.querySelectorAll('.theme-group .ctrl-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                LocalDB.set('nailongTheme', btn.dataset.theme);
-            });
-        });
-        document.querySelectorAll('.lang-group .ctrl-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                LocalDB.set('nailongLang', btn.dataset.lang);
-            });
-        });
+        // 请求权限
+        requestPermissions();
 
-        // 定位
-        LocationAPI.getCity();
-
-        // 额外：点击模块内的导航时，保持语言/主题不变
         console.log('🐲 奶龙AI助理空间站 已启动 ✨');
         console.log('📦 主题:', currentTheme, ' 语言:', currentLang);
-        console.log('💡 游戏: requestAnimationFrame + 无敌帧 | AI: 青云客API | 小说: 超长篇章');
+        console.log('💡 游戏: 按键移动一格 | 慢速怪物 | 自适应画布');
+        console.log('💬 AI: 青云客纯AI对话 | 无本地规则');
+        console.log('📖 末世文: 超丰富随机生成 | 每次完全不同');
     </script>
 </body>
 </html>
